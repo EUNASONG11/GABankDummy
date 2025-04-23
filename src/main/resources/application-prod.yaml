@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    username: even_adv_sql_2
+    password: ajax
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://112.222.157.157:5298/db_even_adv_sql_2
