@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="">
+<mapper namespace="com.example.projectdummy.customer.CustomerMapper">
+    <insert id="insCustomer">
+        insert into customer
+        (cust_id, cust_name, email, phone, birth, credit_point, cust_code)
+        values
+        (#{custId}, #{custName}, #{email}, #{phone}, #{birth}, #{creditPoint}, #{custCode})
+    </insert>
+
+    <update id="updCustomer">
+        update customer
+        set credit_point = #{creditPoint}
+        where cust_id = #{custId}
+    </update>
 </mapper>

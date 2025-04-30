@@ -10,7 +10,7 @@ public class Customer {
     private String custName;
     private String phone;
     private String email;
-    private String brith;
+    private String birth;
     private String custCode;
     private int creditPoint;
 }
