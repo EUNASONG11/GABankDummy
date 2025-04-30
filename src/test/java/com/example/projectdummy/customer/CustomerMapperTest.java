@@ -77,7 +77,7 @@ class CustomerMapperTest extends DummyDefault {
             buco.setCompanyName(kofaker.company().name());
             if(i%5==0){
                 customer.setCustCode("00103");
-                buco.setCorporationNumber(kofaker.numerify("####-#######"));
+                buco.setCorporationNumber(kofaker.numerify("######-#######"));
             }
             try {
                 customerMapper.updCustomer(customer);
