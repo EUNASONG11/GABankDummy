@@ -32,12 +32,14 @@ class CustomerMapperTest extends DummyDefault {
             customerMapper.insCustomer(customer);
             sqlSession.flushStatements();
         }
-        // 300~600 4퍼 300아래 0.5프로
-        for(int i=0;i<cnt/200;i++){
+        // 300~600 4퍼 300아래 0.5프로 1/8
+        for(int i=0;i<cnt/25;i++){
             Customer customer = new Customer();
             customer.setCustId(kofaker.random().nextLong(10001)+1);
-            customer.setCreditPoint(kofaker.random().nextInt(301)+1);
-
+            customer.setCreditPoint(kofaker.random().nextInt(301)+300);
+            if(i%8==0) {
+                customer.setCreditPoint(kofaker.random().nextInt(301) + 1);
+            }
             customerMapper.updCustomer(customer);
             sqlSession.flushStatements();
         }
@@ -77,7 +79,9 @@ class CustomerMapperTest extends DummyDefault {
             buco.setCompanyName(kofaker.company().name());
             if(i%5==0){
                 customer.setCustCode("00103");
-                buco.setCorporationNumber(kofaker.numerify("######-#######"));
+                buco.setCorporationNumber(kofaker.random().nextInt(1990, 2024).toString()+
+                        String.format("%02d",kofaker.random().nextInt(1,12))+
+                        kofaker.numerify("-#######"));
             }
             try {
                 customerMapper.updCustomer(customer);
