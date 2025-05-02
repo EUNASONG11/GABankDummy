@@ -43,29 +43,6 @@ class CustomerMapperTest extends DummyDefault {
             customerMapper.updCustomer(customer);
             sqlSession.flushStatements();
         }
-    }
-    @Test
-    void updateCustomer(){
-
-        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
-//        // 사업자8 법인2 일반90
-//        for(int i=0;i<cnt*2/25;i++){
-//            Customer customer = new Customer();
-//            customer.setCustId(kofaker.random().nextLong(10001)+1);
-//            customer.setCustCode("00102");
-//
-//            customerMapper.updCustomer(customer);
-//            sqlSession.flushStatements();
-//        }
-//
-//        for(int i=0;i<cnt/50;i++){
-//            Customer customer = Customer.builder()
-//                    .custId(kofaker.random().nextLong(10001)+1)
-//                    .custCode("00103")
-//                    .build();
-//            customerMapper.updCustomer(customer);
-//            sqlSession.flushStatements();
-//        }
 
         for(int i=0;i<cnt/10;i++){
             Customer customer = new Customer();
@@ -92,4 +69,52 @@ class CustomerMapperTest extends DummyDefault {
             }
         }
     }
+//    @Test
+//    void updateCustomer(){
+//
+//        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+////        // 사업자8 법인2 일반90
+////        for(int i=0;i<cnt*2/25;i++){
+////            Customer customer = new Customer();
+////            customer.setCustId(kofaker.random().nextLong(10001)+1);
+////            customer.setCustCode("00102");
+////
+////            customerMapper.updCustomer(customer);
+////            sqlSession.flushStatements();
+////        }
+////
+////        for(int i=0;i<cnt/50;i++){
+////            Customer customer = Customer.builder()
+////                    .custId(kofaker.random().nextLong(10001)+1)
+////                    .custCode("00103")
+////                    .build();
+////            customerMapper.updCustomer(customer);
+////            sqlSession.flushStatements();
+////        }
+//
+//        for(int i=0;i<cnt/10;i++){
+//            Customer customer = new Customer();
+//            Long custId = kofaker.random().nextLong(10001)+1;
+//            customer.setCustId(custId);
+//            customer.setCustCode("00102");
+//            BusinessCorporation buco = new BusinessCorporation();
+//            buco.setCustId(custId);
+//            buco.setBusinessNumber(kofaker.numerify("###-##-#####"));
+//            buco.setFax(kofaker.phoneNumber().phoneNumber());
+//            buco.setCompanyName(kofaker.company().name());
+//            if(i%5==0){
+//                customer.setCustCode("00103");
+//                buco.setCorporationNumber(kofaker.random().nextInt(1990, 2024).toString()+
+//                        String.format("%02d",kofaker.random().nextInt(1,12))+
+//                        kofaker.numerify("-#######"));
+//            }
+//            try {
+//                customerMapper.updCustomer(customer);
+//                customerMapper.insBusinessCorporation(buco);
+//                sqlSession.flushStatements();
+//            } catch (Exception e){
+//                e.printStackTrace();
+//            }
+//        }
+//    }
 }
