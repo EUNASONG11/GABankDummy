@@ -20,9 +20,9 @@ class LoanMapperTest extends DummyDefault {
     @Test
     void loanLog() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
-        List<Long> selLoan = loanMapper.selLoan();
+        List<Long> selLoan = loanMapper.selLoan(0);
 
-        LocalDate startDate = LocalDate.of(2022, 1, 1);
+        LocalDate startDate = LocalDate.of(2025, 1, 1);
         LocalDate endDate = LocalDate.now();
         String[] rateNames = {
                 "cofix 6개월", "cofix 잔액", "cofix 신규취급액",
@@ -38,20 +38,45 @@ class LoanMapperTest extends DummyDefault {
             }
             List<String> selectedRateNamesList = new ArrayList<>(selectedRateNames);
             for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusWeeks(1)) {
+                boolean isLastWeek = date.plusWeeks(1).isAfter(endDate);
                 for(int k=0; k<selectedRateNames.size(); k++) {
-
                 RateLog rateLog = new RateLog();
                 rateLog.setLoanId(selLoan.get(i));
-                rateLog.setUseFlag(1);
+                rateLog.setUseFlag(isLastWeek ? 0 : 1);
                 rateLog.setBaseRateName(selectedRateNamesList.get(k));
                 rateLog.setCreatedAt(date);
                 rateLog.setAdditionalRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.8,3.5)));
                 rateLog.setBaseRate(BigDecimal.valueOf(kofaker.random().nextDouble(2.8,4.9)));
                 rateLog.setDiscountedRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.1,0.5)));
 
-                if (date.equals(endDate)) {
-                    rateLog.setUseFlag(0);
-                    }
+                    loanMapper.insLoanLog(rateLog);
+                }
+            }
+            sqlSession.flushStatements();
+        }
+
+        List<Long> selLoan1 = loanMapper.selLoan(1);
+
+        for (int i = 0; i < selLoan1.size(); i++) {
+            Set<String> selectedRateNames = new HashSet<>();
+            Random random = new Random();
+
+            for (int j = 0; j < 3; j++) {
+                selectedRateNames.add(rateNames[random.nextInt(rateNames.length)]);
+            }
+            List<String> selectedRateNamesList = new ArrayList<>(selectedRateNames);
+            for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusWeeks(1)) {
+
+                for(int k=0; k<selectedRateNames.size(); k++) {
+                    RateLog rateLog = new RateLog();
+                    rateLog.setLoanId(selLoan1.get(i));
+                    rateLog.setUseFlag(1);
+                    rateLog.setBaseRateName(selectedRateNamesList.get(k));
+                    rateLog.setCreatedAt(date);
+                    rateLog.setAdditionalRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.8,3.5)));
+                    rateLog.setBaseRate(BigDecimal.valueOf(kofaker.random().nextDouble(2.8,4.9)));
+                    rateLog.setDiscountedRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.1,0.5)));
+
                     loanMapper.insLoanLog(rateLog);
                 }
             }

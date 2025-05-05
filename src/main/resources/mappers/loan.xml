@@ -12,5 +12,6 @@
     <select id="selLoan">
         select loan_id
         from loan
+        where use_flag = #{useFlag}
     </select>
 </mapper>

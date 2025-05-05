@@ -8,6 +8,6 @@ import java.util.List;
 @Mapper
 public interface LoanMapper {
 
-    List<Long> selLoan();
+    List<Long> selLoan(int useFlag);
     int insLoanLog(RateLog rateLog);
 }
