@@ -4,7 +4,7 @@
 <mapper namespace="com.example.projectdummy.account.AccountMapper">
 
     <select id="findProduct">
-        select product_id from product
+        select product_id, product_code from product
     </select>
     <select id="findCustomer">
         select cust_id from Customer
@@ -12,5 +12,12 @@
     <select id="findEmployee">
         select employee_id from employee
     </select>
+
+    <insert id="saveBankAccount">
+        INSERT INTO bank_account
+            (account_id, product_id, cust_id, employee_id, account_num, account_password, money, status_code)
+        VALUES
+            (#{accountId},#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode})
+    </insert>
 
 </mapper>
