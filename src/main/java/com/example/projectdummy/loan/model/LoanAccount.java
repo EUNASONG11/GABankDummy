@@ -1,18 +1,19 @@
 package com.example.projectdummy.loan.model;
 
-import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
-@Builder
+@Getter
 @Setter
 public class LoanAccount {
     private Long accountId;
-    private Long lonMoney;
+    private Long loanMoney;
     private BigDecimal discountedRate;
     private BigDecimal additionalRate;
     private Long rateId;
-    private String endAt;
+    private LocalDate endAt;
     private String redemptionCode;
 }
