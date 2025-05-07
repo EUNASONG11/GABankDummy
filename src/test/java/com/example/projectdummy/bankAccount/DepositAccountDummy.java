@@ -24,7 +24,7 @@ class DepositAccountDummy extends DummyDefault {
     DepositMapper depositMapper;
     final Long CNT = 10000L;
 
-    @Test
+    @Test //요구불
     void createDemandAccount() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
 
@@ -66,7 +66,7 @@ class DepositAccountDummy extends DummyDefault {
         }
     }
 
-    @Test
+    @Test //저축
     void createSavingAccount() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
 
