@@ -3,6 +3,7 @@ package com.example.projectdummy.customer;
 import com.example.projectdummy.DummyDefault;
 import com.example.projectdummy.customer.model.BusinessCorporation;
 import com.example.projectdummy.customer.model.Customer;
+import com.example.projectdummy.customer.model.OnlineBank;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ class CustomerMapperTest extends DummyDefault {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
 
         for(Long i=1L;i<=cnt;i++){
-
+            int randomInt = kofaker.random().nextInt(2);
             Customer customer = new Customer();
             customer.setCustId(i);
             customer.setCustName(kofaker.name().lastName() + kofaker.name().firstName());
@@ -28,8 +29,17 @@ class CustomerMapperTest extends DummyDefault {
             customer.setBirth(kofaker.date().birthday(18,70).toString());
             customer.setCreditPoint(kofaker.random().nextInt(401)+600);
             customer.setCustCode("00101");
-
             customerMapper.insCustomer(customer);
+            if(randomInt == 1){
+                OnlineBank ob =  OnlineBank.builder()
+                        .custId(i)
+                        .id(enfaker.internet().emailAddress()+i)
+                        .pw(enfaker.lorem().characters(kofaker.random().nextInt(6)+7,true,true))
+                        .document(enfaker.lorem().characters(6,true,true)) // 더미인데 굳이 암호회 할지는 생각
+                        .build();
+                customerMapper.insOnlineBank(ob);
+            }
+
             sqlSession.flushStatements();
         }
         // 300~600 4퍼 300아래 0.5프로 1/8
@@ -69,6 +79,7 @@ class CustomerMapperTest extends DummyDefault {
             }
         }
     }
+
 //    @Test
 //    void updateCustomer(){
 //
