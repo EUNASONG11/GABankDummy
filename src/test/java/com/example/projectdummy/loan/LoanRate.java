@@ -11,9 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class LoanMapperTest extends DummyDefault {
+class LoanRate extends DummyDefault {
     @Autowired
     LoanMapper loanMapper;
 
