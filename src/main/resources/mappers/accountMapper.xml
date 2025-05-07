@@ -3,6 +3,9 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.projectdummy.account.AccountMapper">
 
+    <select id="findProduct">
+        select product_id, product_code from product
+    </select>
     <select id="findCustomer">
         select cust_id from Customer
     </select>
@@ -10,31 +13,11 @@
         select employee_id from employee
     </select>
 
-    <insert id="saveBankAccount" useGeneratedKeys="true" keyProperty="accountId">
+    <insert id="saveBankAccount">
         INSERT INTO bank_account
-            (product_id, cust_id, employee_id, account_num, account_password, money, status_code)
+            (account_id, product_id, cust_id, employee_id, account_num, account_password, money, status_code)
         VALUES
-            (#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode})
-    </insert>
-    <insert id="insBankAccount">
-        insert into bank_account
-        (account_id, product_id, cust_id, employee_id, account_num, account_password, money, status_code, created_at)
-        values
-        (#{accountId} ,#{productId}, #{custId}, #{employeeId}, #{accountNum}, #{accountPassword}, #{money}, #{statusCode}, #{createdAt})
-    </insert>
-
-    <insert id="insBankInternalAccount">
-        insert into bank_internal_account
-        (account_code, account_num, flag, created_at, updated_at)
-        values
-        (#{account_code}, #{account_num}, #{flag}, #{created_at}, #{updated_at})
-    </insert>
-
-    <insert id="insLoanAccount">
-        insert into loan_account
-        (account_id, loan_money, discounted_rate, additional_rate, rate_id, end_at, redemption_code)
-        values
-        (#{accountId}, #{loanMoney}, #{discountedRate}, #{additionalRate}, #{rateId}, #{endAt}, #{redemptionCode})
+            (#{accountId},#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode})
     </insert>
 
 </mapper>
