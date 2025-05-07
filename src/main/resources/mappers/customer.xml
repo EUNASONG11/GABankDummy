@@ -34,4 +34,5 @@
         values
         (#{custId}, #{id}, #{pw}, #{document})
     </insert>
+
 </mapper>
