@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.List;
 import java.util.Random;
 
+//아직 테스트 안햇음
 class BankAccountDummy  extends DummyDefault {
 
     @Autowired
