@@ -28,7 +28,7 @@ public class LoanAccountDummy extends DummyDefault {
     @Autowired
     EmployeeMapper employeeMapper;
     final int cnt = 100;
-    final Long minDiscount = 50000000L;
+    final Long minDiscount = 20000000L;
     @Test
     void loanAccount() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
@@ -61,7 +61,7 @@ public class LoanAccountDummy extends DummyDefault {
                 ba.setEmployeeId(selEmployee.get(kofaker.random().nextInt(selEmployee.size())));
                 ba.setAccountNum("50402"+kofaker.numerify("########"));
                 ba.setAccountPassword(kofaker.numerify("####"));
-                ba.setMoney(kofaker.random().nextInt(loanAmount));
+                ba.setMoney(kofaker.random().nextInt(loanAmount)); //최저값이 없음 수정 필요
                 ba.setStatusCode("00201");
                 ba.setCreatedAt(randomDate);
                 accountMapper.insBankAccount(ba);
@@ -71,7 +71,7 @@ public class LoanAccountDummy extends DummyDefault {
                 LoanAccount loanAccount = new LoanAccount();
                 loanAccount.setAccountId(accountId++);
                 loanAccount.setRedemptionCode(loan.getRedemptionCode());
-                loanAccount.setLoanMoney(kofaker.random().nextLong(maxAmount - minAmount + 1) + minAmount);
+                    loanAccount.setLoanMoney(kofaker.random().nextLong(maxAmount - minAmount + 1) + minAmount);
                 loanAccount.setEndAt(finalDate);
                 loanAccount.setRateId(kofaker.random().nextLong(10001)+1);
                 loanAccount.setDiscountedRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.1,0.5)));
