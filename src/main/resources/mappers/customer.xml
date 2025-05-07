@@ -11,7 +11,27 @@
 
     <update id="updCustomer">
         update customer
-        set credit_point = #{creditPoint}
+        <set>
+            <if test="creditPoint != null">
+                credit_point = #{creditPoint},
+            </if>
+            <if test="custCode != null">
+                cust_code = #{custCode}
+            </if>
+        </set>
         where cust_id = #{custId}
     </update>
+    <insert id="insBusinessCorporation">
+        insert into business_corporation
+        (cust_id, business_number, company_name, fax, corporation_number)
+        values
+        (#{custId}, #{businessNumber}, #{companyName}, #{fax}, #{corporationNumber})
+    </insert>
+
+    <insert id="insOnlineBank">
+        insert into online_bank
+        (cust_id, id, pw, document)
+        values
+        (#{custId}, #{id}, #{pw}, #{document})
+    </insert>
 </mapper>
