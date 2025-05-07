@@ -27,4 +27,11 @@
         values
         (#{custId}, #{businessNumber}, #{companyName}, #{fax}, #{corporationNumber})
     </insert>
+
+    <insert id="insOnlineBank">
+        insert into online_bank
+        (cust_id, id, pw, document)
+        values
+        (#{custId}, #{id}, #{pw}, #{document})
+    </insert>
 </mapper>
