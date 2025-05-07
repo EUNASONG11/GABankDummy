@@ -22,7 +22,7 @@ class LoanMapperTest extends DummyDefault {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
         List<Long> selLoan = loanMapper.selLoan(0);
 
-        LocalDate startDate = LocalDate.of(2025, 1, 1);
+        LocalDate startDate = LocalDate.of(2022, 1, 1);
         LocalDate endDate = LocalDate.now();
         String[] rateNames = {
                 "cofix 6개월", "cofix 잔액", "cofix 신규취급액",
@@ -38,11 +38,10 @@ class LoanMapperTest extends DummyDefault {
             }
             List<String> selectedRateNamesList = new ArrayList<>(selectedRateNames);
             for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusWeeks(1)) {
-                boolean isLastWeek = date.plusWeeks(1).isAfter(endDate);
                 for(int k=0; k<selectedRateNames.size(); k++) {
                 RateLog rateLog = new RateLog();
                 rateLog.setLoanId(selLoan.get(i));
-                rateLog.setUseFlag(isLastWeek ? 0 : 1);
+                rateLog.setUseFlag(0);
                 rateLog.setBaseRateName(selectedRateNamesList.get(k));
                 rateLog.setCreatedAt(date);
                 rateLog.setAdditionalRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.8,3.5)));
