@@ -1,5 +1,9 @@
 package com.example.projectdummy.account.model;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
