@@ -1,9 +1,11 @@
 package com.example.projectdummy.account.model;
 
-import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
-@Builder
+import java.time.LocalDate;
+
+@Getter
 @Setter
 public class BankAccount {
     private Long accountId;
@@ -14,4 +16,5 @@ public class BankAccount {
     private String accountPassword;
     private int money;
     private String statusCode;
+    private LocalDate createdAt;
 }
