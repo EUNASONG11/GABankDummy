@@ -9,10 +9,6 @@ import java.util.List;
 @Mapper
 public interface AccountMapper {
 
-    List<Product> findProduct();
-    List<Long> findCustomer();
-    List<Long> findEmployee();
-
     int saveBankAccount(BankAccount bankAccount);
     int insBankAccount(BankAccount bankAccount);
     int insBankInternalAccount();
