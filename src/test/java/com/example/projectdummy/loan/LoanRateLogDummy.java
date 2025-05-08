@@ -18,7 +18,7 @@ public class LoanRateLogDummy extends DummyDefault {
     LoanMapper loanMapper;
 
     @Test
-    void insertLoanRateLogs_ShuffledAccounts_CreatedAtOrderedPerAccountId() {
+    void insertLoanRateLogs() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
         try {
             List<Long> accountIds = loanMapper.selLoanAccountId();
@@ -51,16 +51,31 @@ public class LoanRateLogDummy extends DummyDefault {
             // 섞기 (account_id가 완전 무작위로 분산되게)
             Collections.shuffle(allLogs);
 
-            // account_id별 등장 횟수 누적을 위한 맵
+            // 생성 시점 범위 설정
+            LocalDate startDate = LocalDate.of(2022, 1, 1);
+            LocalDate endDate = LocalDate.now(); // 오늘 날짜 (2025-05-08)
+
+            // account_id별 등장 횟수 누적용
             Map<Long, Integer> accountOrder = new HashMap<>();
-            LocalDate baseDate = LocalDate.of(2022, 1, 1);
+
+            // account_id별 최대 count 저장 (accountId → count)
+            Map<Long, Integer> accountMaxCount = new HashMap<>();
+            for (LoanRateLog log : allLogs) {
+                accountMaxCount.put(log.getAccountId(), accountMaxCount.getOrDefault(log.getAccountId(), 0) + 1);
+            }
 
             for (int i = 0; i < allLogs.size() && i < totalLogs; i++) {
                 LoanRateLog log = allLogs.get(i);
                 Long accountId = log.getAccountId();
 
                 int order = accountOrder.getOrDefault(accountId, 0);
-                log.setCreatedAt(baseDate.plusDays(order * 30L));  // 같은 account일수록 점점 미래로
+                int maxOrder = accountMaxCount.get(accountId);
+
+                // account별 날짜 범위 내에서 order 비율에 따라 날짜 계산
+                long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
+                long step = (long) ((order / (double) maxOrder) * totalDays);
+
+                log.setCreatedAt(startDate.plusDays(step));
                 accountOrder.put(accountId, order + 1);
 
                 loanMapper.insLoanRateLog(log);
