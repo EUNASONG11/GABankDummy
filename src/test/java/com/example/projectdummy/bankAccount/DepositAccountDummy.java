@@ -3,6 +3,9 @@ package com.example.projectdummy.bankAccount;
 import com.example.projectdummy.DummyDefault;
 import com.example.projectdummy.account.AccountMapper;
 import com.example.projectdummy.account.model.BankAccount;
+import com.example.projectdummy.card.CardMapper;
+import com.example.projectdummy.card.model.CheckCard;
+import com.example.projectdummy.card.model.UserCard;
 import com.example.projectdummy.employee.EmployeeMapper;
 import com.example.projectdummy.productAndDeposit.DepositMapper;
 import com.example.projectdummy.productAndDeposit.Product;
@@ -12,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
@@ -22,15 +26,15 @@ class DepositAccountDummy extends DummyDefault {
     AccountMapper accountMapper;
     EmployeeMapper employeeMapper;
     DepositMapper depositMapper;
+    CardMapper cardMapper;
     final Long CNT = 10000L;
 
-    @Test //요구불
+    @Test //요구불 생성
     void createDemandAccount() {
-        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
-
         List<Long> depositIds = depositMapper.selDemandDepositId();
         List<Long> selEmployee = employeeMapper.selEmployee();
-
+        List<Long> checkCards=cardMapper.findCheckCard();
+        LocalDate localDate = LocalDate.now();
         Random random = new Random();
         //final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -38,9 +42,10 @@ class DepositAccountDummy extends DummyDefault {
             long demandDepositId = depositIds.get(random.nextInt(depositIds.size()));
             boolean success = false;
             int retryCnt = 0;
+            BankAccount account = new BankAccount();
 
+            //계좌 중복시 10번까지는 계좌번호 바꾸며 새로 넣도록 함.
             while(!success && retryCnt < 10) {
-                BankAccount account = new BankAccount();
                 account.setAccountNum("50401"+kofaker.numerify("########"));
                 account.setEmployeeId(selEmployee.get(kofaker.random().nextInt(selEmployee.size())));
                 account.setCustId(kofaker.random().nextLong(10001)+1);
@@ -51,7 +56,6 @@ class DepositAccountDummy extends DummyDefault {
 
                 try {
                     accountMapper.saveBankAccount(account);
-                    sqlSession.flushStatements();
                     success = true;
                 } catch (Exception e) {
                     retryCnt++;
@@ -63,10 +67,33 @@ class DepositAccountDummy extends DummyDefault {
                     }
                 }
             }
+            //체크카드 insert
+            if(success) {
+                CheckCard checkCard = CheckCard.builder()
+                        .accountId(account.getAccountId())
+                        .build();
+                cardMapper.saveCheckCard(checkCard);
+
+
+                UserCard userCard = UserCard.builder()
+                        .uCardId(checkCard.getCheckCardId())
+                        .cardId(checkCards.get(new Random().nextInt(checkCards.size())))
+                        .custId(account.getCustId())
+                        .cardNumber("502502"+kofaker.numerify("##########"))
+                        .uCardCode("00801")
+                        .cardPassword(kofaker.numerify("####"))
+                        .endAt(localDate.plusYears(3).toString())
+                        .build();
+
+
+
+            }
+
+
         }
     }
 
-    @Test //저축
+    @Test //저축 계정 생성
     void createSavingAccount() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
 
