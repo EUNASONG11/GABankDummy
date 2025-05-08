@@ -20,4 +20,32 @@
         from loan
         where use_flag = #{useFlag}
     </select>
+
+    <select id="selLoanAccountId">
+        SELECT account_id
+        FROM loan_account
+    </select>
+
+    <select id="selDiscountedRate">
+        SELECT discounted_rate
+        FROM loan_account
+        WHERE account_id = #{accountId}
+    </select>
+
+    <select id="selAdditionalRate">
+        SELECT additional_rate
+        FROM loan_account
+        WHERE account_id = #{accountId}
+    </select>
+
+    <select id="selCreatedAt">
+        SELECT
+    </select>
+
+    <insert id="insLoanRateLog">
+        INSERT INTO loan_rate_log
+        (account_id, interest_rate, change_at, created_at)
+        VALUES
+        (#{accountId}, #{interestRate}, #{changeAt}, #{createdAt})
+    </insert>
 </mapper>
