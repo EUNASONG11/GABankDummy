@@ -24,6 +24,19 @@ public class CardMapperTest extends DummyDefault {
         //0~25% 무이자
         for(Long i=1L; i <= (cnt/4); i++){
             int langType = faker.random().nextInt(2);
+            String companyName = "";
+            if(langType == 0) {
+                 companyName = kofaker.company().name();
+                if(companyName.length() >= 30) {
+                    companyName = companyName.substring(0, 29);
+                }
+            }else if(langType == 1) {
+                companyName = enfaker.company().name();
+                if(companyName.length() >= 30) {
+                    companyName = companyName.substring(0, 29);
+                }
+            }
+
             int month = (faker.random().nextInt(11) + 1);
             String randomDay = "";
             if (month == 2) {
@@ -34,10 +47,10 @@ public class CardMapperTest extends DummyDefault {
                 randomDay = String.valueOf(faker.random().nextInt(30) + 1); // 1일부터 30일까지
             }
 
-            CreditStatement.builder()
+            CreditStatement cs = CreditStatement.builder()
                     .creditId(i)
-                    .credit_card_id(faker.random().nextLong(100) + 1)
-                    .place(langType==0 ? kofaker.company().name() : enfaker.company().name() )
+                    .creditCardId(faker.random().nextLong(100) + 1)
+                    .place(companyName)
                     .flag(1)
                     .state(faker.random().nextInt(3))
                     .exploiter(faker.random().nextInt(2)==0?"본인":"가족")
@@ -52,11 +65,26 @@ public class CardMapperTest extends DummyDefault {
                     .uMonth(String.valueOf(month))
                     .uDay(randomDay)
                     .build();
+            cardMapper.insCreditStatement(cs);
         }
+        sqlSession.flushStatements();
 
         //25~50% 할부 이자
         for(Long i = (cnt/4) + 1; i < cnt/2; i++) {
             int langType = faker.random().nextInt(2);
+            String companyName = "";
+            if(langType == 0) {
+                companyName = kofaker.company().name();
+                if(companyName.length() >= 30) {
+                    companyName = companyName.substring(0, 29);
+                }
+            }else if(langType == 1) {
+                companyName = enfaker.company().name();
+                if(companyName.length() >= 30) {
+                    companyName = companyName.substring(0, 29);
+                }
+            }
+
             int month = (faker.random().nextInt(11) + 1);
             String randomDay = "";
             if (month == 2) {
@@ -71,21 +99,19 @@ public class CardMapperTest extends DummyDefault {
             int ogAmount = faker.random().nextInt(9999900) + 100;
             int fee = 0;
             if(installment == 2){
-                fee = (int) Math.round(10.9 * ogAmount);
-            }else if(3 <= installment && installment <= 5){
                 fee = (int) Math.round(14.5 * ogAmount);
-            }else if(6 <= installment && installment <= 12){
-                fee = (int) Math.round(16.5 * ogAmount);
-            }else if(13 <= installment && installment <= 18){
-                fee = 17 * ogAmount;
-            }else if(19 <= installment && installment <= 36){
-                fee = 18 * ogAmount;
+            }else if(installment == 3){
+                fee = (int) Math.round(18.2 * ogAmount);
+            }else if(4 <= installment && installment <= 18){
+                fee = (int) Math.round(19.7 * ogAmount);
+            }else if(19 <= installment ){
+                fee = (int) Math.round(19.8 * ogAmount);
             }
 
-            CreditStatement.builder()
+            CreditStatement cs = CreditStatement.builder()
                     .creditId(i)
-                    .credit_card_id(faker.random().nextLong(100) + 1)
-                    .place(langType==0 ? kofaker.company().name() : enfaker.company().name())
+                    .creditCardId(faker.random().nextLong(100) + 1)
+                    .place(companyName)
                     .flag(1)
                     .state(faker.random().nextInt(3))
                     .exploiter(faker.random().nextInt(2)==0?"본인":"가족")
@@ -100,11 +126,26 @@ public class CardMapperTest extends DummyDefault {
                     .uMonth(String.valueOf(month))
                     .uDay(randomDay)
                     .build();
+            cardMapper.insCreditStatement(cs);
+            sqlSession.flushStatements();
         }
 
         //50~100% 일시불
-        for(Long i = (cnt/2) + 1; i < cnt; i++) {
+        for(Long i = (cnt/2) + 1; i <= cnt; i++) {
             int langType = faker.random().nextInt(2);
+            String companyName = "";
+            if(langType == 0) {
+                companyName = kofaker.company().name();
+                if(companyName.length() >= 30) {
+                    companyName = companyName.substring(0, 29);
+                }
+            }else if(langType == 1) {
+                companyName = enfaker.company().name();
+                if(companyName.length() >= 30) {
+                    companyName = companyName.substring(0, 29);
+                }
+            }
+
             int month = (faker.random().nextInt(11) + 1);
             String randomDay = "";
             if (month == 2) {
@@ -117,10 +158,10 @@ public class CardMapperTest extends DummyDefault {
 
             int ogAmount = faker.random().nextInt(9999900) + 100;
 
-            CreditStatement.builder()
+            CreditStatement cs = CreditStatement.builder()
                     .creditId(i)
-                    .credit_card_id(faker.random().nextLong(100) + 1)
-                    .place(langType==0 ? kofaker.company().name() : enfaker.company().name())
+                    .creditCardId(faker.random().nextLong(100) + 1)
+                    .place(companyName)
                     .flag(0)
                     .state(faker.random().nextInt(3))
                     .exploiter(faker.random().nextInt(2)==0?"본인":"가족")
@@ -135,8 +176,9 @@ public class CardMapperTest extends DummyDefault {
                     .uMonth(String.valueOf(month))
                     .uDay(randomDay)
                     .build();
-
+            cardMapper.insCreditStatement(cs);
         }
+        sqlSession.flushStatements();
 
     }
 }

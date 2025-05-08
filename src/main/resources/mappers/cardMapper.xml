@@ -14,7 +14,7 @@
             , #{state}
             , #{exploiter}
             , #{accumPoint}
-            , #{discount]
+            , #{discount}
             , #{fee}
             , #{ogAmount}
             , #{installment}
@@ -25,3 +25,5 @@
         )
 
     </insert>
+
+</mapper>
