@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Builder
 @Setter
-public class branch {
+public class Branch {
 
 }
