@@ -1,9 +1,10 @@
 package com.example.projectdummy.card.model;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
-@Builder
+@Getter
 @Setter
 public class CardOptionLog {
     private Long cardOptionLogId;
