@@ -8,9 +8,9 @@ import lombok.Setter;
 public class UserCard {
     private Long uCardId;
     private Long cardId;
+    private Long custId;
     private String cardNumber;
     private String cardPassword;
     private String uCardCode;
-    private String benefitCode;
     private String endAt;
 }
