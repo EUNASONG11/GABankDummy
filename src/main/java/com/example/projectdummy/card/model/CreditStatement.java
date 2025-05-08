@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Setter
 public class CreditStatement {
     private Long creditId;
+    private Long credit_card_id;
     private String place;
     private int flag;
     private int state;
