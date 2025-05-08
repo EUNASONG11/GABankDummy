@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.projectdummy.card.CardMapper">
+
+    <insert id="saveCheckCard" useGeneratedKeys="true" keyProperty="checkCardId">
+        INSERT INTO check_card
+        SET account_id = #{accountId}
+    </insert>
+    <insert id="saveDepositCard">
+        insert into user_card
+        (u_card_id, card_id, cust_id, card_number, card_password, u_card_code,  end_at)
+        values
+        (#{uCardId},#{cardId},#{custId},#{cardNumber},#{cardPassword},#{uCardCode},#{endAt})
+    </insert>
+    
+    <select id="findCheckCard">
+        SELECT card_id FROM card
+        WHERE flag = 1
+        AND available = 0
+    </select>
+</mapper>
