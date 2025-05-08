@@ -1,10 +1,11 @@
-package com.example.projectdummy.loan;
+package com.example.projectdummy.bankAccount;
 
 import com.example.projectdummy.DummyDefault;
 import com.example.projectdummy.account.AccountMapper;
 import com.example.projectdummy.account.model.BankAccount;
 import com.example.projectdummy.customer.CustomerMapper;
 import com.example.projectdummy.employee.EmployeeMapper;
+import com.example.projectdummy.loan.LoanMapper;
 import com.example.projectdummy.loan.model.Loan;
 import com.example.projectdummy.loan.model.LoanAccount;
 import org.apache.ibatis.session.ExecutorType;
