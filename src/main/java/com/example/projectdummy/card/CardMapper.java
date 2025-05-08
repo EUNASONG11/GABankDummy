@@ -12,4 +12,5 @@ public interface CardMapper {
     int saveCheckCard(CheckCard checkCard);
     int saveDepositCard(UserCard userCard);
     List<Long> findCheckCard();
+    List<Long> selCardId();
 }
