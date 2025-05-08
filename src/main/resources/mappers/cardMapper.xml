@@ -5,25 +5,20 @@
 
     <insert id = "insCreditStatement">
         INSERT INTO credit_statement
-        (credit_id, credit_card_id, place, flag, state, exploiter, accum_point, discount, fee, og_amount, installment, interest_free, u_year, u_month, u_day)
+        (credit_id, credit_card_id, place, flag, state, exploiter, accum_point, discount, fee
+        , og_amount, installment, interest_free, u_year, u_month, u_day)
         VALUES(
-              #{creditId}
-            , #{creditCardId}
-            , #{place}
-            , #{flag}
-            , #{state}
-            , #{exploiter}
-            , #{accumPoint}
-            , #{discount}
-            , #{fee}
-            , #{ogAmount}
-            , #{installment}
-            , #{interestFree}
-            , #{uYear}
-            , #{uMonth}
-            , #{uDay}
+              #{creditId}, #{creditCardId}, #{place}, #{flag}, #{state}, #{exploiter}, #{accumPoint}, #{discount}, #{fee}
+            , #{ogAmount}, #{installment}, #{interestFree}, #{uYear}, #{uMonth}, #{uDay}
         )
+    </insert>
 
+    <insert id="insCreditCardPayment">
+        INSERT INTO credit_card_payment
+        (credit_payment_id, credit_id, due_code, cnt, dc_amount, due_at, paid_at)
+        VALUES(
+            #{creditPaymentId}, #{creditId}, #{dueCode}, #{cnt}, #{dcAmount}, #{dueAt}, #{paidAt}
+        )
     </insert>
 
 </mapper>
