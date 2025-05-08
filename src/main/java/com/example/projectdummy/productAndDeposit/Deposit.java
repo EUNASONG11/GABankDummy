@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Builder
 @Setter
-public class deposit {
+public class Deposit {
     private Long depositId;
     private int useFlag;
     private String depositName;
