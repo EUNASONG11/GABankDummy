@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.projectdummy.card.CardMapper">
+
+    <insert id = "insCreditStatement">
+        INSERT INTO credit_statement
+        (credit_id, credit_card_id, place, flag, state, exploiter, accum_point, discount, fee, og_amount, installment, interest_free, u_year, u_month, u_day)
+        VALUES(
+              #{creditId}
+            , #{creditCardId}
+            , #{place}
+            , #{flag}
+            , #{state}
+            , #{exploiter}
+            , #{accumPoint}
+            , #{discount]
+            , #{fee}
+            , #{ogAmount}
+            , #{installment}
+            , #{interestFree}
+            , #{uYear}
+            , #{uMonth}
+            , #{uDay}
+        )
+
+    </insert>
