@@ -16,4 +16,11 @@
         AND deposit_code IN (00503, 00504)
     </select>
 
+    <select id="selDepositDuration">
+        SELECT deposit_duration_id AS duration, deposit_duration_id AS depositDurationId
+        , sa_deposit_id AS saDepositId, over_interest AS overInterest, end_interest AS endInterest
+        , cancel_interest AS cancelInterest
+        FROM deposit_duration
+    </select>
+
 </mapper>

@@ -9,4 +9,6 @@ public interface DepositMapper {
 
     List<Long> selDemandDepositId();
     List<Long> selSavingDepositId();
+
+    List<DepositDuration> selDepositDuration();
 }
