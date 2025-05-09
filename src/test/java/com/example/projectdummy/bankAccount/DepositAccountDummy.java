@@ -69,8 +69,12 @@ class DepositAccountDummy extends AccountDummyDefault {
                     }
                 }
             }
-            //체크카드 insert
+
             if(success) {
+                //계좌 개설 서류 저장
+                savingContractDocument(demandDepositId, account.getAccountId(),0);
+
+                //체크카드 insert
                 int cardRetryCnt = 0;
                 boolean cardSuccess = false;
                 CheckCard checkCard = CheckCard.builder()
@@ -95,17 +99,16 @@ class DepositAccountDummy extends AccountDummyDefault {
                         cardRetryCnt++;
                         userCard.setCardNumber("502502"+kofaker.numerify("##########"));
                         if (isDuplicateKeyException(e)) {
-                            System.out.println("Duplicate accountNum detected. Retrying... (" + retryCnt + ")");
+                            System.out.println("Duplicate accountNum detected. Retrying... (" + cardRetryCnt + ")");
                         } else {
                             e.printStackTrace();
                             break;
                         }
                     }
                 }
+                //카드 개설 서류 저장
+                savingContractDocument(userCard.getCardId(),checkCard.getCheckCardId(),1);
             }
-
-            //계좌 개설 서류 저장
-            savingAccountDocument(demandDepositId, account.getAccountId());
 
         }
     }

@@ -1,6 +1,6 @@
 package com.example.projectdummy.account;
 
-import com.example.projectdummy.account.model.AccountDocument;
+import com.example.projectdummy.account.model.ContractDocument;
 import com.example.projectdummy.account.model.Document;
 import com.example.projectdummy.account.model.ProductDocumentWithName;
 import org.apache.ibatis.annotations.Mapper;
@@ -13,5 +13,5 @@ public interface DocumentMapper {
 
     List<ProductDocumentWithName> findProductDocument(long productId);
 
-    int saveAccountDocument(AccountDocument accountDocument);
+    int saveContractDocument(ContractDocument contractDocument);
 }

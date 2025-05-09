@@ -18,11 +18,11 @@
         WHERE p.product_id=#{productId}
     </select>
     
-    <insert id="saveAccountDocument">
-        insert into account_document
-        (account_id, product_document_id, document)
+    <insert id="saveContractDocument">
+        insert into contract_document
+        (contract_id, product_document_id, document, flag)
         values
-        (#{accountId}, #{productDocumentId}, #{document})
+        (#{contractId}, #{productDocumentId}, #{document}, #{flag})
     </insert>
 
 </mapper>
