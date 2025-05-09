@@ -20,52 +20,52 @@ class BankAccountDummy  extends DummyDefault {
     AccountMapper accountMapper;
     final Long CNT = 10000L;
 
-    @Test
-    void createBankAccount() {
-        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
-
-        List<Product> products = accountMapper.findProduct();
-        List<Long> employeeIds = accountMapper.findEmployee();
-        List<Long> customerIds = accountMapper.findCustomer();
-
-        Random random = new Random();
-        final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        for(int i = 0 ; i < CNT ; i++) {
-            Product product = products.get(random.nextInt(products.size()));
-            boolean success = false;
-            int retryCnt = 0;
-
-            while(!success && retryCnt < 10) {
-                String accountNum = makeRandomAccount(product.getProductCode());
-
-                BankAccount account = BankAccount.builder()
-                        .employeeId(employeeIds.get(random.nextInt(employeeIds.size())))
-                        .custId(customerIds.get(random.nextInt(customerIds.size())))
-                        .productId(product.getProductId())
-                        .accountNum(accountNum)
-                        .accountPassword(encoder.encode(String.valueOf(random.nextInt(9000) + 1000)))
-                        .money(random.nextInt(1_000_000_000))
-                        .statusCode("0")
-                        .build();
-
-                try {
-                    accountMapper.saveBankAccount(account);
-                    sqlSession.flushStatements();
-                    success = true;
-                } catch (Exception e) {
-                    retryCnt++;
-                    if (isDuplicateKeyException(e)) {
-                        System.out.println("Duplicate accountNum detected. Retrying... (" + retryCnt + ")");
-                    } else {
-                        e.printStackTrace(); // 다른 예외는 출력
-                        break; // 중복 외 에러 발생 시 반복 중단
-                    }
-                }
-            }
-        }
-
-    }
+//    @Test
+//    void createBankAccount() {
+//        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+//
+//        List<Product> products = accountMapper.findProduct();
+//        List<Long> employeeIds = accountMapper.findEmployee();
+//        List<Long> customerIds = accountMapper.findCustomer();
+//
+//        Random random = new Random();
+//        final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//
+//        for(int i = 0 ; i < CNT ; i++) {
+//            Product product = products.get(random.nextInt(products.size()));
+//            boolean success = false;
+//            int retryCnt = 0;
+//
+//            while(!success && retryCnt < 10) {
+//                String accountNum = makeRandomAccount(product.getProductCode());
+//
+//                BankAccount account = BankAccount.builder()
+//                        .employeeId(employeeIds.get(random.nextInt(employeeIds.size())))
+//                        .custId(customerIds.get(random.nextInt(customerIds.size())))
+//                        .productId(product.getProductId())
+//                        .accountNum(accountNum)
+//                        .accountPassword(encoder.encode(String.valueOf(random.nextInt(9000) + 1000)))
+//                        .money(random.nextInt(1_000_000_000))
+//                        .statusCode("0")
+//                        .build();
+//
+//                try {
+//                    accountMapper.saveBankAccount(account);
+//                    sqlSession.flushStatements();
+//                    success = true;
+//                } catch (Exception e) {
+//                    retryCnt++;
+//                    if (isDuplicateKeyException(e)) {
+//                        System.out.println("Duplicate accountNum detected. Retrying... (" + retryCnt + ")");
+//                    } else {
+//                        e.printStackTrace(); // 다른 예외는 출력
+//                        break; // 중복 외 에러 발생 시 반복 중단
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
 
     boolean isDuplicateKeyException(Exception e) {
         return e.getMessage() != null && e.getMessage().toLowerCase().contains("duplicate");
