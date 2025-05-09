@@ -1,9 +1,11 @@
 package com.example.projectdummy.account.model;
 
-import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
-@Builder
+import java.time.LocalDateTime;
+
+@Getter
 @Setter
 public class TransactionHistory {
     private Long historyId;
@@ -13,9 +15,11 @@ public class TransactionHistory {
     private Long money;
     private String toName;
     private String accountNum;
-    private String bankCode;
+    private String toBankCode;
     private String location;
     private Long hsMoney;
     private String atmCOde;
     private String useAccount;
+    private String useBankCode;
+    private LocalDateTime createdAt;
 }
