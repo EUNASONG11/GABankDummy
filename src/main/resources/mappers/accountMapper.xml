@@ -6,9 +6,9 @@
 
     <insert id="saveBankAccount" useGeneratedKeys="true" keyProperty="accountId">
         INSERT INTO bank_account
-            (product_id, cust_id, employee_id, account_num, account_password, money, status_code)
+            (product_id, cust_id, employee_id, account_num, account_password, money, status_code, created_at)
         VALUES
-            (#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode})
+            (#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode}, #{createdAt})
     </insert>
     <insert id="insBankAccount">
         insert into bank_account

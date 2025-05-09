@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-// 계좌 생성시 서류 생성하는 메서드를 담은 클래스
+// 계좌 or 카드 계약시 서류 생성하는 메서드를 담은 클래스
 public class AccountDummyDefault extends DummyDefault{
     @Autowired
     DocumentMapper documentMapper;
