@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class CardAccountAuth {
-    private Long division_id;
+    private Long divisionId;
     private String location;
     private Integer state;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private Integer flag;
 }
