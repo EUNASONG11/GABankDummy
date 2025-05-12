@@ -16,4 +16,5 @@ public class LoanAccount {
     private Long rateId;
     private LocalDate endAt;
     private String redemptionCode;
+    private Long loanApplicationId;
 }

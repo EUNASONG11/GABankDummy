@@ -8,6 +8,7 @@ import com.example.projectdummy.employee.EmployeeMapper;
 import com.example.projectdummy.loan.LoanMapper;
 import com.example.projectdummy.loan.model.Loan;
 import com.example.projectdummy.loan.model.LoanAccount;
+import com.example.projectdummy.loan.model.LoanApplication;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
@@ -38,6 +40,8 @@ public class LoanAccountDummy extends DummyDefault {
         List<Long> selEmployee = employeeMapper.selEmployee();
         Random random = new Random();
 
+        // 대출신청이력 테이블 추가로 인해
+        // 대출계좌 insert 전 대출신청이력에 상태 01902로 된 대출신청이력이 먼저 들어가 있어야 함
 
         LocalDate startDate = LocalDate.of(2022, 1, 1);
         LocalDate endDate = LocalDate.now();
@@ -45,24 +49,44 @@ public class LoanAccountDummy extends DummyDefault {
 
 
         Long accountId = 20000001L;
+        Long loanApplicationId = 1L;
         for(Loan loan : selLoan){
             Long loanId = loan.getLoanId();
             for(int j=0;j<cnt;j++){
                 long randomDays = random.nextInt((int) totalDays + 1);
                 LocalDate randomDate = startDate.plusDays(randomDays);
 
+                LocalDateTime rd = startDate.atStartOfDay();
+                LocalDateTime ad = rd.minusDays(kofaker.random().nextInt(5));
+
+                // 지금은 일자 고정인데 시간까지 필요
+
                 int yearsToAdd = kofaker.random().nextInt(3) + 3;
                 LocalDate finalDate = randomDate.plusYears(yearsToAdd);
 
                 int loanAmount = kofaker.random().nextInt(200_000_001) + 200_000_000;
+                int loanMoney = kofaker.random().nextInt(50_000_000) + loanAmount - 50_000_000;
+                Long custId = kofaker.random().nextLong(10001)+1;
+
+                LoanApplication la = new  LoanApplication();
+                la.setLoanApplicationId(loanApplicationId);
+                la.setCustId(custId);
+                la.setLoanId(loanId);
+                la.setApplicationDate(ad);
+                la.setRequestedTerm(yearsToAdd);
+                la.setRequestedAmount(loanMoney);
+                la.setStatusCode("01902");
+                la.setDecisionDate(rd);
+                loanMapper.insLoanApplication(la);
+
                 BankAccount ba = new BankAccount();
                 ba.setAccountId(accountId);
                 ba.setProductId(loanId);
-                ba.setCustId(kofaker.random().nextLong(10001)+1);
+                ba.setCustId(custId);
                 ba.setEmployeeId(selEmployee.get(kofaker.random().nextInt(selEmployee.size())));
                 ba.setAccountNum("50402"+kofaker.numerify("########"));
                 ba.setAccountPassword(kofaker.numerify("####"));
-                ba.setMoney(kofaker.random().nextInt(loanAmount)); //최저값이 없음 수정 필요
+                ba.setMoney(loanMoney); //최저값이 없음 수정 필요
                 ba.setStatusCode("00201");
                 ba.setCreatedAt(randomDate);
                 accountMapper.insBankAccount(ba);
@@ -72,11 +96,12 @@ public class LoanAccountDummy extends DummyDefault {
                 LoanAccount loanAccount = new LoanAccount();
                 loanAccount.setAccountId(accountId++);
                 loanAccount.setRedemptionCode(loan.getRedemptionCode());
-                    loanAccount.setLoanMoney(kofaker.random().nextLong(maxAmount - minAmount + 1) + minAmount);
+                loanAccount.setLoanMoney(kofaker.random().nextLong(maxAmount - minAmount + 1) + minAmount);
                 loanAccount.setEndAt(finalDate);
                 loanAccount.setRateId(kofaker.random().nextLong(10001)+1);
                 loanAccount.setDiscountedRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.1,0.5)));
                 loanAccount.setAdditionalRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.8,3.5)));
+                loanAccount.setLoanApplicationId(loanApplicationId);
 
                 accountMapper.insLoanAccount(loanAccount);
 
