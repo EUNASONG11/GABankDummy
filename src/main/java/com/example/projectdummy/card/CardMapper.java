@@ -1,10 +1,6 @@
 package com.example.projectdummy.card;
 
-import com.example.projectdummy.card.model.CreditCardPayment;
-import com.example.projectdummy.card.model.CreditStatement;
-import com.example.projectdummy.card.model.CardOptionLog;
-import com.example.projectdummy.card.model.CheckCard;
-import com.example.projectdummy.card.model.UserCard;
+import com.example.projectdummy.card.model.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,8 +9,9 @@ import java.util.List;
 public interface CardMapper {
     int insCreditStatement(CreditStatement creditStatement);
     int insCreditCardPayment(CreditCardPayment creditCardPayment);
-    List<Long> selCreditCardPayment();
-    List<Long> selDcAmount();
+    List<Long> selCreditCardPaymentId();
+    Long selDcAmount(Long CreditPaymentId);
+    int insCreditOverdue(CreditOverdue creditOverdue);
 
 
     int saveCheckCard(CheckCard checkCard);

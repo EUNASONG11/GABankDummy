@@ -2,6 +2,7 @@ package com.example.projectdummy.card;
 
 import com.example.projectdummy.DummyDefault;
 import com.example.projectdummy.card.model.CreditCardPayment;
+import com.example.projectdummy.card.model.CreditOverdue;
 import com.example.projectdummy.card.model.CreditStatement;
 import net.datafaker.Faker;
 import org.apache.ibatis.session.ExecutorType;
@@ -314,7 +315,7 @@ public class CardMapperTest extends DummyDefault {
             BigDecimal discount = BigDecimal.valueOf(2.0 + faker.random().nextDouble() * 7.9)
                     .setScale(1, RoundingMode.HALF_UP);
 
-            // 연도 범위 지정 (예: 2015 ~ 2025)
+            // 연도 범위 지정
             int year = ThreadLocalRandom.current().nextInt(2000, 2026);
 
             // 월 범위 지정 (1 ~ 12)
@@ -322,7 +323,7 @@ public class CardMapperTest extends DummyDefault {
 
             // 해당 년/월의 마지막 일 계산
             YearMonth yearMonth = YearMonth.of(year, month);
-            int maxDay = yearMonth.lengthOfMonth(); // 윤년 자동 반영됨
+            int maxDay = yearMonth.lengthOfMonth(); // 윤년 자동 반영되는 감사한 코드
 
             // 일 범위 지정 (1 ~ maxDay)
             int day = ThreadLocalRandom.current().nextInt(1, maxDay + 1);
@@ -413,11 +414,21 @@ public class CardMapperTest extends DummyDefault {
     @Test
     void Generate2() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
-        Faker faker = new Faker();
 
-        List<Long> idList = cardMapper.selCreditCardPayment();
-        List<Long> dcAmountList = cardMapper.selDcAmount();
+        List<Long> idList = cardMapper.selCreditCardPaymentId();
+            for (Long id : idList) {
+                Long dcAmount = cardMapper.selDcAmount(id);
+
+                CreditOverdue co = CreditOverdue.builder()
+                        .creditPaymentId(id)
+                        .overdueAmount(dcAmount)
+                        .build();
+
+                cardMapper.insCreditOverdue(co);
+            }
+        sqlSession.flushStatements();
+        }
 
 
-    }
+
 }
