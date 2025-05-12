@@ -16,7 +16,7 @@ public class AccountDummyDefault extends DummyDefault{
 
 
     public void savingContractDocument(long productId, Long contractId, int flag) {
-        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+        //SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
         List<ProductDocumentWithName> productDocuments = documentMapper.findProductDocument(productId);
 
         for(ProductDocumentWithName pd : productDocuments) {
@@ -29,6 +29,6 @@ public class AccountDummyDefault extends DummyDefault{
 
             documentMapper.saveContractDocument(contractDocument);
         }
-        sqlSession.flushStatements();
+        //sqlSession.flushStatements();
     }
 }
