@@ -137,6 +137,7 @@ class DepositAccountDummy extends AccountDummyDefault {
             DepositAccount depositAccount=new DepositAccount();
 
             // deposit_account의 우대금리: 예금 테이블의 우대금리 이하의 랜덤 값. 정수로 바꿨다가 바꿔 넣을 것.
+            // 정기예금인지 적금인지에 따라 입출금 기록도 필요할듯?
 
             int money;
             if(demandDeposit.getDepositCode().equals("00503")){ //정기예금이라면
@@ -178,7 +179,7 @@ class DepositAccountDummy extends AccountDummyDefault {
                 if(endAt.isBefore(LocalDateTime.now())) { //endAt이 현재보다 이전이라면 endAt과 같게. 아니면 null로 둠.
                     depositAccount.setCancelDate(endAt);
                 }
-
+                depositMapper.saveDepositAccount(depositAccount);
 
         }
 

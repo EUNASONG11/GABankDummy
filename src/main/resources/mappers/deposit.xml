@@ -23,4 +23,16 @@
         FROM deposit_duration
     </select>
 
+    <insert id="saveDepositAccount">
+        INSERT INTO deposit_account
+        set
+            account_id = #{accountId}
+            , deposit_duration_id= #{depositDurationId}
+            , end_at = #{endAt}
+            , discounted_rate = #{discountedRate}
+            <if test="cancelDate is not null">
+                , cancel_date = #{cancelDate}
+            </if>
+    </insert>
+
 </mapper>
