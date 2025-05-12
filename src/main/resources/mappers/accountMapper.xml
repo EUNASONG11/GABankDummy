@@ -10,26 +10,6 @@
         VALUES
             (#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode})
     </insert>
-    <insert id="insBankAccount">
-        insert into bank_account
-        (account_id, product_id, cust_id, employee_id, account_num, account_password, money, status_code, created_at)
-        values
-        (#{accountId} ,#{productId}, #{custId}, #{employeeId}, #{accountNum}, #{accountPassword}, #{money}, #{statusCode}, #{createdAt})
-    </insert>
-
-    <insert id="insBankInternalAccount">
-        insert into bank_internal_account
-        (account_code, account_num, flag, created_at, updated_at)
-        values
-        (#{account_code}, #{account_num}, #{flag}, #{created_at}, #{updated_at})
-    </insert>
-
-    <insert id="insLoanAccount">
-        insert into loan_account
-        (account_id, loan_money, discounted_rate, additional_rate, rate_id, end_at, redemption_code)
-        values
-        (#{accountId}, #{loanMoney}, #{discountedRate}, #{additionalRate}, #{rateId}, #{endAt}, #{redemptionCode})
-    </insert>
 
     <select id="selAccountId">
         SELECT account_id, product_id
