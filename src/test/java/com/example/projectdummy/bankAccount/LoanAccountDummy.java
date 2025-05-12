@@ -55,8 +55,10 @@ public class LoanAccountDummy extends DummyDefault {
             for(int j=0;j<cnt;j++){
                 long randomDays = random.nextInt((int) totalDays + 1);
                 LocalDate randomDate = startDate.plusDays(randomDays);
+                int randomHour = kofaker.random().nextInt(24);
+                int randomMinute = kofaker.random().nextInt(60);
 
-                LocalDateTime rd = startDate.atStartOfDay();
+                LocalDateTime rd = randomDate.atTime(randomHour, randomMinute);
                 LocalDateTime ad = rd.minusDays(kofaker.random().nextInt(5));
 
                 // 지금은 일자 고정인데 시간까지 필요
@@ -88,7 +90,7 @@ public class LoanAccountDummy extends DummyDefault {
                 ba.setAccountPassword(kofaker.numerify("####"));
                 ba.setMoney(loanMoney); //최저값이 없음 수정 필요
                 ba.setStatusCode("00201");
-                ba.setCreatedAt(randomDate);
+                ba.setCreatedAt(rd);
                 accountMapper.insBankAccount(ba);
 
                 Long maxAmount = loan.getMaximumAmount();
