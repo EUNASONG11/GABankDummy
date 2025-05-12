@@ -48,4 +48,12 @@
         VALUES
         (#{accountId}, #{interestRate}, #{changeAt}, #{createdAt})
     </insert>
+
+    <insert id="insLoanApplication">
+        insert into loan_application
+        (loan_application_id, cust_id, loan_id, application_date, requested_amount, requested_term, status_code, decision_date)
+        values
+        (#{loanApplicationId}, #{custId}, #{loanId}, #{applicationDate}, #{requestedAmount}, #{requestedTerm}, #{statusCode}, #{decisionDate})
+
+    </insert>
 </mapper>

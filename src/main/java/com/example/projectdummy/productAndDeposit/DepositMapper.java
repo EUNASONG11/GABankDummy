@@ -8,5 +8,9 @@ import java.util.List;
 public interface DepositMapper {
 
     List<Long> selDemandDepositId();
-    List<Long> selSavingDepositId();
+    List<SavingsDeposit> selSavingDeposit();
+
+    List<DepositDuration> selDepositDuration();
+
+    int saveDepositAccount(DepositAccount depositAccount);
 }

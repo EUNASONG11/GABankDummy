@@ -6,14 +6,33 @@
         SELECT deposit_id
         FROM deposit
         WHERE use_flag=0
-        AND deposit_code IN (00501, 00502)
+        AND deposit_code IN (00501, 00502, 00505)
     </select>
 
-    <select id="selSavingDepositId">
-        SELECT deposit_id
+    <select id="selSavingDeposit">
+        SELECT deposit_id AS depositId, discounted_rate AS discountedRate, deposit_code AS depositCode
         FROM deposit
         WHERE use_flag=0
         AND deposit_code IN (00503, 00504)
     </select>
+
+    <select id="selDepositDuration">
+        SELECT deposit_duration_id AS duration, deposit_duration_id AS depositDurationId
+        , sa_deposit_id AS saDepositId, over_interest AS overInterest, end_interest AS endInterest
+        , cancel_interest AS cancelInterest
+        FROM deposit_duration
+    </select>
+
+    <insert id="saveDepositAccount">
+        INSERT INTO deposit_account
+        set
+            account_id = #{accountId}
+            , deposit_duration_id= #{depositDurationId}
+            , end_at = #{endAt}
+            , discounted_rate = #{discountedRate}
+            <if test="cancelDate is not null">
+                , cancel_date = #{cancelDate}
+            </if>
+    </insert>
 
 </mapper>
