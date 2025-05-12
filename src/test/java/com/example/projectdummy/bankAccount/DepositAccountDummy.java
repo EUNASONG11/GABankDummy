@@ -3,6 +3,7 @@ package com.example.projectdummy.bankAccount;
 import com.example.projectdummy.AccountDummyDefault;
 import com.example.projectdummy.account.AccountMapper;
 import com.example.projectdummy.account.model.BankAccount;
+import com.example.projectdummy.account.model.BankAccountAnother;
 import com.example.projectdummy.card.CardMapper;
 import com.example.projectdummy.card.model.CheckCard;
 import com.example.projectdummy.card.model.UserCard;
@@ -23,10 +24,13 @@ class DepositAccountDummy extends AccountDummyDefault {
 
     @Autowired
     AccountMapper accountMapper;
+    @Autowired
     EmployeeMapper employeeMapper;
+    @Autowired
     DepositMapper depositMapper;
+    @Autowired
     CardMapper cardMapper;
-    final Long CNT = 100L;
+    final Long CNT = 1L;
 
     @Test //요구불, 상품계약, 체크카드 더미 생성
     void createDemandAccount() {
@@ -41,7 +45,7 @@ class DepositAccountDummy extends AccountDummyDefault {
             long demandDepositId = depositIds.get(random.nextInt(depositIds.size()));
             boolean success = false;
             int retryCnt = 0;
-            BankAccount account = new BankAccount();
+            BankAccountAnother account = new BankAccountAnother();
 
             account.setAccountNum("50401"+kofaker.numerify("########"));
             account.setEmployeeId(selEmployee.get(kofaker.random().nextInt(selEmployee.size())));
@@ -129,7 +133,7 @@ class DepositAccountDummy extends AccountDummyDefault {
             DepositDuration duration = durations.get(random.nextInt(durations.size()));
             boolean success = false;
             int retryCnt = 0;
-            BankAccount account = new BankAccount();
+            BankAccountAnother account = new BankAccountAnother();
             DepositAccount depositAccount=new DepositAccount();
 
             // deposit_account의 우대금리: 예금 테이블의 우대금리 이하의 랜덤 값. 정수로 바꿨다가 바꿔 넣을 것.
