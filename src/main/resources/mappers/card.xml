@@ -37,4 +37,15 @@
         #{creditPaymentId}, #{creditId}, #{dueCode}, #{cnt}, #{dcAmount}, #{dueAt}, #{paidAt}
         )
     </insert>
+    <select id="selCardId">
+        select u_card_id
+        from user_card
+    </select>
+
+    <insert id="insCardOptionLog">
+        insert into card_option_log
+        (u_card_id, c_option_code, flag)
+        values
+        (#{userCardId}, #{cOptionCode}, #{flag})
+    </insert>
 </mapper>

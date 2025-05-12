@@ -2,6 +2,7 @@ package com.example.projectdummy.card;
 
 import com.example.projectdummy.card.model.CreditCardPayment;
 import com.example.projectdummy.card.model.CreditStatement;
+import com.example.projectdummy.card.model.CardOptionLog;
 import com.example.projectdummy.card.model.CheckCard;
 import com.example.projectdummy.card.model.UserCard;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,4 +19,5 @@ public interface CardMapper {
     int saveDepositCard(UserCard userCard);
     List<Long> findCheckCard();
     List<Long> selCardId();
+    int insCardOptionLog(CardOptionLog cardOptionLog);
 }
