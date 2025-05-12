@@ -24,7 +24,7 @@ public class AccountDummyDefault extends DummyDefault{
                     .contractId(contractId)
                     .document(pd.getDocumentName()) //나중에 파일명이나 경로로 수정해둘 것.
                     .productDocumentId(pd.getProductDocumentId())
-                    .flag(flag)
+//                    .flag(flag)
                     .build();
 
             documentMapper.saveContractDocument(contractDocument);
