@@ -4,11 +4,13 @@ import lombok.Builder;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Builder
 @Setter
 public class CreditStatement {
     private Long creditId;
+    private Long creditCardId;
     private String place;
     private int flag;
     private int state;
@@ -22,4 +24,5 @@ public class CreditStatement {
     private String uYear;
     private String uMonth;
     private String uDay;
+    private LocalDateTime createdAt;
 }

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,5 +21,5 @@ public class BankAccount {
     private String accountPassword;
     private int money;
     private String statusCode;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 }

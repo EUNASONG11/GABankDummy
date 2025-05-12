@@ -1,12 +1,15 @@
 package com.example.projectdummy.productAndDeposit;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
-@Builder
+import java.math.BigDecimal;
+
+@Getter
 @Setter
 public class SavingsDeposit {
-    private Long saDepositId;
-    private String savingCode;
-    private int outFlag;
+    private Long depositId;
+    private BigDecimal discountedRate;
+    private String depositCode;
 }

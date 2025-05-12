@@ -35,4 +35,11 @@
         (#{custId}, #{id}, #{pw}, #{document})
     </insert>
 
+    <insert id="insAuth">
+        insert into card_account_auth
+        (location, division_id, flag, state, created_at)
+        values
+        (#{location}, #{divisionId}, #{flag}, #{state}, #{createdAt})
+    </insert>
+
 </mapper>

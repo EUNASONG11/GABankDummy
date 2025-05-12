@@ -6,41 +6,26 @@
 
     <insert id="saveBankAccount" useGeneratedKeys="true" keyProperty="accountId">
         INSERT INTO bank_account
-            (product_id, cust_id, employee_id, account_num, account_password, money, status_code)
+            (product_id, cust_id, employee_id, account_num, account_password, money, status_code, created_at)
         VALUES
-            (#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode})
-    </insert>
-    <insert id="insBankAccount">
-        insert into bank_account
-        (account_id, product_id, cust_id, employee_id, account_num, account_password, money, status_code, created_at)
-        values
-        (#{accountId} ,#{productId}, #{custId}, #{employeeId}, #{accountNum}, #{accountPassword}, #{money}, #{statusCode}, #{createdAt})
-    </insert>
-
-    <insert id="insBankInternalAccount">
-        insert into bank_internal_account
-        (account_code, account_num, flag, created_at, updated_at)
-        values
-        (#{account_code}, #{account_num}, #{flag}, #{created_at}, #{updated_at})
-    </insert>
-
-    <insert id="insLoanAccount">
-        insert into loan_account
-        (account_id, loan_money, discounted_rate, additional_rate, rate_id, end_at, redemption_code)
-        values
-        (#{accountId}, #{loanMoney}, #{discountedRate}, #{additionalRate}, #{rateId}, #{endAt}, #{redemptionCode})
+            (#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode}, #{createdAt})
     </insert>
 
     <select id="selAccountId">
-        SELECT account_id, product_id
+        SELECT account_id, a.product_id, created_at
         FROM bank_account A
         JOIN product B ON a.product_id = b.product_id
         WHERE b.product_id &lt; 50001 OR b.product_id &gt; 200000
         UNION
-        SELECT account_id
+        SELECT account_id, a.product_id, created_at
         FROM bank_account a
         JOIN savings_deposit b ON a.product_id = b.sa_deposit_id
         WHERE out_flag = 0
+    </select>
+
+    <select id="selTranFeeId">
+        select transaction_fee_id
+        where transaction_fee
     </select>
 
 </mapper>

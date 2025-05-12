@@ -9,9 +9,9 @@
     </insert>
     <insert id="saveDepositCard">
         insert into user_card
-        (u_card_id, card_id, cust_id, card_number, card_password, u_card_code,  end_at)
+        (u_card_id, card_id, cust_id, card_number, card_password, u_card_code,  end_at, created_at)
         values
-        (#{uCardId},#{cardId},#{custId},#{cardNumber},#{cardPassword},#{uCardCode},#{endAt})
+        (#{uCardId},#{cardId},#{custId},#{cardNumber},#{cardPassword},#{uCardCode},#{endAt}, #{createdAt})
     </insert>
     
     <select id="findCheckCard">
@@ -19,6 +19,24 @@
         WHERE flag = 1
         AND available = 0
     </select>
+
+    <insert id = "insCreditStatement">
+        INSERT INTO credit_statement
+        (credit_id, credit_card_id, place, flag, state, exploiter, accum_point, discount, fee
+        , og_amount, installment, interest_free, u_year, u_month, u_day, created_at)
+        VALUES(
+        #{creditId}, #{creditCardId}, #{place}, #{flag}, #{state}, #{exploiter}, #{accumPoint}, #{discount}, #{fee}
+        , #{ogAmount}, #{installment}, #{interestFree}, #{uYear}, #{uMonth}, #{uDay}, #{createdAt}
+        )
+    </insert>
+
+    <insert id="insCreditCardPayment">
+        INSERT INTO credit_card_payment
+        (credit_payment_id, credit_id, due_code, cnt, dc_amount, due_at, paid_at)
+        VALUES(
+        #{creditPaymentId}, #{creditId}, #{dueCode}, #{cnt}, #{dcAmount}, #{dueAt}, #{paidAt}
+        )
+    </insert>
     <select id="selCardId">
         select u_card_id
         from user_card

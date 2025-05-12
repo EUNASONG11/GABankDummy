@@ -15,5 +15,6 @@ public interface AccountMapper {
     int insBankInternalAccount();
     int insLoanAccount(LoanAccount loanAccount);
     List<UseAuthPk> selAccountId();
+    List<Long> selTranFeeId();
 
 }
