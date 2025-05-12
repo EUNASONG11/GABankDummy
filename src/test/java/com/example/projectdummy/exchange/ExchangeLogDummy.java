@@ -60,7 +60,7 @@ public class ExchangeLogDummy extends DummyDefault {
                 BigDecimal USD = BigDecimal.valueOf(randomValue).setScale(2, RoundingMode.HALF_UP); // 소수점 둘째 자리까지 반올림
 
                 exchangeLog.setStandardMoney(USD);
-                exchangeLog.setChangeRate(BigDecimal.valueOf(1.75));
+                exchangeLog.setChargeRate(BigDecimal.valueOf(1.75));
             }
 
             if(currency.equals("JPY")) {
@@ -68,7 +68,7 @@ public class ExchangeLogDummy extends DummyDefault {
                 BigDecimal JPY = BigDecimal.valueOf(randomValue).setScale(2, RoundingMode.HALF_UP); // 소수점 둘째 자리까지 반올림
 
                 exchangeLog.setStandardMoney(JPY);
-                exchangeLog.setChangeRate(BigDecimal.valueOf(1.75));
+                exchangeLog.setChargeRate(BigDecimal.valueOf(1.75));
             }
 
             if(currency.equals("EUR")) {
@@ -76,7 +76,7 @@ public class ExchangeLogDummy extends DummyDefault {
                 BigDecimal EUR = BigDecimal.valueOf(randomValue).setScale(2, RoundingMode.HALF_UP); // 소수점 둘째 자리까지 반올림
 
                 exchangeLog.setStandardMoney(EUR);
-                exchangeLog.setChangeRate(BigDecimal.valueOf(1.97));
+                exchangeLog.setChargeRate(BigDecimal.valueOf(1.97));
             }
 
             if(currency.equals("CNY")) {
@@ -84,7 +84,7 @@ public class ExchangeLogDummy extends DummyDefault {
                 BigDecimal CNY = BigDecimal.valueOf(randomValue).setScale(2, RoundingMode.HALF_UP); // 소수점 둘째 자리까지 반올림
 
                 exchangeLog.setStandardMoney(CNY);
-                exchangeLog.setChangeRate(BigDecimal.valueOf(5.00));
+                exchangeLog.setChargeRate(BigDecimal.valueOf(5.00));
             }
 
             // MyBatis insert 호출
