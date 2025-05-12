@@ -103,7 +103,7 @@ public class LoanAccountDummy extends DummyDefault {
                 loanAccount.setRateId(kofaker.random().nextLong(10001)+1);
                 loanAccount.setDiscountedRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.1,0.5)));
                 loanAccount.setAdditionalRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.8,3.5)));
-                loanAccount.setLoanApplicationId(loanApplicationId);
+                loanAccount.setLoanApplicationId(loanApplicationId++);
 
                 accountMapper.insLoanAccount(loanAccount);
 
