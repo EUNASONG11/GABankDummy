@@ -37,6 +37,19 @@
         #{creditPaymentId}, #{creditId}, #{dueCode}, #{cnt}, #{dcAmount}, #{dueAt}, #{paidAt}
         )
     </insert>
+
+    <select id="selCreditPaymentId">
+        select credit_payment_id
+        from credit_card_payment
+        where due_code = '01203'
+    </select>
+
+    <select id="selDcAmount">
+        select dc_amount
+        from credit_card_payment
+        where due_code = '01203'
+    </select>
+
     <select id="selCardId">
         select u_card_id
         from user_card

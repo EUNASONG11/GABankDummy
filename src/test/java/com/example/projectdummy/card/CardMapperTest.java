@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -406,6 +407,17 @@ public class CardMapperTest extends DummyDefault {
             cardMapper.insCreditCardPayment(ccp);
         }
         sqlSession.flushStatements();
+
+    }
+
+    @Test
+    void Generate2() {
+        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+        Faker faker = new Faker();
+
+        List<Long> idList = cardMapper.selCreditCardPayment();
+        List<Long> dcAmountList = cardMapper.selDcAmount();
+
 
     }
 }

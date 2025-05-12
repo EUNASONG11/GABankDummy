@@ -13,6 +13,8 @@ import java.util.List;
 public interface CardMapper {
     int insCreditStatement(CreditStatement creditStatement);
     int insCreditCardPayment(CreditCardPayment creditCardPayment);
+    List<Long> selCreditCardPayment();
+    List<Long> selDcAmount();
 
 
     int saveCheckCard(CheckCard checkCard);
