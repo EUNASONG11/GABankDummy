@@ -3,15 +3,16 @@ package com.example.projectdummy.exchange.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ExchangeLog {
+public class ForeignExchange {
+    private Long employeeId;
+    private Long accountId;
     private Long exchangeLogId;
-    private String currency;
-    private BigDecimal standardMoney;
-    private BigDecimal chargeRate;
+    private Long toExchange;
+    private Long fromExchange;
+    private int changeFlag;
     private LocalDateTime createdAt;
 }
