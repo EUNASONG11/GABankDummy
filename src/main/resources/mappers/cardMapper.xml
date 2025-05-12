@@ -6,10 +6,10 @@
     <insert id = "insCreditStatement">
         INSERT INTO credit_statement
         (credit_id, credit_card_id, place, flag, state, exploiter, accum_point, discount, fee
-        , og_amount, installment, interest_free, u_year, u_month, u_day)
+        , og_amount, installment, interest_free, u_year, u_month, u_day, created_at)
         VALUES(
               #{creditId}, #{creditCardId}, #{place}, #{flag}, #{state}, #{exploiter}, #{accumPoint}, #{discount}, #{fee}
-            , #{ogAmount}, #{installment}, #{interestFree}, #{uYear}, #{uMonth}, #{uDay}
+            , #{ogAmount}, #{installment}, #{interestFree}, #{uYear}, #{uMonth}, #{uDay}, #{createdAt}
         )
     </insert>
 

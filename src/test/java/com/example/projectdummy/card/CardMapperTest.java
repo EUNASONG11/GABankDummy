@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -45,22 +47,37 @@ public class CardMapperTest extends DummyDefault {
             int interestFree = faker.random().nextInt(5) + 2; //무이자할부기간
             int ogAmount = faker.random().nextInt(9999900) + 100; //총결제금액
 
-            int month = (faker.random().nextInt(12) + 1);
-            String randomDay = "";
-            if (month == 2) {
-                randomDay = String.valueOf(faker.random().nextInt(28) + 1); // 1일부터 28일까지
-            } else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) { // 31일이 있는 달
-                randomDay = String.valueOf(faker.random().nextInt(31) + 1); // 1일부터 31일까지
-            } else { // 30일이 있는 달
-                randomDay = String.valueOf(faker.random().nextInt(30) + 1); // 1일부터 30일까지
-            }
+
+
+
+
+            // 연도 범위 지정 (예: 2015 ~ 2025)
+            int year = ThreadLocalRandom.current().nextInt(2000, 2026);
+
+            // 월 범위 지정 (1 ~ 12)
+            int month = ThreadLocalRandom.current().nextInt(1, 13);
+
+            // 해당 년/월의 마지막 일 계산
+            YearMonth yearMonth = YearMonth.of(year, month);
+            int maxDay = yearMonth.lengthOfMonth(); // 윤년 자동 반영됨
+
+            // 일 범위 지정 (1 ~ maxDay)
+            int day = ThreadLocalRandom.current().nextInt(1, maxDay + 1);
+
+            // LocalDateTime 생성 (시간 고정)
+            LocalDateTime createdAt = LocalDate.of(year, month, day).atStartOfDay();
+
+            // 문자열로 추출
+            String uYear = String.valueOf(year);
+            String uMonth = String.format("%02d", month);
+            String uDay = String.format("%02d", day);
+
+
 
             BigDecimal discount = BigDecimal.valueOf(2.0 + faker.random().nextDouble() * 7.9)
                     .setScale(1, RoundingMode.HALF_UP); //할인율
 
-            String uYear = String.valueOf(faker.random().nextInt(25) + 2000);
-            String uMonth = String.format("%02d", month);
-            String uDay = String.format("%02d", Integer.parseInt(randomDay));
+
 
             CreditStatement cs = CreditStatement.builder()
                     .creditId(i)
@@ -78,6 +95,7 @@ public class CardMapperTest extends DummyDefault {
                     .uYear(uYear)
                     .uMonth(uMonth)
                     .uDay(uDay)
+                    .createdAt(createdAt)
                     .build();
             cardMapper.insCreditStatement(cs);
 
@@ -112,8 +130,10 @@ public class CardMapperTest extends DummyDefault {
                     String paddedMonth = String.format("%02d", baseMonth);
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    String dueAtString = uYear + "-" + paddedMonth + "-" + uDay + " 00:00:00";
-                    LocalDateTime dueAt = LocalDateTime.parse(dueAtString, formatter);
+                    //String dueAtString = uYear + "-" + paddedMonth + "-" + uDay + " 00:00:00";
+                    LocalDateTime dueAt = createdAt.plusMonths(1); //LocalDateTime.parse(dueAtString, formatter);
+                    String dueAtString = dueAt.format(formatter);
+
                     // 15% 확률로만 날짜를 앞당김
                     LocalDateTime paidAt = dueAt;
                     if (ThreadLocalRandom.current().nextInt(100) < 15) {  // 0~14 → true
@@ -140,7 +160,7 @@ public class CardMapperTest extends DummyDefault {
         sqlSession.flushStatements();
 
         //25~50% 할부 이자
-        for(Long i = (cnt/4) + 1; i < cnt/2; i++) {
+        for(Long i = (cnt/4) + 1; i <= cnt/2; i++) {
             int langType = faker.random().nextInt(2);
             String companyName = "";
             if(langType == 0) {
@@ -155,15 +175,6 @@ public class CardMapperTest extends DummyDefault {
                 }
             }
 
-            int month = (faker.random().nextInt(12) + 1);
-            String randomDay = "";
-            if (month == 2) {
-                randomDay = String.valueOf(faker.random().nextInt(28) + 1); // 1일부터 28일까지
-            } else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) { // 31일이 있는 달
-                randomDay = String.valueOf(faker.random().nextInt(31) + 1); // 1일부터 31일까지
-            } else { // 30일이 있는 달
-                randomDay = String.valueOf(faker.random().nextInt(30) + 1); // 1일부터 30일까지
-            }
 
             int installment = faker.random().nextInt(35) + 2; //유이자할부기간
             int ogAmount = faker.random().nextInt(9999900) + 100; //총결제금액
@@ -181,9 +192,26 @@ public class CardMapperTest extends DummyDefault {
             BigDecimal discount = BigDecimal.valueOf(2.0 + faker.random().nextDouble() * 7.9)
                     .setScale(1, RoundingMode.HALF_UP);
 
-            String uYear = String.valueOf(faker.random().nextInt(25) + 2000);
+            // 연도 범위 지정 (예: 2015 ~ 2025)
+            int year = ThreadLocalRandom.current().nextInt(2000, 2026);
+
+            // 월 범위 지정 (1 ~ 12)
+            int month = ThreadLocalRandom.current().nextInt(1, 13);
+
+            // 해당 년/월의 마지막 일 계산
+            YearMonth yearMonth = YearMonth.of(year, month);
+            int maxDay = yearMonth.lengthOfMonth(); // 윤년 자동 반영됨
+
+            // 일 범위 지정 (1 ~ maxDay)
+            int day = ThreadLocalRandom.current().nextInt(1, maxDay + 1);
+
+            // LocalDateTime 생성 (시간 고정)
+            LocalDateTime createdAt = LocalDate.of(year, month, day).atStartOfDay();
+
+            // 문자열로 추출
+            String uYear = String.valueOf(year);
             String uMonth = String.format("%02d", month);
-            String uDay = String.format("%02d", Integer.parseInt(randomDay));
+            String uDay = String.format("%02d", day);
 
             CreditStatement cs = CreditStatement.builder()
                     .creditId(i)
@@ -201,6 +229,7 @@ public class CardMapperTest extends DummyDefault {
                     .uYear(uYear)
                     .uMonth(uMonth)
                     .uDay(uDay)
+                    .createdAt(createdAt)
                     .build();
             cardMapper.insCreditStatement(cs);
 
@@ -235,8 +264,10 @@ public class CardMapperTest extends DummyDefault {
                     String paddedMonth = String.format("%02d", baseMonth);
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    String dueAtString = uYear + "-" + paddedMonth + "-" + uDay + " 00:00:00";
-                    LocalDateTime dueAt = LocalDateTime.parse(dueAtString, formatter);
+                    //String dueAtString = uYear + "-" + paddedMonth + "-" + uDay + " 00:00:00";
+                    LocalDateTime dueAt = createdAt.plusMonths(1); //LocalDateTime.parse(dueAtString, formatter);
+                    String dueAtString = dueAt.format(formatter);
+
                     // 15% 확률로만 날짜를 앞당김
                     LocalDateTime paidAt = dueAt;
                     if (ThreadLocalRandom.current().nextInt(100) < 15) {  // 0~14 → true
@@ -276,24 +307,32 @@ public class CardMapperTest extends DummyDefault {
                 }
             }
 
-            int month = (faker.random().nextInt(12) + 1);
-            String randomDay = "";
-            if (month == 2) {
-                randomDay = String.valueOf(faker.random().nextInt(28) + 1); // 1일부터 28일까지
-            } else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) { // 31일이 있는 달
-                randomDay = String.valueOf(faker.random().nextInt(31) + 1); // 1일부터 31일까지
-            } else { // 30일이 있는 달
-                randomDay = String.valueOf(faker.random().nextInt(30) + 1); // 1일부터 30일까지
-            }
 
             int ogAmount = faker.random().nextInt(9999900) + 100;
 
             BigDecimal discount = BigDecimal.valueOf(2.0 + faker.random().nextDouble() * 7.9)
                     .setScale(1, RoundingMode.HALF_UP);
 
-            String uYear = String.valueOf(faker.random().nextInt(25) + 2000);
+            // 연도 범위 지정 (예: 2015 ~ 2025)
+            int year = ThreadLocalRandom.current().nextInt(2000, 2026);
+
+            // 월 범위 지정 (1 ~ 12)
+            int month = ThreadLocalRandom.current().nextInt(1, 13);
+
+            // 해당 년/월의 마지막 일 계산
+            YearMonth yearMonth = YearMonth.of(year, month);
+            int maxDay = yearMonth.lengthOfMonth(); // 윤년 자동 반영됨
+
+            // 일 범위 지정 (1 ~ maxDay)
+            int day = ThreadLocalRandom.current().nextInt(1, maxDay + 1);
+
+            // LocalDateTime 생성 (시간 고정)
+            LocalDateTime createdAt = LocalDate.of(year, month, day).atStartOfDay();
+
+            // 문자열로 추출
+            String uYear = String.valueOf(year);
             String uMonth = String.format("%02d", month);
-            String uDay = String.format("%02d", Integer.parseInt(randomDay));
+            String uDay = String.format("%02d", day);
 
             CreditStatement cs = CreditStatement.builder()
                     .creditId(i)
@@ -312,6 +351,7 @@ public class CardMapperTest extends DummyDefault {
                     .uYear(uYear)
                     .uMonth(uMonth)
                     .uDay(uDay)
+                    .createdAt(createdAt)
                     .build();
             cardMapper.insCreditStatement(cs);
 
@@ -342,8 +382,10 @@ public class CardMapperTest extends DummyDefault {
             String paddedMonth = String.format("%02d", baseMonth);
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String dueAtString = uYear + "-" + paddedMonth + "-" + uDay + " 00:00:00";
-            LocalDateTime dueAt = LocalDateTime.parse(dueAtString, formatter);
+            //String dueAtString = uYear + "-" + paddedMonth + "-" + uDay + " 00:00:00";
+            LocalDateTime dueAt = createdAt.plusMonths(1); //LocalDateTime.parse(dueAtString, formatter);
+            String dueAtString = dueAt.format(formatter);
+
             // 15% 확률로만 날짜를 앞당김
             LocalDateTime paidAt = dueAt;
             if (ThreadLocalRandom.current().nextInt(100) < 15) {  // 0~14 → true
