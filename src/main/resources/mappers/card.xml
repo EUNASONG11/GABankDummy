@@ -9,9 +9,9 @@
     </insert>
     <insert id="saveDepositCard">
         insert into user_card
-        (u_card_id, card_id, cust_id, card_number, card_password, u_card_code,  end_at)
+        (u_card_id, card_id, cust_id, card_number, card_password, u_card_code,  end_at, created_at)
         values
-        (#{uCardId},#{cardId},#{custId},#{cardNumber},#{cardPassword},#{uCardCode},#{endAt})
+        (#{uCardId},#{cardId},#{custId},#{cardNumber},#{cardPassword},#{uCardCode},#{endAt}, #{createdAt})
     </insert>
     
     <select id="findCheckCard">
