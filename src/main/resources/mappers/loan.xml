@@ -36,6 +36,7 @@
         (account_id, principal, interest, total_due, due_at, final_at, due_code)
         VALUES
         (#{accountId}, #{principal}, #{interest}, #{totalDue}, #{dueAt}, #{finalAt}, #{dueCode})
+    </insert>
 
     <select id="selLoanAccountId">
         SELECT account_id

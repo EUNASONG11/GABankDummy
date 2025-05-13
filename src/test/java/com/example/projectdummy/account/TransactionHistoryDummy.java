@@ -35,7 +35,7 @@ class TransactionHistoryDummy extends DummyDefault {
             th.setFlag(0);
             th.setMoney(a);
             money -= a;
-            th.setAtmCOde("00302");
+            th.setAtmCode("00302");
 
             // 여기서 부터 created_at에 따라서 들어가도록 for문 안에
             th.setToName(kofaker.name().lastName()+kofaker.name().firstName());
