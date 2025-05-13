@@ -41,6 +41,7 @@ class DepositAccountDummy extends AccountDummyDefault {
         Random random = new Random();
         //final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+        //요구불
         for(int i = 0 ; i < CNT ; i++) {
             long demandDepositId = depositIds.get(random.nextInt(depositIds.size()));
             boolean success = false;

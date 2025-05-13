@@ -75,15 +75,15 @@ public class LoanRepaymentDummy extends DummyDefault {
                     th.setFlag(0);
                     th.setMoney(principalPayment+interest);
                     th.setToName(lu.getCustName()); // 상품에서 찾아서 넣기
-                    th.setAccountNum(lu.getAccountNum());
-                    th.setToBankCode("300");
+                    th.setAccountNum(lu.getUseAccount());
+                    th.setToBankCode(lu.getBankCode());
                     th.setCreatedAt(ldt);
                     th.setLocation("대출 납부"); // 위치 어케
                     th.setHsMoney(totalMoneyByDue); //기존에 넣은거때매 +해야되는데?
                     th.setAtmCode(kofaker.random().nextInt(3)==0?"00301":"00302"); // ATM 모바일 1:2 비율
 
-                    th.setUseAccount(lu.getUseAccount()); // 이거 달라져도 괜찮음
-                    th.setUseBankCode(lu.getBankCode()); // 위에 따라 달라진 은행코드
+//                    th.setUseAccount(lu.getUseAccount()); // 이거 달라져도 괜찮음
+//                    th.setUseBankCode(lu.getBankCode()); // 위에 따라 달라진 은행코드
                     if(!loanRepayment.getDueCode().equals("01101")){
                         accountMapper.insTranHistory(th);
                     }
@@ -126,15 +126,15 @@ public class LoanRepaymentDummy extends DummyDefault {
                     th.setFlag(0);
                     th.setMoney(monthlyPrincipal+interest);
                     th.setToName(lu.getCustName()); // 상품에서 찾아서 넣기
-                    th.setAccountNum(lu.getAccountNum());
-                    th.setToBankCode("300");
+                    th.setAccountNum(lu.getUseAccount());
+                    th.setToBankCode(lu.getBankCode());
                     th.setCreatedAt(ldt);
                     th.setLocation("대출 납부"); // 위치 어케
                     th.setHsMoney(totalMoneyByDue); //기존에 넣은거때매 +해야되는데?
                     th.setAtmCode(kofaker.random().nextInt(3)==0?"00301":"00302"); // ATM 모바일 1:2 비율
 
-                    th.setUseAccount(lu.getUseAccount()); // 이거 달라져도 괜찮음
-                    th.setUseBankCode(lu.getBankCode()); // 위에 따라 달라진 은행코드
+//                    th.setUseAccount(lu.getUseAccount()); // 이거 달라져도 괜찮음
+//                    th.setUseBankCode(lu.getBankCode()); // 위에 따라 달라진 은행코드
                     if(!loanRepayment.getDueCode().equals("01101")){
                         accountMapper.insTranHistory(th);
                     }
