@@ -4,6 +4,7 @@ import com.example.projectdummy.loan.model.*;
 
 
 import com.example.projectdummy.loan.model.RateLog;
+import com.example.projectdummy.loan.model.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -21,5 +22,6 @@ public interface LoanMapper {
     double selAdditionalRate(long accountId);
     int insLoanRateLog(LoanRateLog loanRateLog);
     int insLoanApplication(LoanApplication loanApplication);
+
 
 }

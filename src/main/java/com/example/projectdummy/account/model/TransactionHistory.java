@@ -19,7 +19,7 @@ public class TransactionHistory {
     private String location;
     private Long hsMoney;
     private String atmCode;
-    private String useAccount;
-    private String useBankCode;
+//    private String useAccount;
+//    private String useBankCode;
     private LocalDateTime createdAt;
 }

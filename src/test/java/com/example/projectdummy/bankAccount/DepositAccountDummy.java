@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
-//아직 테스트 안햇음
 class DepositAccountDummy extends AccountDummyDefault {
 
     @Autowired
@@ -42,6 +41,7 @@ class DepositAccountDummy extends AccountDummyDefault {
         Random random = new Random();
         //final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+        //요구불
         for(int i = 0 ; i < CNT ; i++) {
             long demandDepositId = depositIds.get(random.nextInt(depositIds.size()));
             boolean success = false;
@@ -53,7 +53,7 @@ class DepositAccountDummy extends AccountDummyDefault {
             account.setCustId(kofaker.random().nextLong(10001)+1);
             account.setProductId(demandDepositId);
             account.setAccountPassword(kofaker.numerify("####"));
-            account.setMoney(random.nextInt(0));
+            account.setMoney(0);
             account.setStatusCode("00201");
             account.setCreatedAt(localDateTime);
             //계좌 중복시 10번까지는 계좌번호 바꾸며 새로 넣도록 함.
