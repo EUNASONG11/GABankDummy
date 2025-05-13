@@ -32,8 +32,8 @@ public class SavingAccountDummy extends AccountDummyDefault {
     CardMapper cardMapper;
     final Long CNT = 10000L;
 
-//    @Test //저축 계좌 생성
-//    void createSavingAccount() {
+    @Test //저축 계좌 생성
+    void createSavingAccount() {
 //        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
 //
 //        List<SavingsDeposit> savingDeposits = depositMapper.selSavingDeposit();
@@ -59,9 +59,10 @@ public class SavingAccountDummy extends AccountDummyDefault {
 //            int money;
 //            if(demandDeposit.getDepositCode().equals("00503")){ //정기예금이라면
 //                money=kofaker.random().nextInt(1_000_000_000);
-//
 //            }else { //적금이라면
+//
 //                TransactionHistory history = new TransactionHistory();
+//
 //            }
 //
 //
@@ -105,5 +106,5 @@ public class SavingAccountDummy extends AccountDummyDefault {
 
 
 
-    //}
+    }
 }
