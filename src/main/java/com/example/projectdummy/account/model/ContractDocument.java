@@ -11,5 +11,5 @@ public class ContractDocument {
     private long contractId;
     private long productDocumentId;
     private String document;
-    private int flag;
+    private String productCode;
 }
