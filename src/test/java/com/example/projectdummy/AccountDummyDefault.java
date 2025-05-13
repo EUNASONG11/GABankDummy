@@ -15,7 +15,7 @@ public class AccountDummyDefault extends DummyDefault{
     DocumentMapper documentMapper;
 
 
-    public void savingContractDocument(long productId, Long contractId, int flag) {
+    public void savingContractDocument(long productId, Long contractId, String productCode) {
         //SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
         List<ProductDocumentWithName> productDocuments = documentMapper.findProductDocument(productId);
 
@@ -24,11 +24,14 @@ public class AccountDummyDefault extends DummyDefault{
                     .contractId(contractId)
                     .document(pd.getDocumentName()) //나중에 파일명이나 경로로 수정해둘 것.
                     .productDocumentId(pd.getProductDocumentId())
-//                    .flag(flag)
+                    .productCode(productCode)
                     .build();
 
             documentMapper.saveContractDocument(contractDocument);
         }
         //sqlSession.flushStatements();
+    }
+    public boolean isDuplicateKeyException(Exception e) {
+        return e.getMessage() != null && e.getMessage().toLowerCase().contains("duplicate");
     }
 }
