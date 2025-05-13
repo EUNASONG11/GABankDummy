@@ -49,5 +49,4 @@
         (#{accountId}, #{loanMoney}, #{discountedRate}, #{additionalRate}, #{rateId}, #{endAt}, #{redemptionCode}, #{loanApplicationId})
     </insert>
 
-
 </mapper>
