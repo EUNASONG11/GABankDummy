@@ -3,12 +3,14 @@ package com.example.projectdummy.bankAccount;
 import com.example.projectdummy.DummyDefault;
 import com.example.projectdummy.account.AccountMapper;
 import com.example.projectdummy.account.model.BankAccount;
+import com.example.projectdummy.account.model.ContractDocument;
 import com.example.projectdummy.customer.CustomerMapper;
 import com.example.projectdummy.employee.EmployeeMapper;
 import com.example.projectdummy.loan.LoanMapper;
 import com.example.projectdummy.loan.model.Loan;
 import com.example.projectdummy.loan.model.LoanAccount;
 import com.example.projectdummy.loan.model.LoanApplication;
+import com.example.projectdummy.productAndDeposit.ProductMapper;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,7 @@ public class LoanAccountDummy extends DummyDefault {
     @Autowired
     AccountMapper accountMapper;
     @Autowired
-    CustomerMapper customerMapper;
+    ProductMapper productMapper;
     @Autowired
     EmployeeMapper employeeMapper;
     final int cnt = 100;
@@ -52,6 +54,7 @@ public class LoanAccountDummy extends DummyDefault {
         Long loanApplicationId = 1L;
         for(Loan loan : selLoan){
             Long loanId = loan.getLoanId();
+            List<Long> selPD = productMapper.selProductDocument(loanId);
             for(int j=0;j<cnt;j++){
                 long randomDays = random.nextInt((int) totalDays + 1);
                 LocalDate randomDate = startDate.plusDays(randomDays);
@@ -69,6 +72,16 @@ public class LoanAccountDummy extends DummyDefault {
                 int loanAmount = kofaker.random().nextInt(200_000_001) + 200_000_000;
                 int loanMoney = kofaker.random().nextInt(50_000_000) + loanAmount - 50_000_000;
                 Long custId = kofaker.random().nextLong(10001)+1;
+                for(Long pdi :  selPD){
+                    ContractDocument cd = ContractDocument.builder()
+                            .productDocumentId(pdi)
+                            .contractId(loanApplicationId)
+                            .document("loanDocument"+loanApplicationId)
+                            .createdAt(rd)
+                            .productCode("00403")
+                            .build();
+                    productMapper.insContractDocument(cd);
+                }
 
                 LoanApplication la = new  LoanApplication();
                 la.setLoanApplicationId(loanApplicationId);
@@ -80,6 +93,7 @@ public class LoanAccountDummy extends DummyDefault {
                 la.setStatusCode("01902");
                 la.setDecisionDate(rd);
                 loanMapper.insLoanApplication(la);
+
 
                 BankAccount ba = new BankAccount();
                 ba.setAccountId(accountId);
