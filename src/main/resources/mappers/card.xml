@@ -37,6 +37,27 @@
         #{creditPaymentId}, #{creditId}, #{dueCode}, #{cnt}, #{dcAmount}, #{dueAt}, #{paidAt}
         )
     </insert>
+
+    <select id="selCreditCardPaymentId">
+        select credit_payment_id
+        from credit_card_payment
+        where due_code = '01203'
+    </select>
+
+    <select id="selDcAmount">
+        select dc_amount
+        from credit_card_payment
+        where credit_payment_id = #{creditPaymentId}
+    </select>
+
+    <insert id="insCreditOverdue">
+        INSERT INTO credit_overdue
+        (credit_payment_id, overdue_amount)
+        values (
+            #{creditPaymentId}, #{overdueAmount}
+        )
+    </insert>
+
     <select id="selCardId">
         select u_card_id
         from user_card

@@ -21,6 +21,22 @@
         where use_flag = #{useFlag}
     </select>
 
+    <select id="selLoanInfo">
+        SELECT b.account_id, b.created_at, la.end_at , la.loan_money, la.redemption_code
+        FROM bank_account b
+        JOIN loan l
+        ON b.product_id = l.loan_id
+        JOIN loan_account la
+        ON la.account_id = b.account_id
+        WHERE l.rate_flag = 0
+    </select>
+
+    <insert id="insLoanRepayment">
+        insert into loan_repayment
+        (account_id, principal, interest, total_due, due_at, final_at, due_code)
+        VALUES
+        (#{accountId}, #{principal}, #{interest}, #{totalDue}, #{dueAt}, #{finalAt}, #{dueCode})
+
     <select id="selLoanAccountId">
         SELECT account_id
         FROM loan_account
