@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.projectdummy.productAndDeposit.ProductMapper">
+    <insert id="insContractDocument">
+        insert into contract_document
+        (product_document_id, contract_id, document, created_at, product_code)
+        values
+        (#{productDocumentId}, #{contractId}, #{document}, #{createdAt}, #{productCode})
+    </insert>
+
+    <select id="selProductDocument">
+        select product_document_id
+        from product_document
+        where product_id = #{productId}
+    </select>
+</mapper>

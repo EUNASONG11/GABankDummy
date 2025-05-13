@@ -23,6 +23,14 @@
         WHERE out_flag = 0
     </select>
 
+    <select id="selLoanUser">
+        select cust_name, account_num, bank_code, use_account
+        from bank_account A
+        join customer B on a.cust_id = b.cust_id
+        join loan_account C on a.account_id = c.account_id
+        where a.account_id = #{accountId}
+    </select>
+
     <select id="selTranFeeId">
         select transaction_fee_id
         where transaction_fee
@@ -44,10 +52,17 @@
 
     <insert id="insLoanAccount">
         insert into loan_account
-        (account_id, loan_money, discounted_rate, additional_rate, rate_id, end_at, redemption_code, loan_application_id)
+        (account_id, loan_money, discounted_rate, additional_rate, rate_id, end_at, redemption_code, loan_application_id, bank_code, use_account)
         values
-        (#{accountId}, #{loanMoney}, #{discountedRate}, #{additionalRate}, #{rateId}, #{endAt}, #{redemptionCode}, #{loanApplicationId})
+        (#{accountId}, #{loanMoney}, #{discountedRate}, #{additionalRate}, #{rateId}, #{endAt}, #{redemptionCode}, #{loanApplicationId}, #{bankCode}, #{useAccount})
     </insert>
 
+    <insert id="insTranHistory">
+        insert into transaction_history
+        (transaction_fee_id, account_id, flag, money, to_name, account_num, to_bank_code, created_at, location, hs_money, atm_code, use_account, use_bank_code)
+        values
+        (#{transactionFeeId}, #{accountId}, #{flag}, #{money}, #{toName}, #{accountNum}, #{toBankCode}, #{createdAt}, #{location}, #{hsMoney}, #{atmCode}, #{useAccount}, #{useBankCode})
+
+    </insert>
 
 </mapper>

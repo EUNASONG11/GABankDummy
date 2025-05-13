@@ -20,9 +20,9 @@
     
     <insert id="saveContractDocument">
         insert into contract_document
-        (contract_id, product_document_id, document, flag)
+        (contract_id, product_document_id, document, product_code)
         values
-        (#{contractId}, #{productDocumentId}, #{document}, #{flag})
+        (#{contractId}, #{productDocumentId}, #{document}, #{productCode})
     </insert>
 
 </mapper>

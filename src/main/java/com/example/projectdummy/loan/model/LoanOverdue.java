@@ -10,4 +10,6 @@ public class LoanOverdue {
     private Long loanRepaymentId;
     private Long overdueMoney;
     private int paymentFlag;
+    private String updatedAt;
+    private String createdAt;
 }
