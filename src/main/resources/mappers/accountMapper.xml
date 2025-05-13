@@ -3,22 +3,31 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.projectdummy.account.AccountMapper">
 
-    <select id="findProduct">
-        select product_id, product_code from product
-    </select>
-    <select id="findCustomer">
-        select cust_id from Customer
-    </select>
-    <select id="findEmployee">
-        select employee_id from employee
+
+    <insert id="saveBankAccount" useGeneratedKeys="true" keyProperty="accountId">
+        INSERT INTO bank_account
+            (product_id, cust_id, employee_id, account_num, account_password, money, status_code, created_at)
+        VALUES
+            (#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode}, #{createdAt})
+    </insert>
+
+    <select id="selAccountId">
+        SELECT account_id, a.product_id, created_at
+        FROM bank_account A
+        JOIN product B ON a.product_id = b.product_id
+        WHERE b.product_id &lt; 50001 OR b.product_id &gt; 200000
+        UNION
+        SELECT account_id, a.product_id, created_at
+        FROM bank_account a
+        JOIN savings_deposit b ON a.product_id = b.sa_deposit_id
+        WHERE out_flag = 0
     </select>
 
-    <insert id="saveBankAccount">
-        INSERT INTO bank_account
-            (account_id, product_id, cust_id, employee_id, account_num, account_password, money, status_code)
-        VALUES
-            (#{accountId},#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode})
-    </insert>
+    <select id="selTranFeeId">
+        select transaction_fee_id
+        where transaction_fee
+    </select>
+
     <insert id="insBankAccount">
         insert into bank_account
         (account_id, product_id, cust_id, employee_id, account_num, account_password, money, status_code, created_at)
@@ -35,9 +44,10 @@
 
     <insert id="insLoanAccount">
         insert into loan_account
-        (account_id, loan_money, discounted_rate, additional_rate, rate_id, end_at, redemption_code)
+        (account_id, loan_money, discounted_rate, additional_rate, rate_id, end_at, redemption_code, loan_application_id)
         values
-        (#{accountId}, #{loanMoney}, #{discountedRate}, #{additionalRate}, #{rateId}, #{endAt}, #{redemptionCode})
+        (#{accountId}, #{loanMoney}, #{discountedRate}, #{additionalRate}, #{rateId}, #{endAt}, #{redemptionCode}, #{loanApplicationId})
     </insert>
+
 
 </mapper>

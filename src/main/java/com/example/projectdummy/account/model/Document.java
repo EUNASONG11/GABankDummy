@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Builder
 @Setter
-public class document {
+public class Document {
     private Long documentId;
     private String documentName;
     private String document;

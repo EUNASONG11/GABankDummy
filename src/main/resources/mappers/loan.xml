@@ -20,7 +20,7 @@
         from loan
         where use_flag = #{useFlag}
     </select>
-    
+
     <select id="selLoanInfo">
         SELECT b.account_id, b.created_at, la.end_at , la.loan_money, la.redemption_code
         FROM bank_account b
@@ -36,5 +36,40 @@
         (account_id, principal, interest, total_due, due_at, final_at, due_code)
         VALUES
         (#{accountId}, #{principal}, #{interest}, #{totalDue}, #{dueAt}, #{finalAt}, #{dueCode})
+
+    <select id="selLoanAccountId">
+        SELECT account_id
+        FROM loan_account
+    </select>
+
+    <select id="selDiscountedRate">
+        SELECT discounted_rate
+        FROM loan_account
+        WHERE account_id = #{accountId}
+    </select>
+
+    <select id="selAdditionalRate">
+        SELECT additional_rate
+        FROM loan_account
+        WHERE account_id = #{accountId}
+    </select>
+
+    <select id="selCreatedAt">
+        SELECT
+    </select>
+
+    <insert id="insLoanRateLog">
+        INSERT INTO loan_rate_log
+        (account_id, interest_rate, change_at, created_at)
+        VALUES
+        (#{accountId}, #{interestRate}, #{changeAt}, #{createdAt})
+    </insert>
+
+    <insert id="insLoanApplication">
+        insert into loan_application
+        (loan_application_id, cust_id, loan_id, application_date, requested_amount, requested_term, status_code, decision_date)
+        values
+        (#{loanApplicationId}, #{custId}, #{loanId}, #{applicationDate}, #{requestedAmount}, #{requestedTerm}, #{statusCode}, #{decisionDate})
+
     </insert>
 </mapper>

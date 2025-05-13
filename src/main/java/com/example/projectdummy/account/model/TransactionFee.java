@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Builder
 @Setter
-public class transactionFee {
+public class TransactionFee {
     private Long transactionFeeId;
     private int fee;
     private String reason;
