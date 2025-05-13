@@ -47,7 +47,7 @@ public class CardMapperTest extends DummyDefault {
             }
 
             int interestFree = faker.random().nextInt(5) + 2; //무이자할부기간
-            int ogAmount = faker.random().nextInt(9999900) + 100; //총결제금액
+            int ogAmount = faker.random().nextInt(1999900) + 100; //총결제금액
 
 
 
@@ -179,7 +179,7 @@ public class CardMapperTest extends DummyDefault {
 
 
             int installment = faker.random().nextInt(35) + 2; //유이자할부기간
-            int ogAmount = faker.random().nextInt(9999900) + 100; //총결제금액
+            int ogAmount = faker.random().nextInt(1999900) + 100; //총결제금액
             int fee = 0;
             if(installment == 2){ //할부개월에 따른 수수료
                 fee = (int) Math.round(14.5 * ogAmount);
@@ -310,7 +310,7 @@ public class CardMapperTest extends DummyDefault {
             }
 
 
-            int ogAmount = faker.random().nextInt(9999900) + 100;
+            int ogAmount = faker.random().nextInt(1999900) + 100;
 
             BigDecimal discount = BigDecimal.valueOf(2.0 + faker.random().nextDouble() * 7.9)
                     .setScale(1, RoundingMode.HALF_UP);
