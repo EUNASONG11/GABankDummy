@@ -18,11 +18,11 @@
         WHERE p.product_id=#{productId}
     </select>
     
-    <insert id="saveContractDocument">
+    <insert id="saveContractDocument" useGeneratedKeys="true" keyProperty="contractDocumentId">
         insert into contract_document
-        (contract_id, product_document_id, document, product_code)
+        (contract_id, product_document_id, document, product_code, created_at)
         values
-        (#{contractId}, #{productDocumentId}, #{document}, #{productCode})
+        (#{contractId}, #{productDocumentId}, #{document}, #{productCode}, #{createdAt})
     </insert>
 
 </mapper>
