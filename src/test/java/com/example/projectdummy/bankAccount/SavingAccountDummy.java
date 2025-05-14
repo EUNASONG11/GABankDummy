@@ -134,7 +134,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                     history1.setTransactionFeeId(selTranFeeId.get(kofaker.random().nextInt(selTranFeeId.size())));
                     history1.setFlag(1);
                     history1.setMoney((long) postMoney);
-                    history1.setToName("본인");
+                    history1.setToName("예금 입금");
                     history1.setAccountNum(""); //내부계좌 중 하나로 수정할것
                     history1.setToBankCode("300");
                     history1.setCreatedAt(localDateTime);
@@ -147,7 +147,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                     history2.setTransactionFeeId(history1.getTransactionFeeId());
                     history2.setFlag(1);
                     history2.setMoney((long) (money - postMoney));
-                    history2.setToName("본인");
+                    history2.setToName("예금 만료");
                     history2.setAccountNum(""); //내부계좌 중 하나로 수정할것
                     history2.setToBankCode("300");
                     history2.setCreatedAt(endAt);
@@ -166,7 +166,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                     history.setTransactionFeeId(selTranFeeId.get(kofaker.random().nextInt(selTranFeeId.size())));
                     history.setFlag(1);
                     history.setMoney((long) postMoney);
-                    history.setToName("본인");
+                    history.setToName("예금 입금");
                     history.setAccountNum(""); //내부계좌 중 하나로 수정할것
                     history.setToBankCode("300");
                     history.setCreatedAt(localDateTime);
@@ -186,7 +186,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                         history.setTransactionFeeId(feeId);
                         history.setFlag(1);
                         history.setMoney((long) postMoney);
-                        history.setToName("본인");
+                        history.setToName("적금 "+(j+1)+"회차");
                         history.setAccountNum(""); //내부계좌 중 하나로 수정할것
                         history.setToBankCode("300");
                         history.setCreatedAt(localDateTime);
@@ -211,7 +211,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                         history.setTransactionFeeId(feeId);
                         history.setFlag(1);
                         history.setMoney((long) postMoney);
-                        history.setToName("본인");
+                        history.setToName("적금 "+(j+1)+"회차");
                         history.setAccountNum(""); //내부계좌 중 하나로 수정할것
                         history.setToBankCode("300");
                         history.setCreatedAt(localDateTime);
