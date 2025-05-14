@@ -97,6 +97,7 @@ public class CardMapperTest extends DummyDefault {
             //신용카드지불내역
             String dueCode = "";
 
+
             // 할인 후 금액 계산
             BigDecimal discountedAmount = BigDecimal.valueOf(ogAmount)
                     .multiply(BigDecimal.ONE.subtract(discount.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP)))
@@ -131,10 +132,12 @@ public class CardMapperTest extends DummyDefault {
                         dueCode = "01201";
                     }
 
+
                     if(dueCode.equals("01204")) {
                         paidAt = dueAt.minusDays(kofaker.random().nextInt(7, 31));
                         paidAtStr = paidAt.format(formatter);
                     }
+
 
 
                     CreditCardPayment ccp = CreditCardPayment.builder()
@@ -268,10 +271,12 @@ public class CardMapperTest extends DummyDefault {
                         dueCode = "01201";
                     }
 
+
                     if(dueCode.equals("01204")) {
                         paidAt = dueAt.minusDays(kofaker.random().nextInt(7, 31));
                         paidAtStr = paidAt.format(formatter);
                     }
+
 
                     CreditCardPayment ccp = CreditCardPayment.builder()
                             .creditId(i)
@@ -353,6 +358,7 @@ public class CardMapperTest extends DummyDefault {
             //신용카드지불내역
             String dueCode = "";
 
+
             // 할인 후 금액 계산
             BigDecimal discountedAmount = BigDecimal.valueOf(ogAmount)
                     .multiply(BigDecimal.ONE.subtract(discount.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP)))
@@ -384,10 +390,12 @@ public class CardMapperTest extends DummyDefault {
                 dueCode = "01201";
             }
 
+
             if(dueCode.equals("01204")) {
                 paidAt = dueAt.minusDays(kofaker.random().nextInt(7, 31));
                 paidAtStr = paidAt.format(formatter);
             }
+
 
 
             CreditCardPayment ccp = CreditCardPayment.builder()
