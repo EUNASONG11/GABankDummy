@@ -109,7 +109,7 @@ public class CardMapperTest extends DummyDefault {
                 dueCode = "01202";
             }else if((cnt/4)/2 <= i && i < ((cnt/4)*3)/4){
                 dueCode = "01203";
-            }else {
+            }else if(((cnt/4)*3)/4 <= i && i <= cnt/4) {
                 dueCode = "01204";
             }
 
@@ -142,6 +142,18 @@ public class CardMapperTest extends DummyDefault {
                         paidAt = dueAt.minusDays(daysToSubtract);
                     }
                     String paidAtStr = paidAt.format(formatter);
+
+                    LocalDateTime ld = LocalDateTime.now();
+                    if(!paidAt.isAfter(ld)) {
+//                        dueCode = "01201"; // 혹은 01204 가중치줘서 1/10 확률로 넣음
+                        dueCode = kofaker.random().nextInt(10)==0 ? "01204": "01202";
+                        if(!paidAt.isAfter(ld) && !paidAt.isBefore(ld.minusMonths(1))) {
+                            // 1달전 더미기준 2천건이 있음 >> 여기서 1/10 인 200건이 최근 연체중인걸로 나오도록 하는게 맞을듯?
+                            dueCode = kofaker.random().nextInt(10)==0 ? "01203": "01202";
+                        }
+                    } else {
+                        dueCode = "01201";
+                    }
 
 
 
@@ -240,9 +252,14 @@ public class CardMapperTest extends DummyDefault {
                 dueCode = "01202";
             }else if((cnt/4)/2 <= i && i < ((cnt/4)*3)/4){
                 dueCode = "01203";
-            }else {
+            }else if(((cnt/4)*3)/4 <= i && i <= cnt/4){
                 dueCode = "01204";
             }
+            // 1. dueCode for문 안에서만 사용함
+            // 2. 상환일이 지난 경우는 어쳐피 01201이나 01204가 들어가야함
+            // 3. 상환일이 지나지 않았으면 무조건 01203임
+            // 4. 상환일이 지났지만 부근일 경우에만 연체일 가능성이 있음 01203
+
 
 
             // 할인 후 금액 계산
@@ -273,6 +290,18 @@ public class CardMapperTest extends DummyDefault {
                         paidAt = dueAt.minusDays(daysToSubtract);
                     }
                     String paidAtStr = paidAt.format(formatter);
+
+                    LocalDateTime ld = LocalDateTime.now();
+                    if(!paidAt.isAfter(ld)) {
+//                        dueCode = "01201"; // 혹은 01204 가중치줘서 1/10 확률로 넣음
+                        dueCode = kofaker.random().nextInt(10)==0 ? "01204": "01202";
+                        if(!paidAt.isAfter(ld) && !paidAt.isBefore(ld.minusMonths(1))) {
+                            // 1달전 더미기준 2천건이 있음 >> 여기서 1/10 인 200건이 최근 연체중인걸로 나오도록 하는게 맞을듯?
+                            dueCode = kofaker.random().nextInt(10)==0 ? "01203": "01202";
+                        }
+                    } else {
+                        dueCode = "01201";
+                    }
 
                     CreditCardPayment ccp = CreditCardPayment.builder()
                             .creditId(i)
@@ -359,7 +388,7 @@ public class CardMapperTest extends DummyDefault {
                 dueCode = "01202";
             }else if((cnt/4)/2 <= i && i < ((cnt/4)*3)/4){
                 dueCode = "01203";
-            }else {
+            }else if(((cnt/4)*3)/4 <= i && i <= cnt/4){
                 dueCode = "01204";
             }
 
@@ -387,6 +416,18 @@ public class CardMapperTest extends DummyDefault {
                 paidAt = dueAt.minusDays(daysToSubtract);
             }
             String paidAtStr = paidAt.format(formatter);
+
+            LocalDateTime ld = LocalDateTime.now();
+            if(!paidAt.isAfter(ld)) {
+//                        dueCode = "01201"; // 혹은 01204 가중치줘서 1/10 확률로 넣음
+                dueCode = kofaker.random().nextInt(10)==0 ? "01204": "01202";
+                if(!paidAt.isAfter(ld) && !paidAt.isBefore(ld.minusMonths(1))) {
+                    // 1달전 더미기준 2천건이 있음 >> 여기서 1/10 인 200건이 최근 연체중인걸로 나오도록 하는게 맞을듯?
+                    dueCode = kofaker.random().nextInt(10)==0 ? "01203": "01202";
+                }
+            } else {
+                dueCode = "01201";
+            }
 
 
             CreditCardPayment ccp = CreditCardPayment.builder()
