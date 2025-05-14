@@ -22,4 +22,5 @@ public interface AccountMapper {
     Long selFinalPk();
     List<UseAuthPk> selAccountByDepositCode(String code);
 
+    List<String> findOwnAccountNum(long custId);
 }
