@@ -47,7 +47,7 @@
 
     <select id="selTranFeeId">
         select transaction_fee_id
-        where transaction_fee
+        from transaction_fee
     </select>
 
     <insert id="insBankAccount">
@@ -73,10 +73,19 @@
 
     <insert id="insTranHistory">
         insert into transaction_history
-        (transaction_fee_id, account_id, flag, money, to_name, account_num, to_bank_code, created_at, location, hs_money, atm_code, use_account, use_bank_code)
+        (transaction_fee_id, account_id, flag, money, to_name, account_num, to_bank_code, created_at, location, hs_money, atm_code)
         values
-        (#{transactionFeeId}, #{accountId}, #{flag}, #{money}, #{toName}, #{accountNum}, #{toBankCode}, #{createdAt}, #{location}, #{hsMoney}, #{atmCode}, #{useAccount}, #{useBankCode})
+        (#{transactionFeeId}, #{accountId}, #{flag}, #{money}, #{toName}, #{accountNum}, #{toBankCode}, #{createdAt}, #{location}, #{hsMoney}, #{atmCode})
 
     </insert>
+
+    <select id="findOwnAccountNum">
+        SELECT b.account_num
+        FROM bank_account b
+        JOIN deposit d
+        ON b.product_id=d.deposit_id
+        WHERE d.deposit_code IN (00501, 00502, 00505)
+        AND b.cust_id=#{custId}
+    </select>
 
 </mapper>
