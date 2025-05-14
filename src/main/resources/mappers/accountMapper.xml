@@ -11,6 +11,20 @@
             (#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode}, #{createdAt})
     </insert>
 
+    <select id="selFinalPk">
+        select account_id
+        from bank_account
+        order by account_id desc
+        limit 1
+    </select>
+
+    <select id="selAccountByDepositCode">
+        select account_id, a.created_at
+        from deposit A
+        join bank_account B on a.deposit_id = b.product_id
+        where a.deposit_code = #{code}
+    </select>
+
     <select id="selAccountId">
         SELECT account_id, a.product_id, created_at
         FROM bank_account A
@@ -21,6 +35,14 @@
         FROM bank_account a
         JOIN savings_deposit b ON a.product_id = b.sa_deposit_id
         WHERE out_flag = 0
+    </select>
+
+    <select id="selLoanUser">
+        select cust_name, account_num, bank_code, use_account
+        from bank_account A
+        join customer B on a.cust_id = b.cust_id
+        join loan_account C on a.account_id = c.account_id
+        where a.account_id = #{accountId}
     </select>
 
     <select id="selTranFeeId">
@@ -44,10 +66,17 @@
 
     <insert id="insLoanAccount">
         insert into loan_account
-        (account_id, loan_money, discounted_rate, additional_rate, rate_id, end_at, redemption_code, loan_application_id)
+        (account_id, loan_money, discounted_rate, additional_rate, rate_id, end_at, redemption_code, loan_application_id, bank_code, use_account)
         values
-        (#{accountId}, #{loanMoney}, #{discountedRate}, #{additionalRate}, #{rateId}, #{endAt}, #{redemptionCode}, #{loanApplicationId})
+        (#{accountId}, #{loanMoney}, #{discountedRate}, #{additionalRate}, #{rateId}, #{endAt}, #{redemptionCode}, #{loanApplicationId}, #{bankCode}, #{useAccount})
     </insert>
 
+    <insert id="insTranHistory">
+        insert into transaction_history
+        (transaction_fee_id, account_id, flag, money, to_name, account_num, to_bank_code, created_at, location, hs_money, atm_code, use_account, use_bank_code)
+        values
+        (#{transactionFeeId}, #{accountId}, #{flag}, #{money}, #{toName}, #{accountNum}, #{toBankCode}, #{createdAt}, #{location}, #{hsMoney}, #{atmCode}, #{useAccount}, #{useBankCode})
+
+    </insert>
 
 </mapper>
