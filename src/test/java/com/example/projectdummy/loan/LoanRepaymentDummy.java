@@ -52,7 +52,7 @@ public class LoanRepaymentDummy extends DummyDefault {
                     if (j == totalMonths && month.isBefore(LocalDate.now())) {
                         loanRepayment.setFinalAt(month);
                     }
-                    if (month.isBefore(createdAt)) {
+                    if (month.isBefore(LocalDate.now())) {
                         loanRepayment.setDueCode("01202");
                     } else {
                         loanRepayment.setDueCode("01201");
@@ -103,7 +103,7 @@ public class LoanRepaymentDummy extends DummyDefault {
                     if (j == totalMonths && month.isBefore(LocalDate.now())) {
                         loanRepayment.setFinalAt(month);
                     }
-                    if (month.isBefore(createdAt)) {
+                    if (month.isBefore(LocalDate.now())) {
                         loanRepayment.setDueCode("01202");
                     } else {
                         loanRepayment.setDueCode("01201");

@@ -7,6 +7,7 @@ import com.example.projectdummy.loan.model.RateLog;
 import com.example.projectdummy.loan.model.*;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Mapper
@@ -22,6 +23,12 @@ public interface LoanMapper {
     double selAdditionalRate(long accountId);
     int insLoanRateLog(LoanRateLog loanRateLog);
     int insLoanApplication(LoanApplication loanApplication);
+    int selLoanAccountCnt();
+    LoanAccount selLoanAccount(long accountId);
+    LoanRepayment selLoanRepayment(LocalDate month, long accountId);
+    LoanRepayment selLoanRepayment2(long loanRepaymentId);
 
-
+    int updLoanRepaymentDueCode(long loanRepaymentId);
+    int updLoanRepayment(long totalDue, long principal, long interest, long loanRepaymentId);
+    int insLoanOverdue(LoanOverdue loanOverdue);
 }
