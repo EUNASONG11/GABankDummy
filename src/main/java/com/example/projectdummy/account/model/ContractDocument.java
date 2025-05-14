@@ -4,6 +4,8 @@ package com.example.projectdummy.account.model;
 import lombok.Builder;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Setter
 public class ContractDocument {
@@ -11,5 +13,6 @@ public class ContractDocument {
     private long contractId;
     private long productDocumentId;
     private String document;
-    private int flag;
+    private String productCode;
+    private LocalDateTime createdAt;
 }

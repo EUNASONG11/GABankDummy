@@ -17,4 +17,6 @@ public class LoanAccount {
     private LocalDate endAt;
     private String redemptionCode;
     private Long loanApplicationId;
+    private String useAccount;
+    private String bankCode;
 }
