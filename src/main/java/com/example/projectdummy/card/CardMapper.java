@@ -12,6 +12,10 @@ public interface CardMapper {
     List<Long> selCreditCardPaymentId();
     Long selDcAmount(Long CreditPaymentId);
     int insCreditOverdue(CreditOverdue creditOverdue);
+    List<Long> selCardId2();
+    int insUserCreditCard(UserCard userCard);
+    List<Long> selCreditCardId();
+    List<Long> selCustId();
 
 
     int saveCheckCard(CheckCard checkCard);

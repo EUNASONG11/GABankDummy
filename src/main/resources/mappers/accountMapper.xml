@@ -11,6 +11,20 @@
             (#{productId},#{custId},#{employeeId},#{accountNum},#{accountPassword},#{money},#{statusCode}, #{createdAt})
     </insert>
 
+    <select id="selFinalPk">
+        select account_id
+        from bank_account
+        order by account_id desc
+        limit 1
+    </select>
+
+    <select id="selAccountByDepositCode">
+        select account_id, a.created_at
+        from deposit A
+        join bank_account B on a.deposit_id = b.product_id
+        where a.deposit_code = #{code}
+    </select>
+
     <select id="selAccountId">
         SELECT account_id, a.product_id, created_at
         FROM bank_account A

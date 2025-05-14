@@ -49,7 +49,8 @@ public class LoanAccountDummy extends DummyDefault {
         LocalDate endDate = LocalDate.now();
         long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
         String[] bankDummy= {"356", "1002", "012", "00"};
-        Long accountId = 20000001L;
+        Long finalId = accountMapper.selFinalPk();
+        Long accountId = finalId == null ? 10000001L : finalId+1;
         Long loanApplicationId = 1L;
         for(Loan loan : selLoan){
             Long loanId = loan.getLoanId();

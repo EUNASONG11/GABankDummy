@@ -19,4 +19,5 @@ public class UserCard {
     private String uCardCode;
     private String endAt;
     private LocalDateTime createdAt;
+    private LocalDateTime lostAt;
 }
