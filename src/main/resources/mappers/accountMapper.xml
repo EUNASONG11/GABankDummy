@@ -79,4 +79,13 @@
 
     </insert>
 
+    <select id="findOwnAccountNum">
+        SELECT b.account_num
+        FROM bank_account b
+        JOIN deposit d
+        ON b.product_id=d.deposit_id
+        WHERE d.deposit_code IN (00501, 00502, 00505)
+        AND b.cust_id=#{custId}
+    </select>
+
 </mapper>
