@@ -9,4 +9,6 @@ import java.util.List;
 public interface ProductMapper {
     List<Long> selProductDocument(Long productId);
     int insContractDocument(ContractDocument contractDocument);
+    int insCheckBill(CheckBill checkBill);
+    List<DepositAccount> findDepositAccount();
 }

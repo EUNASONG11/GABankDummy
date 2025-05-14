@@ -2,24 +2,11 @@ package com.example.projectdummy.bankAccount;
 
 import com.example.projectdummy.AccountDummyDefault;
 import com.example.projectdummy.account.AccountMapper;
-import com.example.projectdummy.account.model.BankAccount;
-import com.example.projectdummy.account.model.TransactionHistory;
 import com.example.projectdummy.card.CardMapper;
 import com.example.projectdummy.employee.EmployeeMapper;
-import com.example.projectdummy.productAndDeposit.DepositAccount;
-import com.example.projectdummy.productAndDeposit.DepositDuration;
 import com.example.projectdummy.productAndDeposit.DepositMapper;
-import com.example.projectdummy.productAndDeposit.SavingsDeposit;
-import org.apache.ibatis.session.ExecutorType;
-import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Random;
 
 public class SavingAccountDummy extends AccountDummyDefault {
     @Autowired

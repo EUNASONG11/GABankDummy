@@ -35,4 +35,12 @@
             </if>
     </insert>
 
+    <select id="findDepositAccount">
+        SELECT A.*
+        FROM deposit_account A
+        JOIN deposit_duration B ON A.deposit_duration_id = B.deposit_duration_id
+        JOIN deposit C ON B.sa_deposit_id = C.deposit_id
+        WHERE C.deposit_code = '00501'
+    </select>
+
 </mapper>
