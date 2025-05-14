@@ -91,6 +91,7 @@ public class CheckBillDummy extends DummyDefault {
         sqlSession.commit();
         sqlSession.close();
         System.out.println("총 " + CNT + "건 수표/어음 생성 완료");
+
     }
 }
 
