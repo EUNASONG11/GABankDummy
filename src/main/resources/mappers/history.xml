@@ -4,7 +4,7 @@
 <mapper namespace="com.example.projectdummy.account.HistoryMapper">
     <insert id="saveHistories">
         insert into transaction_history
-        (transaction_fee_id, account_id, flag, money, to_name, account_num, to_bank_code, created_at, location, hs_money, atm_code)
+        (account_id, transaction_fee_id, flag, money, to_name, account_num, to_bank_code, created_at, location, hs_money, atm_code)
         values
         <foreach collection="histories" item="his" separator=",">
             (
