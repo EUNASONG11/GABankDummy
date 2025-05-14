@@ -49,11 +49,7 @@ public class CardMapperTest extends DummyDefault {
             }
 
             int interestFree = faker.random().nextInt(5) + 2; //무이자할부기간
-            int ogAmount = faker.random().nextInt(1999900) + 100; //총결제금액
-
-
-
-
+            int ogAmount = faker.random().nextInt(4950000) + 50000; //총결제금액(할부 최저 50,000원 이상부터)
 
 
             int year = ThreadLocalRandom.current().nextInt(2000, 2026);
@@ -73,11 +69,8 @@ public class CardMapperTest extends DummyDefault {
             String uMonth = String.format("%02d", month);
             String uDay = String.format("%02d", day);
 
-
-
             BigDecimal discount = BigDecimal.valueOf(2.0 + faker.random().nextDouble() * 7.9)
                     .setScale(1, RoundingMode.HALF_UP); //할인율
-
 
 
             CreditStatement cs = CreditStatement.builder()
@@ -103,16 +96,6 @@ public class CardMapperTest extends DummyDefault {
 
             //신용카드지불내역
             String dueCode = "";
-            if(i < (cnt/4)/4) {
-                dueCode = "01201";
-            }else if((cnt/4)/4 <= i && i < (cnt/4)/2){
-                dueCode = "01202";
-            }else if((cnt/4)/2 <= i && i < ((cnt/4)*3)/4){
-                dueCode = "01203";
-            }else if(((cnt/4)*3)/4 <= i && i <= cnt/4) {
-                dueCode = "01204";
-            }
-
 
             // 할인 후 금액 계산
             BigDecimal discountedAmount = BigDecimal.valueOf(ogAmount)
@@ -121,18 +104,11 @@ public class CardMapperTest extends DummyDefault {
             Long discountedAmountLong = discountedAmount.longValue(); //형변환
 
 
-            if(interestFree > 0) {
-                for (int j = 1; j <= interestFree; j++) {
-                    int baseMonth = Integer.parseInt(uMonth);
-                    baseMonth += j;
-                    if (baseMonth > 12) {
-                        baseMonth = 1;
-                    }
-                    String paddedMonth = String.format("%02d", baseMonth);
+
+
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    //String dueAtString = uYear + "-" + paddedMonth + "-" + uDay + " 00:00:00";
-                    LocalDateTime dueAt = createdAt.plusMonths(1); //LocalDateTime.parse(dueAtString, formatter);
+                    LocalDateTime dueAt = createdAt.plusMonths(1);
                     String dueAtString = dueAt.format(formatter);
 
                     // 15% 확률로만 날짜를 앞당김
@@ -166,8 +142,8 @@ public class CardMapperTest extends DummyDefault {
                             .paidAt(paidAtStr)
                             .build();
                     cardMapper.insCreditCardPayment(ccp);
-                }
-            }
+
+
 
         }
         sqlSession.flushStatements();
@@ -190,16 +166,16 @@ public class CardMapperTest extends DummyDefault {
 
 
             int installment = faker.random().nextInt(35) + 2; //유이자할부기간
-            int ogAmount = faker.random().nextInt(1999900) + 100; //총결제금액
+            int ogAmount = faker.random().nextInt(4950000) + 50000; //총결제금액(할부 최저 50,000원 이상부터)
             int fee = 0;
             if(installment == 2){ //할부개월에 따른 수수료
-                fee = (int) Math.round(14.5 * ogAmount);
+                fee = (int) Math.round(0.145 * ogAmount);
             }else if(installment == 3){
-                fee = (int) Math.round(18.2 * ogAmount);
+                fee = (int) Math.round(0.182 * ogAmount);
             }else if(4 <= installment && installment <= 18){
-                fee = (int) Math.round(19.7 * ogAmount);
+                fee = (int) Math.round(0.197 * ogAmount);
             }else if(19 <= installment ){
-                fee = (int) Math.round(19.8 * ogAmount);
+                fee = (int) Math.round(0.198 * ogAmount);
             }
 
             BigDecimal discount = BigDecimal.valueOf(2.0 + faker.random().nextDouble() * 7.9)
@@ -246,15 +222,7 @@ public class CardMapperTest extends DummyDefault {
 
             //신용카드지불내역
             String dueCode = "";
-            if(i < (cnt/4)/4) {
-                dueCode = "01201";
-            }else if((cnt/4)/4 <= i && i < (cnt/4)/2){
-                dueCode = "01202";
-            }else if((cnt/4)/2 <= i && i < ((cnt/4)*3)/4){
-                dueCode = "01203";
-            }else if(((cnt/4)*3)/4 <= i && i <= cnt/4){
-                dueCode = "01204";
-            }
+
             // 1. dueCode for문 안에서만 사용함
             // 2. 상환일이 지난 경우는 어쳐피 01201이나 01204가 들어가야함
             // 3. 상환일이 지나지 않았으면 무조건 01203임
@@ -269,18 +237,11 @@ public class CardMapperTest extends DummyDefault {
             Long discountedAmountLong = discountedAmount.longValue(); //형변환
 
 
-            if(installment > 0) {
-                for (int j = 1; j <= installment; j++) {
-                    int baseMonth = Integer.parseInt(uMonth);
-                    baseMonth += j;
-                    if (baseMonth > 12) {
-                        baseMonth = 1;
-                    }
-                    String paddedMonth = String.format("%02d", baseMonth);
+
+
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    //String dueAtString = uYear + "-" + paddedMonth + "-" + uDay + " 00:00:00";
-                    LocalDateTime dueAt = createdAt.plusMonths(1); //LocalDateTime.parse(dueAtString, formatter);
+                    LocalDateTime dueAt = createdAt.plusMonths(1);
                     String dueAtString = dueAt.format(formatter);
 
                     // 15% 확률로만 날짜를 앞당김
@@ -312,8 +273,8 @@ public class CardMapperTest extends DummyDefault {
                             .paidAt(paidAtStr)
                             .build();
                     cardMapper.insCreditCardPayment(ccp);
-                }
-            }
+
+
         }
         sqlSession.flushStatements();
 
@@ -335,7 +296,7 @@ public class CardMapperTest extends DummyDefault {
             }
 
 
-            int ogAmount = faker.random().nextInt(1999900) + 100;
+            int ogAmount = faker.random().nextInt(2999900) + 100;
 
             BigDecimal discount = BigDecimal.valueOf(2.0 + faker.random().nextDouble() * 7.9)
                     .setScale(1, RoundingMode.HALF_UP);
@@ -382,15 +343,6 @@ public class CardMapperTest extends DummyDefault {
 
             //신용카드지불내역
             String dueCode = "";
-            if(i < (cnt/4)/4) {
-                dueCode = "01201";
-            }else if((cnt/4)/4 <= i && i < (cnt/4)/2){
-                dueCode = "01202";
-            }else if((cnt/4)/2 <= i && i < ((cnt/4)*3)/4){
-                dueCode = "01203";
-            }else if(((cnt/4)*3)/4 <= i && i <= cnt/4){
-                dueCode = "01204";
-            }
 
             // 할인 후 금액 계산
             BigDecimal discountedAmount = BigDecimal.valueOf(ogAmount)
@@ -398,12 +350,6 @@ public class CardMapperTest extends DummyDefault {
                     .setScale(0, RoundingMode.DOWN); // 소수점 제거 (내림)
             Long discountedAmountLong = discountedAmount.longValue(); //형변환
 
-            int baseMonth = Integer.parseInt(uMonth);
-            baseMonth += 1;
-            if (baseMonth > 12) {
-                baseMonth = 1;
-            }
-            String paddedMonth = String.format("%02d", baseMonth);
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime dueAt = createdAt.plusMonths(1);
