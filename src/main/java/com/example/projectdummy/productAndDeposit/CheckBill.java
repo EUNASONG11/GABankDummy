@@ -1,12 +1,14 @@
 package com.example.projectdummy.productAndDeposit;
 
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Builder
 @Setter
+@RequiredArgsConstructor
 public class CheckBill {
     private String checkBill;
     private Long accountId;
@@ -17,4 +19,5 @@ public class CheckBill {
     private int duration;
     private LocalDate usedAt;
     private LocalDate createdAt;
+
 }

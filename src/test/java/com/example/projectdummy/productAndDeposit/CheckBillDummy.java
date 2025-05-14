@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -14,6 +15,8 @@ import java.util.Random;
 
 public class CheckBillDummy extends DummyDefault {
 
+    @Autowired
+    ProductMapper productMapper;
 
     @Autowired
     DepositMapper depositMapper;
@@ -49,9 +52,9 @@ public class CheckBillDummy extends DummyDefault {
             int duration = isNote ? (random.nextInt(4) + 1) * 6 : 0;
 
             // 생성일 및 사용일
-            LocalDateTime createdAt = LocalDateTime.now().minusDays(random.nextInt(1000));
+            LocalDate createdAt = LocalDate.now().minusDays(random.nextInt(1000));
 
-            LocalDateTime usedAt = isNote
+            LocalDate usedAt = isNote
                     ? createdAt.plusMonths(duration)
                     : createdAt.plusDays(random.nextInt(60) + 1);
 
@@ -65,27 +68,27 @@ public class CheckBillDummy extends DummyDefault {
                     ? kofaker.company().name()
                     : (random.nextInt(10) < 3 ? null : kofaker.name().fullName());
 
-//            // insert 수행
-//            productMapper.insCheckBill(
-//                    checkBill,
-//                    accountId,
-//                    money,
-//                    useFlag,
-//                    typeFlag,
-//                    recipientName,
-//                    duration,
-//                    usedAt,
-//                    createdAt
-//            );
+            // insert 수행
+            CheckBill bill = new CheckBill();
+            bill.setCheckBill(checkBill);
+            bill.setAccountId(accountId);
+            bill.setMoney(money);
+            bill.setUseFlag(useFlag);
+            bill.setTypeFlag(typeFlag);
+            bill.setRecipientName(recipientName);
+            bill.setDuration(duration);
+            bill.setUsedAt(usedAt);
+            bill.setCreatedAt(createdAt);
 
-            // 1000건마다 커밋
+            productMapper.insCheckBill(bill);
+
             if (i % 1000 == 0) {
                 sqlSession.commit();
                 System.out.println(i + "건 생성 완료");
             }
         }
 
-        sqlSession.commit(); // 최종 커밋
+        sqlSession.commit();
         sqlSession.close();
         System.out.println("총 " + CNT + "건 수표/어음 생성 완료");
     }
