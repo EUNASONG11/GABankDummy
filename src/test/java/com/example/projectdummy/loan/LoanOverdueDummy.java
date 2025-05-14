@@ -53,7 +53,8 @@ public class LoanOverdueDummy extends DummyDefault {
             loanOverdue.setOverdueMoney(loanRepaymentBefore.getTotalDue());
             loanOverdue.setPaymentFlag(0);
             loanOverdue.setCreatedAt(loanRepaymentBefore.getDueAt());
-            loanOverdue.setUpdatedAt(loanRepaymentBefore.getDueAt().plusDays(day));
+            LocalDate ed = loanRepaymentBefore.getDueAt().plusDays(day);
+            loanOverdue.setUpdatedAt(ed);
             LocalDate startDate = loanRepaymentBefore.getDueAt();
             LocalDate endDate = loanRepaymentAfter.getDueAt();
             long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
@@ -64,7 +65,7 @@ public class LoanOverdueDummy extends DummyDefault {
                 long totalDue = loanRepaymentAfter.getTotalDue() + loanRepaymentBefore.getTotalDue() + interest;
                 long principal = loanRepaymentAfter.getPrincipal() + loanRepaymentBefore.getPrincipal();
                 long interest2 = loanRepaymentBefore.getInterest() + loanRepaymentAfter.getInterest() + interest;
-                loanMapper.updLoanRepayment(totalDue, principal, interest2, loanRepaymentAfter.getLoanRepaymentId());
+                loanMapper.updLoanRepayment(totalDue, principal, interest2, loanRepaymentAfter.getLoanRepaymentId(), ed);
             }
         }
     }

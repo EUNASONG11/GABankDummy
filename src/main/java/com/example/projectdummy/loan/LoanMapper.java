@@ -29,6 +29,6 @@ public interface LoanMapper {
     LoanRepayment selLoanRepayment2(long loanRepaymentId);
 
     int updLoanRepaymentDueCode(long loanRepaymentId);
-    int updLoanRepayment(long totalDue, long principal, long interest, long loanRepaymentId);
+    int updLoanRepayment(long totalDue, long principal, long interest, long loanRepaymentId, LocalDate finalAt);
     int insLoanOverdue(LoanOverdue loanOverdue);
 }
