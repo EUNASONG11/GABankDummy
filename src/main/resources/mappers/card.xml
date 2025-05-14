@@ -94,6 +94,6 @@
         insert into card_option_log
         (u_card_id, c_option_code, flag)
         values
-        (#{userCardId}, #{cOptionCode}, #{flag})
+        (#{uCardId}, #{cOptionCode}, #{flag})
     </insert>
 </mapper>
