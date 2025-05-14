@@ -9,9 +9,13 @@ import java.util.List;
 public interface CardMapper {
     int insCreditStatement(CreditStatement creditStatement);
     int insCreditCardPayment(CreditCardPayment creditCardPayment);
-    List<Long> selCreditCardPaymentId();
+    List<Long> selCreditCardPaymentId(String dueCode);
     Long selDcAmount(Long CreditPaymentId);
     int insCreditOverdue(CreditOverdue creditOverdue);
+    List<Long> selCardId2();
+    int insUserCreditCard(UserCard userCard);
+    List<Long> selCreditCardId();
+    List<Long> selCustId();
 
 
     int saveCheckCard(CheckCard checkCard);

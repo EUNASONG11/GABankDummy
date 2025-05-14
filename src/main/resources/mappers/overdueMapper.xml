@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.projectdummy.customer.OverdueMapper">
+    <insert id="insCardOverdue">
+        insert into overdue_record
+        (remain, overdue_money, target_id, overdue_code,start_at,created_at)
+        values
+        (#{remain}, #{overdueMoney}, #{targetId}, #{overdueCode}, #{startAt}, #{createdAt})
+    </insert>
+
+    <select id="selCardOverdue">
+        select a.overdue_id, a.overdue_amount, b.due_at, b.paid_at
+        from credit_overdue A
+        join credit_card_payment B on a.credit_payment_id = b.credit_payment_id
+        where b.due_code = #{dueCode}
+    </select>
+
+</mapper>

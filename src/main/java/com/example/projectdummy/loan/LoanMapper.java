@@ -4,6 +4,7 @@ import com.example.projectdummy.loan.model.*;
 
 
 import com.example.projectdummy.loan.model.RateLog;
+import com.example.projectdummy.loan.model.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDate;

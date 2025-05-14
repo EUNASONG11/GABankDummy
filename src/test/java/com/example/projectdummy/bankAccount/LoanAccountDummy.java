@@ -48,9 +48,9 @@ public class LoanAccountDummy extends DummyDefault {
         LocalDate startDate = LocalDate.of(2022, 1, 1);
         LocalDate endDate = LocalDate.now();
         long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
-
-
-        Long accountId = 20000001L;
+        String[] bankDummy= {"356", "1002", "012", "00"};
+        Long finalId = accountMapper.selFinalPk();
+        Long accountId = finalId == null ? 10000001L : finalId+1;
         Long loanApplicationId = 1L;
         for(Loan loan : selLoan){
             Long loanId = loan.getLoanId();
@@ -118,6 +118,26 @@ public class LoanAccountDummy extends DummyDefault {
                 loanAccount.setDiscountedRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.1,0.5)));
                 loanAccount.setAdditionalRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.8,3.5)));
                 loanAccount.setLoanApplicationId(loanApplicationId++);
+                String bank = bankDummy[random.nextInt(bankDummy.length)];
+                String newBankAccount;
+                String bankCode;
+                if(bank.equals("00")){
+                    newBankAccount = kofaker.numerify("##############");
+                    bankCode = "004";
+                } else if(bank.equals("012")){
+                    newBankAccount = kofaker.numerify("012########");
+                    bankCode = "003";
+                } else if(bank.equals("356")){
+                    newBankAccount = kofaker.numerify("356##########");
+                    bankCode = "011";
+                } else {
+                    newBankAccount = kofaker.numerify("1002#########");
+                    bankCode = "020";
+                }
+
+                loanAccount.setBankCode(bankCode);
+                loanAccount.setUseAccount(newBankAccount);
+
 
                 accountMapper.insLoanAccount(loanAccount);
 

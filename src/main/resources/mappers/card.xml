@@ -41,7 +41,7 @@
     <select id="selCreditCardPaymentId">
         select credit_payment_id
         from credit_card_payment
-        where due_code = '01203'
+        where due_code = #{dueCode}
     </select>
 
     <select id="selDcAmount">
@@ -58,6 +58,33 @@
         )
     </insert>
 
+    <select id="selCardId2">
+        select card_id
+        from card
+        where flag = 0
+    </select>
+
+    <select id="selCreditCardId">
+        select credit_card_id
+        from credit_card
+    </select>
+
+    <select id="selCustId">
+        select cust_id
+        from customer
+    </select>
+
+    <insert id="insUserCreditCard">
+        INSERT INTO user_card
+        (u_card_id, card_id, cust_id, card_number, card_password, u_card_code, end_at, created_at, lost_at)
+        values(
+            #{uCardId}, #{cardId}, #{custId}, #{cardNumber}, #{cardPassword}
+          , #{uCardCode}, #{endAt}, #{createdAt}, #{lostAt}
+        )
+    </insert>
+
+
+
     <select id="selCardId">
         select u_card_id
         from user_card
@@ -67,6 +94,8 @@
         insert into card_option_log
         (u_card_id, c_option_code, flag)
         values
-        (#{userCardId}, #{cOptionCode}, #{flag})
+        (#{uCardId}, #{cOptionCode}, #{flag})
     </insert>
+
+
 </mapper>
