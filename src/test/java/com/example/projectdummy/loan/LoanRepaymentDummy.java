@@ -78,7 +78,7 @@ public class LoanRepaymentDummy extends DummyDefault {
                     th.setAccountNum(lu.getUseAccount());
                     th.setToBankCode(lu.getBankCode());
                     th.setCreatedAt(ldt);
-                    th.setLocation("대출 납부"); // 위치 어케
+                    th.setLocation("대출납부"); // 위치 어케
                     th.setHsMoney(totalMoneyByDue); //기존에 넣은거때매 +해야되는데?
                     th.setAtmCode(kofaker.random().nextInt(3)==0?"00301":"00302"); // ATM 모바일 1:2 비율
 
