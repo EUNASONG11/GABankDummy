@@ -30,7 +30,7 @@
             , deposit_duration_id= #{depositDurationId}
             , end_at = #{endAt}
             , discounted_rate = #{discountedRate}
-            <if test="cancelDate is not null">
+            <if test="cancelDate != null">
                 , cancel_date = #{cancelDate}
             </if>
     </insert>
