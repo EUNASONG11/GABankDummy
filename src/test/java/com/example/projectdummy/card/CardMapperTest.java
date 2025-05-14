@@ -131,6 +131,10 @@ public class CardMapperTest extends DummyDefault {
                         dueCode = "01201";
                     }
 
+                    if(dueCode.equals("01204")) {
+                        paidAt = dueAt.minusDays(kofaker.random().nextInt(7, 31));
+                        paidAtStr = paidAt.format(formatter);
+                    }
 
 
                     CreditCardPayment ccp = CreditCardPayment.builder()
@@ -264,6 +268,11 @@ public class CardMapperTest extends DummyDefault {
                         dueCode = "01201";
                     }
 
+                    if(dueCode.equals("01204")) {
+                        paidAt = dueAt.minusDays(kofaker.random().nextInt(7, 31));
+                        paidAtStr = paidAt.format(formatter);
+                    }
+
                     CreditCardPayment ccp = CreditCardPayment.builder()
                             .creditId(i)
                             .dueCode(dueCode)
@@ -375,6 +384,11 @@ public class CardMapperTest extends DummyDefault {
                 dueCode = "01201";
             }
 
+            if(dueCode.equals("01204")) {
+                paidAt = dueAt.minusDays(kofaker.random().nextInt(7, 31));
+                paidAtStr = paidAt.format(formatter);
+            }
+
 
             CreditCardPayment ccp = CreditCardPayment.builder()
                     .creditId(i)
@@ -394,7 +408,7 @@ public class CardMapperTest extends DummyDefault {
     void Generate2() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
 
-        List<Long> idList = cardMapper.selCreditCardPaymentId();
+        List<Long> idList = cardMapper.selCreditCardPaymentId("01204");
             for (Long id : idList) {
                 Long dcAmount = cardMapper.selDcAmount(id);
 
@@ -405,6 +419,18 @@ public class CardMapperTest extends DummyDefault {
 
                 cardMapper.insCreditOverdue(co);
             }
+        sqlSession.flushStatements();
+        List<Long> idList2 = cardMapper.selCreditCardPaymentId("01203");
+        for (Long id : idList2) {
+            Long dcAmount = cardMapper.selDcAmount(id);
+
+            CreditOverdue co = CreditOverdue.builder()
+                    .creditPaymentId(id)
+                    .overdueAmount(dcAmount)
+                    .build();
+
+            cardMapper.insCreditOverdue(co);
+        }
         sqlSession.flushStatements();
     }
 
