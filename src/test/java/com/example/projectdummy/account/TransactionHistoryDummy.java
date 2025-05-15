@@ -120,14 +120,14 @@ class TransactionHistoryDummy extends DummyDefault {
                     accountMapper.insTranHistory(th);
                 if(cnt%1000 ==0){
                     sqlSession.flushStatements();
+                    System.out.println(cnt);
                 }
-                }
-                sqlSession.flushStatements();
+            }
+            sqlSession.flushStatements();
+        }
+        sqlSession.flushStatements();
             sqlSession.commit();
             sqlSession.close();
-
-
-        }
     }
 }
 
