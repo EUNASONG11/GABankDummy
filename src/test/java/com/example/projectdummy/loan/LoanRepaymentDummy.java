@@ -30,9 +30,9 @@ public class LoanRepaymentDummy extends DummyDefault {
         List<LoanInfo> selLoanInfo = loanMapper.selLoanInfo();
         for (int i = 0; i < selLoanInfo.size(); i++) {
             LoanInfo loanInfo = selLoanInfo.get(i);
-            LocalDate endAt = loanInfo.getEndAt();
+            LocalDateTime endAt = loanInfo.getEndAt();
             LocalDate createdAt = loanInfo.getCreatedAt();
-            Period period = Period.between(createdAt, endAt);
+            Period period = Period.between(createdAt, endAt.toLocalDate());
             int totalMonths = period.getYears() * 12 + period.getMonths();
             if (loanInfo.getRedemptionCode().equals("01102")) {
                 Double annualRate = Double.valueOf(kofaker.random().nextDouble(0.028, 0.049));
