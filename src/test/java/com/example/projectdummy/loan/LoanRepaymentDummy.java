@@ -49,10 +49,11 @@ public class LoanRepaymentDummy extends DummyDefault {
                     loanRepayment.setAccountId(loanInfo.getAccountId());
                     LocalDate month = loanInfo.getCreatedAt().plusMonths(j);
                     loanRepayment.setFinalAt(LocalDate.parse("9999-12-31"));
-                    if (j == totalMonths && month.isBefore(LocalDate.now())) {
+                    //if (j == totalMonths && month.isBefore(LocalDate.now())) {
+                    if (month.isBefore(LocalDate.now())) {
                         loanRepayment.setFinalAt(month);
                     }
-                    if (month.isBefore(createdAt)) {
+                    if (month.isBefore(LocalDate.now())) {
                         loanRepayment.setDueCode("01202");
                     } else {
                         loanRepayment.setDueCode("01201");
@@ -100,10 +101,11 @@ public class LoanRepaymentDummy extends DummyDefault {
                     loanRepayment.setAccountId(loanInfo.getAccountId());
                     LocalDate month = loanInfo.getCreatedAt().plusMonths(j);
                     loanRepayment.setFinalAt(LocalDate.parse("9999-12-31"));
-                    if (j == totalMonths && month.isBefore(LocalDate.now())) {
+                    //if (j == totalMonths && month.isBefore(LocalDate.now())) {
+                    if (month.isBefore(LocalDate.now())) {
                         loanRepayment.setFinalAt(month);
                     }
-                    if (month.isBefore(createdAt)) {
+                    if (month.isBefore(LocalDate.now())) {
                         loanRepayment.setDueCode("01202");
                     } else {
                         loanRepayment.setDueCode("01201");
