@@ -42,4 +42,9 @@
         (#{location}, #{divisionId}, #{flag}, #{state}, #{createdAt})
     </insert>
 
+    <select id="findCustCode">
+        select cust_id AS custId, cust_code AS custCode
+        from customer
+    </select>
+
 </mapper>
