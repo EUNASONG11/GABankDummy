@@ -30,9 +30,9 @@ public class LoanRepaymentDummy extends DummyDefault {
         List<LoanInfo> selLoanInfo = loanMapper.selLoanInfo();
         for (int i = 0; i < selLoanInfo.size(); i++) {
             LoanInfo loanInfo = selLoanInfo.get(i);
-            LocalDate endAt = loanInfo.getEndAt();
+            LocalDateTime endAt = loanInfo.getEndAt();
             LocalDate createdAt = loanInfo.getCreatedAt();
-            Period period = Period.between(createdAt, endAt);
+            Period period = Period.between(createdAt, endAt.toLocalDate());
             int totalMonths = period.getYears() * 12 + period.getMonths();
             if (loanInfo.getRedemptionCode().equals("01102")) {
                 Double annualRate = Double.valueOf(kofaker.random().nextDouble(0.028, 0.049));
@@ -48,24 +48,25 @@ public class LoanRepaymentDummy extends DummyDefault {
                     LoanRepayment loanRepayment = new LoanRepayment();
                     loanRepayment.setAccountId(loanInfo.getAccountId());
                     LocalDate month = loanInfo.getCreatedAt().plusMonths(j);
-                    loanRepayment.setFinalAt(LocalDate.parse("9999-12-31"));
+
                     if (j == totalMonths && month.isBefore(LocalDate.now())) {
-                        loanRepayment.setFinalAt(month);
+                        loanRepayment.setFinalAt(month.atStartOfDay());
                     }
                     if (month.isBefore(LocalDate.now())) {
                         loanRepayment.setDueCode("01202");
+                        loanRepayment.setFinalAt(LocalDateTime.parse(month.atStartOfDay().toString()));
                     } else {
                         loanRepayment.setDueCode("01201");
+                        loanRepayment.setFinalAt(LocalDateTime.parse("9999-12-31T23:59:59"));
                     }
                     long interest = (long) (remainingPrincipal * monthlyRate);
                     long principalPayment = monthlyPayment - interest;
                     remainingPrincipal -= principalPayment;
                     loanRepayment.setTotalDue(monthlyPayment);
-                    loanRepayment.setDueAt(month);
+                    loanRepayment.setDueAt(month.atStartOfDay());
                     loanRepayment.setPrincipal(principalPayment); // 원금
                     loanRepayment.setInterest(interest); // 이자
                     loanMapper.insLoanRepayment(loanRepayment);
-
                     totalMoneyByDue += principalPayment+interest;
                     LoanUser lu = accountMapper.selLoanUser(loanInfo.getAccountId());
                     TransactionHistory th = new TransactionHistory();
@@ -99,20 +100,21 @@ public class LoanRepaymentDummy extends DummyDefault {
                     LoanRepayment loanRepayment = new LoanRepayment();
                     loanRepayment.setAccountId(loanInfo.getAccountId());
                     LocalDate month = loanInfo.getCreatedAt().plusMonths(j);
-                    loanRepayment.setFinalAt(LocalDate.parse("9999-12-31"));
                     if (j == totalMonths && month.isBefore(LocalDate.now())) {
-                        loanRepayment.setFinalAt(month);
+                        loanRepayment.setFinalAt(month.atStartOfDay());
                     }
                     if (month.isBefore(LocalDate.now())) {
                         loanRepayment.setDueCode("01202");
+                        loanRepayment.setFinalAt(LocalDateTime.parse(month.atStartOfDay().toString()));
                     } else {
                         loanRepayment.setDueCode("01201");
+                        loanRepayment.setFinalAt(LocalDateTime.parse("9999-12-31T23:59:59"));
                     }
                     long interest = (long) (remainingPrincipal * monthlyRate);
                     long monthlyPayment = monthlyPrincipal + interest;
                     remainingPrincipal -= monthlyPrincipal;
                     loanRepayment.setTotalDue(monthlyPayment);
-                    loanRepayment.setDueAt(month);
+                    loanRepayment.setDueAt(month.atStartOfDay());
                     loanRepayment.setPrincipal(monthlyPrincipal);
                     loanRepayment.setInterest(interest);
                     loanMapper.insLoanRepayment(loanRepayment);
