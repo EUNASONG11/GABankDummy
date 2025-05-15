@@ -37,12 +37,15 @@ class DepositAccountDummy extends AccountDummyDefault {
         List<Long> depositIds = depositMapper.selDemandDepositId();
         List<Long> selEmployee = employeeMapper.selEmployee();
         List<Long> checkCards=cardMapper.findCheckCard();
-        LocalDateTime localDateTime = LocalDateTime.of(2015, 1, 1, 0, 1);
+        LocalDateTime localDateTime = LocalDateTime.of(2010, 1, 1, 0, 1);
         Random random = new Random();
         //final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
         //요구불
         for(int i = 0 ; i < CNT ; i++) {
+            if(localDateTime.isAfter(LocalDateTime.now())){
+                break;
+            }
             long demandDepositId = depositIds.get(random.nextInt(depositIds.size()));
             boolean success = false;
             int retryCnt = 0;
@@ -75,7 +78,7 @@ class DepositAccountDummy extends AccountDummyDefault {
 
             if(success) {
                 //계좌 개설 서류 저장
-                savingContractDocument(demandDepositId, account.getAccountId(),"00401");
+                savingContractDocument(demandDepositId, account.getAccountId(),"00401", localDateTime);
 
                 //체크카드 insert
                 int cardRetryCnt = 0;
@@ -111,7 +114,7 @@ class DepositAccountDummy extends AccountDummyDefault {
                     }
                 }
                 //카드 개설 서류 저장
-                savingContractDocument(userCard.getCardId(),checkCard.getCheckCardId(),"00403");
+                savingContractDocument(userCard.getCardId(),checkCard.getCheckCardId(),"00403", localDateTime);
                 localDateTime = localDateTime.plusDays(kofaker.random().nextInt(7)).plusMinutes(kofaker.random().nextInt(30))
                         .plusHours(kofaker.random().nextInt(23));
             }

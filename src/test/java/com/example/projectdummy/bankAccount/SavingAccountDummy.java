@@ -36,7 +36,8 @@ public class SavingAccountDummy extends AccountDummyDefault {
     @Autowired
     HistoryMapper historyMapper;
 
-    final Long CNT = 10000L;
+    final Long CNT = 10L;
+
 
     @Test //저축 계좌 생성
     void createSavingAccount() {
@@ -45,11 +46,14 @@ public class SavingAccountDummy extends AccountDummyDefault {
         List<Long> employees = employeeMapper.selEmployee();
         List<DepositDuration> durations= depositMapper.selDepositDuration();
         Random random = new Random();
-        LocalDateTime localDateTime = LocalDateTime.of(2015, 1, 1, 0, 1);
+        LocalDateTime localDateTime = LocalDateTime.of(2010, 1, 1, 0, 1);
         List<TransactionHistory> histories = new ArrayList<>();
 
 
         for(int i = 0 ; i < CNT ; i++) {
+            if(localDateTime.isAfter(LocalDateTime.now())){
+                break;
+            }
             SavingsDeposit demandDeposit = savingDeposits.get(random.nextInt(savingDeposits.size()));
             DepositDuration duration = durations.get(random.nextInt(durations.size()));
             boolean success = false;
@@ -61,31 +65,31 @@ public class SavingAccountDummy extends AccountDummyDefault {
             // 정기예금인지 적금인지에 따라 입출금 기록도 필요할듯?
             double discount=random.nextDouble()*demandDeposit.getDiscountedRate().doubleValue();
             BigDecimal discountedRate = new BigDecimal(discount).setScale(1, RoundingMode.DOWN);
+            double interestRate = discount + duration.getEndInterest().doubleValue(); //총 이윤
 
             LocalDateTime endAt=localDateTime.plusMonths(duration.getDuration());
-            int postMoney; //원금
+            int postMoney = kofaker.random().nextInt(1_000_000_000); //원금
             int money; //이윤붙은 금액
             int bet = (int)ChronoUnit.MONTHS.between(localDateTime, LocalDateTime.now()) >0 ?
-                    (int)ChronoUnit.MONTHS.between(localDateTime, LocalDateTime.now()):1;
+                    (int)ChronoUnit.MONTHS.between(localDateTime, LocalDateTime.now()):1; //가입기간
             int transCase = 0;
             if(demandDeposit.getDepositCode().equals("00503")) { //정기예금이라면
                 if (endAt.isBefore(LocalDateTime.now())) { //만료되었다면
-                    postMoney = kofaker.random().nextInt(1_000_000_000);
-                    money = (int) (postMoney * (discount + duration.getEndInterest().doubleValue())) + postMoney;
+                    money = (int) (postMoney * (interestRate+1));
                     depositAccount.setCancelDate(endAt); //endAt이 현재보다 이전이라면 endAt과 같게. 아니면 null로 둠.
                     transCase = 1;
                 } else {
-                    money = postMoney = kofaker.random().nextInt(1_000_000_000);
+                    money = postMoney;
                     transCase = 2;
                 }
             } else  { //적금이라면
                 if(endAt.isBefore(LocalDateTime.now())){ //만료되었다면
-                    postMoney = kofaker.random().nextInt(1_000_000_000 / duration.getDuration());
-                    money=(int) (postMoney * duration.getDuration() * (1+(duration.getEndInterest().doubleValue()+discountedRate.doubleValue())));
+                    postMoney=postMoney/ duration.getDuration() ;
+                    money=(int) (postMoney * duration.getDuration() * (1+(interestRate)));
                     depositAccount.setCancelDate(endAt); //endAt이 현재보다 이전이라면 endAt과 같게. 아니면 null로 둠.
                     transCase = 3;
                 } else {
-                    postMoney = kofaker.random().nextInt(1_000_000_000 / bet);
+                    postMoney = postMoney/bet;
                     money =postMoney*bet;
                     transCase = 4;
                 }
@@ -124,7 +128,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
             depositAccount.setAccountId(account.getAccountId());
             depositMapper.saveDepositAccount(depositAccount);
 
-            savingContractDocument(account.getProductId(), account.getAccountId(), "00401");
+            savingContractDocument(account.getProductId(), account.getAccountId(), "00401",localDateTime);
 
 
             //입출금내역 입력
@@ -150,7 +154,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                     history2.setFlag(1);
                     history2.setMoney((long) (money - postMoney));
                     history2.setToName("예금 만료");
-                    history2.setAccountNum(history1.getAccountNum()); //내부계좌 중 하나로 수정할것
+                    history2.setAccountNum(history1.getAccountNum());
                     history2.setToBankCode(history1.getToBankCode());
                     history2.setCreatedAt(endAt);
                     history2.setLocation(history1.getLocation());
@@ -197,6 +201,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                         history.setHsMoney(hsMoney + (long) postMoney);
                         history.setAtmCode("0030" + (2 + random.nextInt(2)));
                         histories.add(history);
+                        hsMoney+=postMoney;
                     }
 
                     histories.get(histories.size()-1).setMoney((long)money-hsMoney+postMoney);
@@ -223,6 +228,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                         history.setHsMoney(hsMoney + (long) postMoney);
                         history.setAtmCode("0030" + (2 + random.nextInt(2)));
                         histories.add(history);
+                        hsMoney+=postMoney;
                     }
                     break;
                 }
