@@ -1,6 +1,8 @@
-package com.example.projectdummy.productAndDeposit;
+package com.example.projectdummy.account;
 
 import com.example.projectdummy.DummyDefault;
+import com.example.projectdummy.productAndDeposit.CheckBill;
+import com.example.projectdummy.productAndDeposit.ProductMapper;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Test;
@@ -14,8 +16,7 @@ import java.util.Random;
 public class CheckBillDummy extends DummyDefault {
 
     @Autowired
-    DepositMapper depositMapper;
-
+    AccountMapper accountMapper;
 
     final Long CNT = 10_000L;
     Random random = new Random();
@@ -25,7 +26,7 @@ public class CheckBillDummy extends DummyDefault {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
         ProductMapper productMapper = sqlSession.getMapper(ProductMapper.class);
 
-        List<Long> accountIds = depositMapper.selAvailableCheckBillAccounts();
+        List<Long> accountIds = accountMapper.selAvailableCheckBillAccounts();
         if (accountIds.isEmpty()) {
             System.out.println("유효한 당좌예금 계좌가 없습니다.");
         }
@@ -63,17 +64,21 @@ public class CheckBillDummy extends DummyDefault {
                     ? kofaker.company().name()
                     : (random.nextInt(10) < 3 ? null : kofaker.name().fullName());
 
+            if (recipientName == null) {
+                recipientName = "없음";
+            }
+
             // insert 수행
             CheckBill bill = CheckBill.builder()
-            .checkBill(checkBill)
-            .accountId(accountId)
-            .money(money)
-            .useFlag(useFlag)
-            .typeFlag(typeFlag)
-            .recipientName(recipientName)
-            .duration(duration)
-            .usedAt(usedAt)
-            .createdAt(createdAt).build();
+                    .checkBill(checkBill)
+                    .accountId(accountId)
+                    .money(money)
+                    .useFlag(useFlag)
+                    .typeFlag(typeFlag)
+                    .recipientName(recipientName)
+                    .duration(duration)
+                    .usedAt(usedAt)
+                    .createdAt(createdAt).build();
 
             productMapper.insCheckBill(bill);
 

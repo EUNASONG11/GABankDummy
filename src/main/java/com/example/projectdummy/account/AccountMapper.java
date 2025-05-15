@@ -23,4 +23,6 @@ public interface AccountMapper {
     List<UseAuthPk> selAccountByDepositCode(String code);
 
     List<String> findOwnAccountNum(long custId);
+
+    List<Long> selAvailableCheckBillAccounts();
 }
