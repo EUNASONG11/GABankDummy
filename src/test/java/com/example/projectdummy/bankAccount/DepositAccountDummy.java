@@ -37,7 +37,6 @@ class DepositAccountDummy extends AccountDummyDefault {
     void createDemandAccount() {
         List<ProductDeposit> bussiDeposits = depositMapper.selProductDeposit(2);
         List<ProductDeposit> commonDeposits = depositMapper.selProductDeposit(3);
-        System.out.printf("사업자갯수:%d, 개인갯수: %d",bussiDeposits.size(),commonDeposits.size());
         List<Long> selEmployee = employeeMapper.selEmployee();
         List<Long> checkCards=cardMapper.findCheckCard();
         LocalDateTime localDateTime = LocalDateTime.of(2010, 1, 1, 0, 1);
