@@ -36,7 +36,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
     @Autowired
     HistoryMapper historyMapper;
 
-    final Long CNT = 10L;
+    final Long CNT = 10000L;
 
 
     @Test //저축 계좌 생성
@@ -244,17 +244,21 @@ public class SavingAccountDummy extends AccountDummyDefault {
         histories=histories.stream().sorted(Comparator.comparing(TransactionHistory::getCreatedAt)).collect(Collectors.toList());
 
         int totalSize = histories.size();
-        int quarter = totalSize / 4;
+        int quarter = totalSize / 6;
 
         List<TransactionHistory> part1 = histories.subList(0, quarter);
         List<TransactionHistory> part2 = histories.subList(quarter, quarter * 2);
         List<TransactionHistory> part3 = histories.subList(quarter * 2, quarter * 3);
-        List<TransactionHistory> part4 = histories.subList(quarter * 3, totalSize);
+        List<TransactionHistory> part4 = histories.subList(quarter * 3, quarter * 4);
+        List<TransactionHistory> part5 = histories.subList(quarter * 4, quarter * 5);
+        List<TransactionHistory> part6 = histories.subList(quarter * 5, totalSize);
 
         historyMapper.saveHistories(part1);
         historyMapper.saveHistories(part2);
         historyMapper.saveHistories(part3);
         historyMapper.saveHistories(part4);
+        historyMapper.saveHistories(part5);
+        historyMapper.saveHistories(part6);
 
     }
 }
