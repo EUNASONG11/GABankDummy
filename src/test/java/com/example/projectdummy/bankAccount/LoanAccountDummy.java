@@ -32,7 +32,7 @@ public class LoanAccountDummy extends DummyDefault {
     ProductMapper productMapper;
     @Autowired
     EmployeeMapper employeeMapper;
-    final int cnt = 100;
+    final int cnt = 625;
     final Long minDiscount = 20000000L;
     @Test
     void loanAccount() {
@@ -52,6 +52,7 @@ public class LoanAccountDummy extends DummyDefault {
         Long finalId = accountMapper.selFinalPk();
         Long accountId = finalId == null ? 10000001L : finalId+1;
         Long loanApplicationId = 1L;
+//        Long custId=0L;
         for(Loan loan : selLoan){
             Long loanId = loan.getLoanId();
             List<Long> selPD = productMapper.selProductDocument(loanId);
@@ -71,7 +72,11 @@ public class LoanAccountDummy extends DummyDefault {
 
                 int loanAmount = kofaker.random().nextInt(200_000_001) + 200_000_000;
                 int loanMoney = kofaker.random().nextInt(50_000_000) + loanAmount - 50_000_000;
-                Long custId = kofaker.random().nextLong(10001)+1;
+                Long custId = kofaker.random().nextLong(10000)+1;
+//                custId += 1+(kofaker.random().nextLong(11));
+//                if(custId > 10000){
+//                    break;
+//                }
                 for(Long pdi :  selPD){
                     ContractDocument cd = ContractDocument.builder()
                             .productDocumentId(pdi)
