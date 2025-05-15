@@ -89,7 +89,7 @@
     </select>
 
     <select id="selAvailableCheckBillAccounts">
-        SELECT ba.account_id
+        SELECT ba.account_id, ba.created_at
         FROM bank_account ba
         JOIN deposit d
         ON ba.product_id = d.deposit_id

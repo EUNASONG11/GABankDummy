@@ -19,6 +19,7 @@ class TransactionHistoryDummy extends DummyDefault {
 
     @Test
     void historyDummy(){
+        int cnt = 0;
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
         Random random = new Random();
         List<UseAuthPk> selAccountId = accountMapper.selAccountId();
@@ -27,6 +28,9 @@ class TransactionHistoryDummy extends DummyDefault {
         List<UseAuthPk> selAccountIdByProduct = accountMapper.selAccountByDepositCode("00502");
         String[] bankDummy= {"356", "1002", "012", "00","3333","1000", "110", "000"};
         for(UseAuthPk uap:selAccountIdByProduct){
+            if(cnt++ %100000==0){
+                System.out.println(cnt +"번 들어감");
+            }
             LocalDateTime startDate = uap.getCreatedAt();
             Long money = 0L;
             int setAccount = kofaker.random().nextInt(3)+12; // 계좌번호용
