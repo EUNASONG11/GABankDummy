@@ -20,7 +20,7 @@ import java.util.List;
 public class LoanOverdueDummy extends DummyDefault {
     @Autowired
     LoanMapper loanMapper;
-    final Long pk = 20000000L;
+    final Long pk = 10000000L;
     @Autowired
     AccountMapper accountMapper;
     final int cnt = 100;
@@ -33,7 +33,7 @@ public class LoanOverdueDummy extends DummyDefault {
         int cnt2 = (int) (cnt * 0.05);
         for (int i = 0; i < cnt2; i++) {
             int ran = (int) (Math.random() * cnt + 1);
-            int day = (int) (Math.random() * 31 + 1);
+            int day = (int) (Math.random() * 6 + 26);
             LoanAccount loanAccount = loanMapper.selLoanAccount(pk + ran);
             LoanRepayment loanRepayment = loanMapper.selLoanRepayment(loanAccount.getEndAt(), pk + ran);
             if (loanRepayment == null) {
