@@ -1,9 +1,12 @@
 package com.example.projectdummy.loan.model;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
-@Builder
+import java.time.LocalDateTime;
+
+@Getter
 @Setter
 public class OverdueRecord {
     private Long overdueRecordId;
@@ -12,5 +15,6 @@ public class OverdueRecord {
     private Long overdueMoney;
     private Long targetId;
     private String overdueCode;
-    private String startAt;
+    private LocalDateTime startAt;
+    private LocalDateTime createdAt;
 }
