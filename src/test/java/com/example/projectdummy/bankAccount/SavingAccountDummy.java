@@ -38,6 +38,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
 
     final Long CNT = 10000L;
 
+
     @Test //저축 계좌 생성
     void createSavingAccount() {
 
@@ -45,11 +46,14 @@ public class SavingAccountDummy extends AccountDummyDefault {
         List<Long> employees = employeeMapper.selEmployee();
         List<DepositDuration> durations= depositMapper.selDepositDuration();
         Random random = new Random();
-        LocalDateTime localDateTime = LocalDateTime.of(2015, 1, 1, 0, 1);
+        LocalDateTime localDateTime = LocalDateTime.of(2012, 1, 1, 0, 1);
         List<TransactionHistory> histories = new ArrayList<>();
 
 
         for(int i = 0 ; i < CNT ; i++) {
+            if(localDateTime.isAfter(LocalDateTime.now())){
+                break;
+            }
             SavingsDeposit demandDeposit = savingDeposits.get(random.nextInt(savingDeposits.size()));
             DepositDuration duration = durations.get(random.nextInt(durations.size()));
             boolean success = false;
@@ -61,31 +65,31 @@ public class SavingAccountDummy extends AccountDummyDefault {
             // 정기예금인지 적금인지에 따라 입출금 기록도 필요할듯?
             double discount=random.nextDouble()*demandDeposit.getDiscountedRate().doubleValue();
             BigDecimal discountedRate = new BigDecimal(discount).setScale(1, RoundingMode.DOWN);
+            double interestRate = discount + duration.getEndInterest().doubleValue(); //총 이윤
 
             LocalDateTime endAt=localDateTime.plusMonths(duration.getDuration());
-            int postMoney; //원금
+            int postMoney = kofaker.random().nextInt(1_000_000_000); //원금
             int money; //이윤붙은 금액
             int bet = (int)ChronoUnit.MONTHS.between(localDateTime, LocalDateTime.now()) >0 ?
-                    (int)ChronoUnit.MONTHS.between(localDateTime, LocalDateTime.now()):1;
+                    (int)ChronoUnit.MONTHS.between(localDateTime, LocalDateTime.now()):1; //가입기간
             int transCase = 0;
             if(demandDeposit.getDepositCode().equals("00503")) { //정기예금이라면
                 if (endAt.isBefore(LocalDateTime.now())) { //만료되었다면
-                    postMoney = kofaker.random().nextInt(1_000_000_000);
-                    money = (int) (postMoney * (discount + duration.getEndInterest().doubleValue())) + postMoney;
+                    money = (int) (postMoney * (interestRate+1));
                     depositAccount.setCancelDate(endAt); //endAt이 현재보다 이전이라면 endAt과 같게. 아니면 null로 둠.
                     transCase = 1;
                 } else {
-                    money = postMoney = kofaker.random().nextInt(1_000_000_000);
+                    money = postMoney;
                     transCase = 2;
                 }
             } else  { //적금이라면
                 if(endAt.isBefore(LocalDateTime.now())){ //만료되었다면
-                    postMoney = kofaker.random().nextInt(1_000_000_000 / duration.getDuration());
-                    money=(int) (postMoney * duration.getDuration() * (1+(duration.getEndInterest().doubleValue()+discountedRate.doubleValue())));
+                    postMoney=postMoney/ duration.getDuration() ;
+                    money=(int) (postMoney * duration.getDuration() * (1+(interestRate)));
                     depositAccount.setCancelDate(endAt); //endAt이 현재보다 이전이라면 endAt과 같게. 아니면 null로 둠.
                     transCase = 3;
                 } else {
-                    postMoney = kofaker.random().nextInt(1_000_000_000 / bet);
+                    postMoney = postMoney/bet;
                     money =postMoney*bet;
                     transCase = 4;
                 }
@@ -124,7 +128,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
             depositAccount.setAccountId(account.getAccountId());
             depositMapper.saveDepositAccount(depositAccount);
 
-            savingContractDocument(account.getProductId(), account.getAccountId(), "00401");
+            savingContractDocument(account.getProductId(), account.getAccountId(), "00401",localDateTime);
 
 
             //입출금내역 입력
@@ -132,6 +136,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                 //예금만료
                 case 1: {
                     TransactionHistory history1 = new TransactionHistory();
+                    String location = kofaker.address().fullAddress();
                     history1.setAccountId(account.getAccountId());
                     history1.setTransactionFeeId(17L);
                     history1.setFlag(1);
@@ -140,7 +145,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                     history1.setAccountNum(kofaker.numerify("############"));
                     history1.setToBankCode(kofaker.numerify("00#"));
                     history1.setCreatedAt(localDateTime);
-                    history1.setLocation(kofaker.address().fullAddress());
+                    history1.setLocation(location);
                     history1.setHsMoney((long) postMoney);
                     history1.setAtmCode("0030" + (2 + random.nextInt(2)));
 
@@ -150,10 +155,10 @@ public class SavingAccountDummy extends AccountDummyDefault {
                     history2.setFlag(1);
                     history2.setMoney((long) (money - postMoney));
                     history2.setToName("예금 만료");
-                    history2.setAccountNum(history1.getAccountNum()); //내부계좌 중 하나로 수정할것
+                    history2.setAccountNum(history1.getAccountNum());
                     history2.setToBankCode(history1.getToBankCode());
                     history2.setCreatedAt(endAt);
-                    history2.setLocation(history1.getLocation());
+                    history2.setLocation(location);
                     history2.setHsMoney((long) money);
                     history2.setAtmCode("0030" + (2 + random.nextInt(2)));
 
@@ -183,6 +188,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                     long hsMoney=0;
                     String accNum=kofaker.numerify("############");
                     String accCode=kofaker.numerify("00#");
+                    String location = kofaker.address().fullAddress();
                     for (int j = 0; j < duration.getDuration(); j++) {
                         TransactionHistory history = new TransactionHistory();
                         history.setAccountId(account.getAccountId());
@@ -192,11 +198,12 @@ public class SavingAccountDummy extends AccountDummyDefault {
                         history.setToName("적금 "+(j+1)+"회차");
                         history.setAccountNum(accNum);
                         history.setToBankCode(accCode);
-                        history.setCreatedAt(localDateTime);
-                        history.setLocation(kofaker.address().fullAddress());
+                        history.setCreatedAt(localDateTime.plusMonths(j));
+                        history.setLocation(location);
                         history.setHsMoney(hsMoney + (long) postMoney);
                         history.setAtmCode("0030" + (2 + random.nextInt(2)));
                         histories.add(history);
+                        hsMoney+=postMoney;
                     }
 
                     histories.get(histories.size()-1).setMoney((long)money-hsMoney+postMoney);
@@ -209,6 +216,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
                     long hsMoney=0;
                     String accNum=kofaker.numerify("############");
                     String accCode=kofaker.numerify("00#");
+                    String location = kofaker.address().fullAddress();
                     for (int j = 0; j < bet; j++){
                         TransactionHistory history = new TransactionHistory();
                         history.setAccountId(account.getAccountId());
@@ -218,11 +226,12 @@ public class SavingAccountDummy extends AccountDummyDefault {
                         history.setToName("적금 "+(j+1)+"회차");
                         history.setAccountNum(accNum);
                         history.setToBankCode(accCode);
-                        history.setCreatedAt(localDateTime);
-                        history.setLocation(kofaker.address().fullAddress());
+                        history.setCreatedAt(localDateTime.plusMonths(j));
+                        history.setLocation(location);
                         history.setHsMoney(hsMoney + (long) postMoney);
                         history.setAtmCode("0030" + (2 + random.nextInt(2)));
                         histories.add(history);
+                        hsMoney+=postMoney;
                     }
                     break;
                 }
@@ -238,17 +247,21 @@ public class SavingAccountDummy extends AccountDummyDefault {
         histories=histories.stream().sorted(Comparator.comparing(TransactionHistory::getCreatedAt)).collect(Collectors.toList());
 
         int totalSize = histories.size();
-        int quarter = totalSize / 4;
+        int quarter = totalSize / 6;
 
         List<TransactionHistory> part1 = histories.subList(0, quarter);
         List<TransactionHistory> part2 = histories.subList(quarter, quarter * 2);
         List<TransactionHistory> part3 = histories.subList(quarter * 2, quarter * 3);
-        List<TransactionHistory> part4 = histories.subList(quarter * 3, totalSize);
+        List<TransactionHistory> part4 = histories.subList(quarter * 3, quarter * 4);
+        List<TransactionHistory> part5 = histories.subList(quarter * 4, quarter * 5);
+        List<TransactionHistory> part6 = histories.subList(quarter * 5, totalSize);
 
         historyMapper.saveHistories(part1);
         historyMapper.saveHistories(part2);
         historyMapper.saveHistories(part3);
         historyMapper.saveHistories(part4);
+        historyMapper.saveHistories(part5);
+        historyMapper.saveHistories(part6);
 
     }
 }
