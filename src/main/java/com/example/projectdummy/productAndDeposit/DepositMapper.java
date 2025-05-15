@@ -11,6 +11,7 @@ public interface DepositMapper {
     List<SavingsDeposit> selSavingDeposit();
 
     List<DepositDuration> selDepositDuration();
+    List<Long> selAvailableCheckBillAccounts();
 
     int saveDepositAccount(DepositAccount depositAccount);
 }
