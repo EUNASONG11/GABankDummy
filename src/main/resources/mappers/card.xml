@@ -41,7 +41,7 @@
     <select id="selCreditCardPaymentId">
         select credit_payment_id
         from credit_card_payment
-        where due_code = '01203'
+        where due_code = #{dueCode}
     </select>
 
     <select id="selDcAmount">
@@ -96,4 +96,6 @@
         values
         (#{uCardId}, #{cOptionCode}, #{flag})
     </insert>
+
+
 </mapper>
