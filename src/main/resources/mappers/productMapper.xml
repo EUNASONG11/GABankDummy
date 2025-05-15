@@ -14,4 +14,11 @@
         from product_document
         where product_id = #{productId}
     </select>
+
+    <insert id="insCheckBill">
+        INSERT INTO check_bill
+        (check_bill, account_id, money, use_flag, type_flag, recipient_name, duration, used_at, created_at)
+        VALUES
+        (#{checkBill}, #{accountId}, #{money}, #{useFlag}, #{typeFlag}, #{recipientName}, #{duration}, #{usedAt}, #{createdAt})
+    </insert>
 </mapper>
