@@ -30,12 +30,14 @@
         FROM bank_account A
         JOIN product B ON a.product_id = b.product_id
         WHERE b.product_id &lt; 50001 OR b.product_id &gt; 200000
+    </select>
+    <!--
         UNION
         SELECT account_id, a.product_id, created_at
         FROM bank_account a
         JOIN savings_deposit b ON a.product_id = b.sa_deposit_id
         WHERE out_flag = 0
-    </select>
+        -->
 
     <select id="selLoanUser">
         select cust_name, account_num, bank_code, use_account
@@ -96,5 +98,11 @@
         WHERE d.deposit_code = '00501'
         AND ba.status_code = '00201'
     </select>
+
+    <update id="updMoney">
+        update bank_account
+        set money = #{money}
+        where account_id = #{accountId}
+    </update>
 
 </mapper>

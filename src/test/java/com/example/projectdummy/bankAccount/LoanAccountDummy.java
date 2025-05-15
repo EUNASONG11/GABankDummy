@@ -97,6 +97,7 @@ public class LoanAccountDummy extends DummyDefault {
                 la.setRequestedAmount(loanMoney);
                 la.setStatusCode("01902");
                 la.setDecisionDate(rd);
+
                 loanMapper.insLoanApplication(la);
 
 
@@ -110,7 +111,8 @@ public class LoanAccountDummy extends DummyDefault {
                 ba.setMoney(loanMoney); //최저값이 없음 수정 필요
                 ba.setStatusCode("00201");
                 ba.setCreatedAt(rd);
-                accountMapper.insBankAccount(ba);
+
+
 
                 Long maxAmount = loan.getMaximumAmount();
                 Long minAmount = maxAmount - minDiscount;
@@ -126,6 +128,8 @@ public class LoanAccountDummy extends DummyDefault {
                 String bank = bankDummy[random.nextInt(bankDummy.length)];
                 String newBankAccount;
                 String bankCode;
+                try {
+                    accountMapper.insBankAccount(ba);
                 if(bank.equals("00")){
                     newBankAccount = kofaker.numerify("##############");
                     bankCode = "004";
@@ -145,6 +149,26 @@ public class LoanAccountDummy extends DummyDefault {
 
 
                 accountMapper.insLoanAccount(loanAccount);
+                } catch (Exception e) {
+                    if(bank.equals("00")){
+                        newBankAccount = kofaker.numerify("##############");
+                        bankCode = "004";
+                    } else if(bank.equals("012")){
+                        newBankAccount = kofaker.numerify("012########");
+                        bankCode = "003";
+                    } else if(bank.equals("356")){
+                        newBankAccount = kofaker.numerify("356##########");
+                        bankCode = "011";
+                    } else {
+                        newBankAccount = kofaker.numerify("1002#########");
+                        bankCode = "020";
+                    }
+                    loanAccount.setBankCode(bankCode);
+                    loanAccount.setUseAccount(newBankAccount);
+
+
+                    accountMapper.insLoanAccount(loanAccount);
+                }
 
             }
             sqlSession.flushStatements();
