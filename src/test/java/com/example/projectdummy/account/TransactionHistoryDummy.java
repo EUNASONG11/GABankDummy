@@ -20,7 +20,7 @@ class TransactionHistoryDummy extends DummyDefault {
     @Test
     void historyDummy() {
         int cnt = 0;
-        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         Random random = new Random();
         List<UseAuthPk> selAccountId = accountMapper.selAccountId();
         LocalDateTime endDate = LocalDateTime.now();
@@ -118,8 +118,13 @@ class TransactionHistoryDummy extends DummyDefault {
                     }
 
                     accountMapper.insTranHistory(th);
+                if(cnt%1000 ==0){
+                    sqlSession.flushStatements();
+                }
                 }
                 sqlSession.flushStatements();
+            sqlSession.commit();
+            sqlSession.close();
 
 
         }

@@ -20,6 +20,7 @@ public class LoanRateLogDummy extends DummyDefault {
     @Test
     void insertLoanRateLogs() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+        int cnt = 0;
         try {
             List<Long> accountIds = loanMapper.selLoanAccountId();
             Random random = new Random();
@@ -77,10 +78,14 @@ public class LoanRateLogDummy extends DummyDefault {
 
                 log.setCreatedAt(startDate.plusDays(step));
                 accountOrder.put(accountId, order + 1);
-
+                cnt++;
                 loanMapper.insLoanRateLog(log);
+                if(cnt %200 ==0){
+                    sqlSession.flushStatements();
+                }
             }
 
+            sqlSession.flushStatements();
             sqlSession.commit();
         } catch (Exception e) {
             sqlSession.rollback();

@@ -53,10 +53,15 @@ public class LoanAccountDummy extends DummyDefault {
         Long accountId = finalId == null ? 10000001L : finalId+1;
         Long loanApplicationId = 1L;
 //        Long custId=0L;
+        int cntOnly = 0;
         for(Loan loan : selLoan){
             Long loanId = loan.getLoanId();
             List<Long> selPD = productMapper.selProductDocument(loanId);
             for(int j=0;j<cnt;j++){
+                cntOnly++;
+                if(cntOnly%1000==0){
+                    System.out.println(cntOnly+"번");
+                }
                 long randomDays = random.nextInt((int) totalDays + 1);
                 LocalDate randomDate = startDate.plusDays(randomDays);
                 int randomHour = kofaker.random().nextInt(24);

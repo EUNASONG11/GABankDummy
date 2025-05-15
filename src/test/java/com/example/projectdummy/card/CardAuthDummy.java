@@ -28,6 +28,7 @@ public class CardAuthDummy extends DummyDefault {
         List<UseAuthPk> selAccountId = accountMapper.selAccountId();
 
         LocalDateTime endDate = LocalDateTime.now();
+        int cnt = 0;
 
         for(UseAuthPk uap:selAccountId){
             LocalDateTime startDate = uap.getCreatedAt();
@@ -35,6 +36,7 @@ public class CardAuthDummy extends DummyDefault {
             ca.setDivisionId(uap.getAccountId());
             ca.setFlag((uap.getProductId() > 200_000) ? 1 : 0);
             ca.setState(0);
+            cnt++;
             while(startDate.isBefore(endDate)){
                 ca.setLocation(kofaker.address().fullAddress()); // 위치 어케 넣을지 생각 일단  >> 랜덤으로 넣음
                 ca.setCreatedAt(startDate); // createdAt 넣기위한 for문(2022년도~오늘)
@@ -42,8 +44,11 @@ public class CardAuthDummy extends DummyDefault {
                 int addMinute = kofaker.random().nextInt(50)+1;
                 startDate = startDate.plusDays(addDay);
                 startDate = startDate.plusMinutes(addMinute);
-
+                cnt++;
                 customerMapper.insAuth(ca);
+                if(cnt%1000==0){
+                    sqlSession.flushStatements();
+                }
             }
             int randomInt = kofaker.random().nextInt(300)+1;
             int randomInt2 = kofaker.random().nextInt(6)+1;
@@ -70,5 +75,8 @@ public class CardAuthDummy extends DummyDefault {
 //            }
             sqlSession.flushStatements();
         }
+        sqlSession.flushStatements();
+        sqlSession.commit();
+        sqlSession.close();
     }
 }

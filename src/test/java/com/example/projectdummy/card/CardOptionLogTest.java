@@ -49,8 +49,13 @@ class CardOptionLogTest extends DummyDefault {
                 col.setFlag(1);
             }
             cardMapper.insCardOptionLog(col);
-            sqlSession.flushStatements();
+            if(i%200==0) {
+                sqlSession.flushStatements();
+            }
         }
+        sqlSession.flushStatements();
+        sqlSession.commit();
+        sqlSession.close();
     }
 
 }

@@ -43,9 +43,14 @@ class DepositAccountDummy extends AccountDummyDefault {
         List<CustIdWithCode> custs = customerMapper.findCustCode();
         Random random = new Random();
         //final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        int cCnt = 0;
 
         //요구불
         for(int i = 0 ; i < CNT ; i++) {
+            cCnt++;
+            if(cCnt%100 ==0){
+                System.out.println(cCnt);
+            }
             if(localDateTime.isAfter(LocalDateTime.now())){
                 break;
             }
