@@ -107,8 +107,7 @@
         UPDATE loan_repayment
         SET total_due = #{totalDue},
         principal = #{principal},
-        interest = #{interest},
-        final_at = #{finalAt}
+        interest = #{interest}
         where loan_repayment_id = #{loanRepaymentId}
     </update>
 
