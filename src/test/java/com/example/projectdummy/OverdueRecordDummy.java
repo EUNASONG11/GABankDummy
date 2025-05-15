@@ -2,7 +2,8 @@ package com.example.projectdummy;
 
 import com.example.projectdummy.card.model.CardOverDue;
 import com.example.projectdummy.customer.OverdueMapper;
-import com.example.projectdummy.loan.model.OverdueLoan;
+import com.example.projectdummy.loan.LoanMapper;
+import com.example.projectdummy.loan.model.LoanOverdue;
 import com.example.projectdummy.loan.model.OverdueRecord;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,22 @@ import java.util.List;
 public class OverdueRecordDummy extends  DummyDefault{
     @Autowired
     OverdueMapper overdueMapper;
+    @Autowired
+    private LoanMapper loanMapper;
 
+    @Test
+    void dummy(){
+        // 1. 대출
+        int cnt = loanMapper.selOverdueCnt();
+        for (int i = 0; i < cnt; i++) {
+            LoanOverdue loanOverdue = loanMapper.selLoanOverdue(cnt + 1);
+            OverdueRecord overdueRecord = new OverdueRecord();
+            overdueRecord.setRemain((long)0);
+            overdueRecord.setOverdueMoney(loanOverdue.getOverdueMoney() + loanOverdue.getOverdueInterest());
+            overdueRecord.setTargetId(loanOverdue.getOverdueId());
+
+        }
+    }
     @Test
     void cardOverdueRecord(){
 
@@ -65,14 +81,4 @@ public class OverdueRecordDummy extends  DummyDefault{
             }
         }
     }
-//    @Test
-//    void dummy(){
-//        // 1. 대출
-//        List<OverdueLoan> odl = overdueMapper.selOverdueLoan();
-//        for(OverdueLoan l : odl){
-//            OverdueRecord odr = new OverdueRecord();
-//            odr.set
-//        }
-//
-//    }
 }

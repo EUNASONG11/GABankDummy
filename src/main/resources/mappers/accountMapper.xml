@@ -88,4 +88,13 @@
         AND b.cust_id=#{custId}
     </select>
 
+    <select id="selAvailableCheckBillAccounts">
+        SELECT ba.account_id, ba.created_at
+        FROM bank_account ba
+        JOIN deposit d
+        ON ba.product_id = d.deposit_id
+        WHERE d.deposit_code = '00501'
+        AND ba.status_code = '00201'
+    </select>
+
 </mapper>

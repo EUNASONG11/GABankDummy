@@ -1,6 +1,7 @@
 package com.example.projectdummy.account;
 
 import com.example.projectdummy.account.model.BankAccount;
+import com.example.projectdummy.account.model.CheckBillInfo;
 import com.example.projectdummy.account.model.LoanUser;
 import com.example.projectdummy.account.model.TransactionHistory;
 import com.example.projectdummy.customer.model.UseAuthPk;
@@ -23,4 +24,6 @@ public interface AccountMapper {
     List<UseAuthPk> selAccountByDepositCode(String code);
 
     List<String> findOwnAccountNum(long custId);
+
+    List<CheckBillInfo> selAvailableCheckBillAccounts();
 }
