@@ -3,20 +3,15 @@ package com.example.projectdummy.productAndDeposit;
 import com.example.projectdummy.DummyDefault;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
 
 public class CheckBillDummy extends DummyDefault {
-
-    @Autowired
-    ProductMapper productMapper;
 
     @Autowired
     DepositMapper depositMapper;
@@ -59,7 +54,7 @@ public class CheckBillDummy extends DummyDefault {
                     : createdAt.plusDays(random.nextInt(60) + 1);
 
             // 금액
-            long money = isNote
+            Long money = isNote
                     ? 1_000_000L + random.nextInt(50_000_000 - 1_000_000 + 1) // 어음: 1,000,000 ~ 50,000,000
                     : 100_000L + random.nextInt(3_000_000 - 100_000 + 1); // // 수표: 100,000 ~ 3,000,000
 
@@ -69,16 +64,16 @@ public class CheckBillDummy extends DummyDefault {
                     : (random.nextInt(10) < 3 ? null : kofaker.name().fullName());
 
             // insert 수행
-            CheckBill bill = new CheckBill();
-            bill.setCheckBill(checkBill);
-            bill.setAccountId(accountId);
-            bill.setMoney(money);
-            bill.setUseFlag(useFlag);
-            bill.setTypeFlag(typeFlag);
-            bill.setRecipientName(recipientName);
-            bill.setDuration(duration);
-            bill.setUsedAt(usedAt);
-            bill.setCreatedAt(createdAt);
+            CheckBill bill = CheckBill.builder()
+            .checkBill(checkBill)
+            .accountId(accountId)
+            .money(money)
+            .useFlag(useFlag)
+            .typeFlag(typeFlag)
+            .recipientName(recipientName)
+            .duration(duration)
+            .usedAt(usedAt)
+            .createdAt(createdAt).build();
 
             productMapper.insCheckBill(bill);
 
