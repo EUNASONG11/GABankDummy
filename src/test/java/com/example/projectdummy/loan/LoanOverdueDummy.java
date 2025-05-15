@@ -73,6 +73,5 @@ public class LoanOverdueDummy extends DummyDefault {
             overdueMapper.insCardOverdue(overdueRecord);
         }
     }
-
 }
 

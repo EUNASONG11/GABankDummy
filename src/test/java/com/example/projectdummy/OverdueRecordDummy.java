@@ -44,7 +44,7 @@ public class OverdueRecordDummy extends  DummyDefault{
             odr.setStartAt(cardOverDue.getDueAt());
             odr.setCreatedAt(cardOverDue.getPaidAt());
 
-            if(kofaker.random().nextInt(50)==1){
+            if(kofaker.random().nextInt(50)==1 && cardOverDue.getOverdueAmount() >1500){
                 Long rm = kofaker.random().nextLong(cardOverDue.getOverdueAmount()-1000)+1000;
                 // 랜덤 상환금을 위해 남은 상환금
                 odr.setRemain(rm);
