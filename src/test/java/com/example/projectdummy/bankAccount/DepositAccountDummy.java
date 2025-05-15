@@ -53,7 +53,7 @@ class DepositAccountDummy extends AccountDummyDefault {
 
             account.setAccountNum("50401"+kofaker.numerify("########"));
             account.setEmployeeId(selEmployee.get(kofaker.random().nextInt(selEmployee.size())));
-            account.setCustId(kofaker.random().nextLong(10001)+1);
+            account.setCustId(kofaker.random().nextLong(10000)+1);
             account.setProductId(demandDepositId);
             account.setAccountPassword(kofaker.numerify("####"));
             account.setMoney(0);
