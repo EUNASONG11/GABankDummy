@@ -23,8 +23,6 @@ public class AccountDummyDefault extends DummyDefault{
 
     public void savingContractDocument(long productId, Long contractId, String productCode, LocalDateTime createdAt) {
         List<ProductDocumentWithName> productDocuments = documentMapper.findProductDocument(productId);
-        System.out.println("productDocuments size: " + productDocuments.size()); //이게 자꾸 0으로 나옴 이거문제인듯
-        int n = 0;
         for(ProductDocumentWithName pd : productDocuments) {
             ContractDocument contractDocument = ContractDocument.builder()
                     .contractId(contractId)
@@ -34,7 +32,7 @@ public class AccountDummyDefault extends DummyDefault{
                     .createdAt(createdAt)
                     .build();
 
-            n+=documentMapper.saveContractDocument(contractDocument);
+            documentMapper.saveContractDocument(contractDocument);
         }
     }
     public boolean isDuplicateKeyException(Exception e) {

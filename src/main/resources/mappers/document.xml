@@ -15,7 +15,7 @@
         FROM product_document p
         JOIN document d
         ON p.document_id=d.document_id
-        WHERE p.product_id=#{productId}
+        WHERE p.product_id = #{productId}
     </select>
     
     <insert id="saveContractDocument" useGeneratedKeys="true" keyProperty="contractDocumentId">
