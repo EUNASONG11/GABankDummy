@@ -52,7 +52,10 @@ public class SavingAccountDummy extends AccountDummyDefault {
                 break;
             }
             ProductDeposit demandDeposit = savingDeposits.get(random.nextInt(savingDeposits.size()));
-            DepositDuration duration = durations.get(random.nextInt(durations.size()));
+
+            List<DepositDuration> durations2 = durations.stream().filter(a->a.getSaDepositId() == demandDeposit.getDepositId()
+                ).collect(Collectors.toList());
+            DepositDuration duration=durations2.get(random.nextInt(durations2.size()));
             boolean success = false;
             int retryCnt = 0;
             BankAccount account = new BankAccount();
