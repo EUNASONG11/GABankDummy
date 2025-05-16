@@ -32,7 +32,7 @@ public class LoanAccountDummy extends DummyDefault {
     ProductMapper productMapper;
     @Autowired
     EmployeeMapper employeeMapper;
-    final int cnt = 100;
+    final int cnt = 625;
     final Long minDiscount = 20000000L;
     @Test
     void loanAccount() {
@@ -52,11 +52,16 @@ public class LoanAccountDummy extends DummyDefault {
         Long finalId = accountMapper.selFinalPk();
         Long accountId = finalId == null ? 10000001L : finalId+1;
         Long loanApplicationId = 1L;
-        Long custId=0L;
+//        Long custId=0L;
+        int cntOnly = 0;
         for(Loan loan : selLoan){
             Long loanId = loan.getLoanId();
             List<Long> selPD = productMapper.selProductDocument(loanId);
             for(int j=0;j<cnt;j++){
+                cntOnly++;
+                if(cntOnly%1000==0){
+                    System.out.println(cntOnly+"번");
+                }
                 long randomDays = random.nextInt((int) totalDays + 1);
                 LocalDate randomDate = startDate.plusDays(randomDays);
                 int randomHour = kofaker.random().nextInt(24);
@@ -72,10 +77,11 @@ public class LoanAccountDummy extends DummyDefault {
 
                 int loanAmount = kofaker.random().nextInt(200_000_001) + 200_000_000;
                 int loanMoney = kofaker.random().nextInt(50_000_000) + loanAmount - 50_000_000;
-                custId += 1+(kofaker.random().nextLong(11));
-                if(custId > 10000){
-                    break;
-                }
+                Long custId = kofaker.random().nextLong(10000)+1;
+//                custId += 1+(kofaker.random().nextLong(11));
+//                if(custId > 10000){
+//                    break;
+//                }
                 for(Long pdi :  selPD){
                     ContractDocument cd = ContractDocument.builder()
                             .productDocumentId(pdi)
@@ -96,6 +102,7 @@ public class LoanAccountDummy extends DummyDefault {
                 la.setRequestedAmount(loanMoney);
                 la.setStatusCode("01902");
                 la.setDecisionDate(rd);
+
                 loanMapper.insLoanApplication(la);
 
 
@@ -109,7 +116,8 @@ public class LoanAccountDummy extends DummyDefault {
                 ba.setMoney(loanMoney); //최저값이 없음 수정 필요
                 ba.setStatusCode("00201");
                 ba.setCreatedAt(rd);
-                accountMapper.insBankAccount(ba);
+
+
 
                 Long maxAmount = loan.getMaximumAmount();
                 Long minAmount = maxAmount - minDiscount;
@@ -125,6 +133,8 @@ public class LoanAccountDummy extends DummyDefault {
                 String bank = bankDummy[random.nextInt(bankDummy.length)];
                 String newBankAccount;
                 String bankCode;
+                try {
+                    accountMapper.insBankAccount(ba);
                 if(bank.equals("00")){
                     newBankAccount = kofaker.numerify("##############");
                     bankCode = "004";
@@ -144,6 +154,26 @@ public class LoanAccountDummy extends DummyDefault {
 
 
                 accountMapper.insLoanAccount(loanAccount);
+                } catch (Exception e) {
+                    if(bank.equals("00")){
+                        newBankAccount = kofaker.numerify("##############");
+                        bankCode = "004";
+                    } else if(bank.equals("012")){
+                        newBankAccount = kofaker.numerify("012########");
+                        bankCode = "003";
+                    } else if(bank.equals("356")){
+                        newBankAccount = kofaker.numerify("356##########");
+                        bankCode = "011";
+                    } else {
+                        newBankAccount = kofaker.numerify("1002#########");
+                        bankCode = "020";
+                    }
+                    loanAccount.setBankCode(bankCode);
+                    loanAccount.setUseAccount(newBankAccount);
+
+
+                    accountMapper.insLoanAccount(loanAccount);
+                }
 
             }
             sqlSession.flushStatements();

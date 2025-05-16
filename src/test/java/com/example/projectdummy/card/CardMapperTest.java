@@ -29,8 +29,9 @@ public class CardMapperTest extends DummyDefault {
 
     @Test
     void Generate(){
-        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+        SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH, false);
         Faker faker = new Faker();
+        int cntOnly = 0;
 
         //0~25% 무이자
         for(Long i=1L; i <= (cnt/4); i++){
@@ -139,22 +140,29 @@ public class CardMapperTest extends DummyDefault {
                     }
 
 
-
-                    CreditCardPayment ccp = CreditCardPayment.builder()
-                            .creditId(i)
-                            .dueCode(dueCode)
-                            .cnt(interestFree)
-                            .dcAmount(discountedAmountLong / interestFree)
-                            .dueAt(dueAtString)
-                            .paidAt(paidAtStr)
-                            .build();
-                    cardMapper.insCreditCardPayment(ccp);
+                    for(int k=0; k<interestFree; k++) {
+                        CreditCardPayment ccp = CreditCardPayment.builder()
+                                .creditId(i)
+                                .dueCode(dueCode)
+                                .cnt(interestFree)
+                                .dcAmount(discountedAmountLong / interestFree)
+                                .dueAt(dueAtString)
+                                .paidAt(paidAtStr)
+                                .build();
+                        cardMapper.insCreditCardPayment(ccp);
+                    }
+                    cntOnly++;
+                    if(cntOnly%1000==0){
+                        System.out.println(cntOnly+"번 들어감");
+                    }
+                    if(i%200 ==0){
+                        sqlSession.flushStatements();
+                    }
 
 
 
         }
-        sqlSession.flushStatements();
-
+        // sqlSession.flushStatements();
         //25~50% 할부 이자
         for(Long i = (cnt/4) + 1; i <= cnt/2; i++) {
             int langType = faker.random().nextInt(2);
@@ -277,20 +285,30 @@ public class CardMapperTest extends DummyDefault {
                         paidAtStr = paidAt.format(formatter);
                     }
 
+                    for(int k = 0 ; k<installment; k++) {
+                        CreditCardPayment ccp = CreditCardPayment.builder()
+                                .creditId(i)
+                                .dueCode(dueCode)
+                                .cnt(installment)
+                                .dcAmount(discountedAmountLong / installment + fee)
+                                .dueAt(dueAtString)
+                                .paidAt(paidAtStr)
+                                .build();
+                        cardMapper.insCreditCardPayment(ccp);
+                    }
 
-                    CreditCardPayment ccp = CreditCardPayment.builder()
-                            .creditId(i)
-                            .dueCode(dueCode)
-                            .cnt(installment)
-                            .dcAmount(discountedAmountLong / installment + fee)
-                            .dueAt(dueAtString)
-                            .paidAt(paidAtStr)
-                            .build();
-                    cardMapper.insCreditCardPayment(ccp);
+            cntOnly++;
+            if(cntOnly%1000==0){
+                System.out.println(cntOnly+"번 들어감 2번쨰 for문");
+
+            }
+            if(i%200 ==0){
+                sqlSession.flushStatements();
+            }
 
 
         }
-        sqlSession.flushStatements();
+        // sqlSession.flushStatements();
 
 
         //50~100% 일시불
@@ -407,17 +425,28 @@ public class CardMapperTest extends DummyDefault {
                     .paidAt(paidAtStr)
                     .build();
             cardMapper.insCreditCardPayment(ccp);
+            cntOnly++;
+            if(cntOnly%1000==0){
+                System.out.println(cntOnly+"번 들어감 3번째 for문");
+            }
+            if(i%200 ==0){
+                sqlSession.flushStatements();
+            }
         }
         sqlSession.flushStatements();
+        sqlSession.commit();
+        sqlSession.close();
 
     }
 
     @Test
     void Generate2() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+        int cnt = 0;
 
         List<Long> idList = cardMapper.selCreditCardPaymentId("01204");
             for (Long id : idList) {
+                cnt++;
                 Long dcAmount = cardMapper.selDcAmount(id);
 
                 CreditOverdue co = CreditOverdue.builder()
@@ -426,10 +455,13 @@ public class CardMapperTest extends DummyDefault {
                         .build();
 
                 cardMapper.insCreditOverdue(co);
+                if(cnt%200==0){
+                    sqlSession.flushStatements();
+                }
             }
-        sqlSession.flushStatements();
         List<Long> idList2 = cardMapper.selCreditCardPaymentId("01203");
         for (Long id : idList2) {
+            cnt++;
             Long dcAmount = cardMapper.selDcAmount(id);
 
             CreditOverdue co = CreditOverdue.builder()
@@ -438,8 +470,13 @@ public class CardMapperTest extends DummyDefault {
                     .build();
 
             cardMapper.insCreditOverdue(co);
+            if(cnt%200==0){
+                sqlSession.flushStatements();
+            }
         }
         sqlSession.flushStatements();
+        sqlSession.commit();
+        sqlSession.close();
     }
 
     @Test
@@ -519,8 +556,13 @@ public class CardMapperTest extends DummyDefault {
                     .lostAt(lostAt)
                     .build();
             cardMapper.insUserCreditCard(userCard);
+            if(count%200==0){
+                sqlSession.flushStatements();
+            }
         }
         sqlSession.flushStatements();
+        sqlSession.commit();
+        sqlSession.close();
     }
 
 

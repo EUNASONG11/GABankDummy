@@ -89,8 +89,11 @@ public class ExchangeLogDummy extends DummyDefault {
 
             // MyBatis insert 호출
             exchangeMapper.insExchangeLog(exchangeLog); // insert 호출 (배치 방식 처리 필요)
+            if (i % 1000 == 0) {
+                sqlSession.flushStatements();
+            }
         }
-
+        sqlSession.flushStatements();
         sqlSession.commit(); // 배치 커밋
         sqlSession.close();
     }
