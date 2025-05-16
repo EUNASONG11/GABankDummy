@@ -86,9 +86,10 @@ class LoanRate extends DummyDefault {
                 }
             }
             sqlSession.flushStatements();
+        }
+            sqlSession.flushStatements();
             sqlSession.commit();
             sqlSession.close();
-        }
     }
 }
 

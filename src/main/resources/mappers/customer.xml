@@ -37,9 +37,9 @@
 
     <insert id="insAuth">
         insert into card_account_auth
-        (location, division_id, flag, state, created_at)
+        (location, division_id, flag, state, created_at, old_auth_flag)
         values
-        (#{location}, #{divisionId}, #{flag}, #{state}, #{createdAt})
+        (#{location}, #{divisionId}, #{flag}, #{state}, #{createdAt}, #{authFlag})
     </insert>
 
     <select id="findCustCode">

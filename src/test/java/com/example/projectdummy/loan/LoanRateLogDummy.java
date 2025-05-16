@@ -36,7 +36,7 @@ public class LoanRateLogDummy extends DummyDefault {
                 BigDecimal addRate = BigDecimal.valueOf(loanMapper.selAdditionalRate(accountId));
                 BigDecimal discountRate = BigDecimal.valueOf(loanMapper.selDiscountedRate(accountId));
 
-                for (int i = 0; i < count; i++) {
+                for (int i = 0; i < count; i++) { // 1~10 랜덤 for문
                     BigDecimal baseRate = BigDecimal.valueOf(kofaker.random().nextDouble(2.8, 4.9));
                     BigDecimal interestRate = baseRate.add(addRate).subtract(discountRate);
 
@@ -45,6 +45,7 @@ public class LoanRateLogDummy extends DummyDefault {
                     log.setInterestRate(interestRate);
                     log.setChangeAt(LocalDate.of(9999, 1, 1));
                     // created_at은 나중에 정함
+                    // 랜덤 돌린만큼 LoanRateLog 객체 생성
                     allLogs.add(log);
                 }
             }
