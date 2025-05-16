@@ -2,6 +2,8 @@ package com.example.projectdummy;
 
 import com.example.projectdummy.card.model.CardOverDue;
 import com.example.projectdummy.customer.OverdueMapper;
+import com.example.projectdummy.loan.LoanMapper;
+import com.example.projectdummy.loan.model.LoanOverdue;
 import com.example.projectdummy.loan.model.OverdueRecord;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +13,21 @@ import java.util.List;
 public class OverdueRecordDummy extends  DummyDefault{
     @Autowired
     OverdueMapper overdueMapper;
+    @Autowired
+    private LoanMapper loanMapper;
 
     @Test
     void dummy(){
         // 1. 대출
+        int cnt = loanMapper.selOverdueCnt();
+        for (int i = 0; i < cnt; i++) {
+            LoanOverdue loanOverdue = loanMapper.selLoanOverdue(cnt + 1);
+            OverdueRecord overdueRecord = new OverdueRecord();
+            overdueRecord.setRemain((long)0);
+            overdueRecord.setOverdueMoney(loanOverdue.getOverdueMoney() + loanOverdue.getOverdueInterest());
+            overdueRecord.setTargetId(loanOverdue.getOverdueId());
 
+        }
     }
     @Test
     void cardOverdueRecord(){
@@ -32,7 +44,7 @@ public class OverdueRecordDummy extends  DummyDefault{
             odr.setStartAt(cardOverDue.getDueAt());
             odr.setCreatedAt(cardOverDue.getPaidAt());
 
-            if(kofaker.random().nextInt(50)==1){
+            if(kofaker.random().nextInt(50)==1 && cardOverDue.getOverdueAmount() >1500){
                 Long rm = kofaker.random().nextLong(cardOverDue.getOverdueAmount()-1000)+1000;
                 // 랜덤 상환금을 위해 남은 상환금
                 odr.setRemain(rm);

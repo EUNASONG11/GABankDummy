@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ public class LoanRepayment {
     private Long totalDue;
     private Long principal;
     private Long interest;
-    private LocalDate dueAt;
-    private LocalDate finalAt;
+    private LocalDateTime dueAt;
+    private LocalDateTime finalAt;
     private String dueCode;
 }

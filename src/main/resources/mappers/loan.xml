@@ -73,4 +73,66 @@
         (#{loanApplicationId}, #{custId}, #{loanId}, #{applicationDate}, #{requestedAmount}, #{requestedTerm}, #{statusCode}, #{decisionDate})
 
     </insert>
+
+    <select id="selLoanAccountCnt">
+        SELECT COUNT(la.account_id) as cnt
+        FROM loan_account la
+    </select>
+
+    <select id="selLoanAccount">
+        SELECT *
+        FROM loan_account
+        WHERE account_id = #{accountId}
+    </select>
+
+    <select id="selLoanRepayment">
+        SELECT *
+        FROM loan_repayment
+        WHERE due_at = #{month} and account_id = #{accountId}
+    </select>
+
+    <select id="selLoanRepayment2">
+        SELECT *
+        FROM loan_repayment
+        WHERE loan_repayment_id = #{loanRepaymentId}
+    </select>
+
+    <update id="updLoanRepaymentDueCode">
+        UPDATE loan_repayment
+        SET due_code = '01204'
+        where loan_repayment_id = #{loanRepaymentId}
+    </update>
+
+    <update id="updLoanRepayment">
+        UPDATE loan_repayment
+        SET total_due = #{totalDue},
+        principal = #{principal},
+        interest = #{interest}
+        where loan_repayment_id = #{loanRepaymentId}
+    </update>
+
+    <update id="updLoanRepayment2">
+        UPDATE loan_repayment
+        SET final_at = #{finalAt},
+        due_code = '01204'
+        where loan_repayment_id = #{loanRepaymentId}
+    </update>
+
+    <insert id="insLoanOverdue" useGeneratedKeys="true" keyProperty="overdueId">
+        insert into loan_overdue
+        (loan_repayment_id, overdue_money, created_at, payment_flag, updated_at, overdue_interest)
+        VALUES
+        (#{loanRepaymentId}, #{overdueMoney}, #{createdAt}, #{paymentFlag}, #{updatedAt}, #{overdueInterest})
+    </insert>
+
+    <select id="selLoanOverdue">
+        SELECT *
+        FROM loan_overdue
+        WHERE overdue_id = #{overdueId}
+    </select>
+
+    <select id="selOverdueCnt">
+        SELECT COUNT(overdue_id)
+        FROM loan_overdue
+    </select>
 </mapper>
