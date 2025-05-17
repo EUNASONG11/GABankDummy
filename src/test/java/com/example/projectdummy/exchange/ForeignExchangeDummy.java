@@ -79,8 +79,11 @@ public class ForeignExchangeDummy extends DummyDefault {
             }
 
             exchangeMapper.insForeignExchange(foreignExchange);
+            if(i%1000==0){
+                sqlSession.flushStatements();
+            }
         }
-
+        sqlSession.flushStatements();
         sqlSession.commit();
         sqlSession.close();
     }

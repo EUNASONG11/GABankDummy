@@ -26,4 +26,5 @@ public interface AccountMapper {
     List<String> findOwnAccountNum(long custId);
 
     List<CheckBillInfo> selAvailableCheckBillAccounts();
+    int updMoney(Long money, Long accountId);
 }

@@ -19,7 +19,7 @@ class LoanRate extends DummyDefault {
     void loanLog() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
         List<Long> selLoan = loanMapper.selLoan(0);
-
+        int cnt = 0;
         LocalDate startDate = LocalDate.of(2022, 1, 1);
         LocalDate endDate = LocalDate.now();
         String[] rateNames = {
@@ -36,6 +36,7 @@ class LoanRate extends DummyDefault {
             }
             List<String> selectedRateNamesList = new ArrayList<>(selectedRateNames);
             for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusWeeks(1)) {
+                cnt++;
                 for(int k=0; k<selectedRateNames.size(); k++) {
                 RateLog rateLog = new RateLog();
                 rateLog.setLoanId(selLoan.get(i));
@@ -47,6 +48,9 @@ class LoanRate extends DummyDefault {
                 rateLog.setDiscountedRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.1,0.5)));
 
                     loanMapper.insLoanLog(rateLog);
+                    if(cnt%200==0){
+                        sqlSession.flushStatements();
+                    }
                 }
             }
             sqlSession.flushStatements();
@@ -65,6 +69,7 @@ class LoanRate extends DummyDefault {
             for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusWeeks(1)) {
 
                 for(int k=0; k<selectedRateNames.size(); k++) {
+                    cnt++;
                     RateLog rateLog = new RateLog();
                     rateLog.setLoanId(selLoan1.get(i));
                     rateLog.setUseFlag(1);
@@ -75,10 +80,16 @@ class LoanRate extends DummyDefault {
                     rateLog.setDiscountedRate(BigDecimal.valueOf(kofaker.random().nextDouble(0.1,0.5)));
 
                     loanMapper.insLoanLog(rateLog);
+                    if(cnt%200==0){
+                        sqlSession.flushStatements();
+                    }
                 }
             }
             sqlSession.flushStatements();
         }
+            sqlSession.flushStatements();
+            sqlSession.commit();
+            sqlSession.close();
     }
 }
 

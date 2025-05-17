@@ -5,14 +5,11 @@ import com.example.projectdummy.account.AccountMapper;
 import com.example.projectdummy.account.HistoryMapper;
 import com.example.projectdummy.account.model.BankAccount;
 import com.example.projectdummy.account.model.TransactionHistory;
-import com.example.projectdummy.card.CardMapper;
 import com.example.projectdummy.employee.EmployeeMapper;
 import com.example.projectdummy.productAndDeposit.DepositAccount;
 import com.example.projectdummy.productAndDeposit.DepositDuration;
 import com.example.projectdummy.productAndDeposit.DepositMapper;
-import com.example.projectdummy.productAndDeposit.SavingsDeposit;
-import org.apache.ibatis.session.ExecutorType;
-import org.apache.ibatis.session.SqlSession;
+import com.example.projectdummy.productAndDeposit.ProductDeposit;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,7 +39,7 @@ public class SavingAccountDummy extends AccountDummyDefault {
     @Test //저축 계좌 생성
     void createSavingAccount() {
 
-        List<SavingsDeposit> savingDeposits = depositMapper.selSavingDeposit();
+        List<ProductDeposit> savingDeposits = depositMapper.selProductDeposit(1);
         List<Long> employees = employeeMapper.selEmployee();
         List<DepositDuration> durations= depositMapper.selDepositDuration();
         Random random = new Random();
@@ -54,8 +51,11 @@ public class SavingAccountDummy extends AccountDummyDefault {
             if(localDateTime.isAfter(LocalDateTime.now())){
                 break;
             }
-            SavingsDeposit demandDeposit = savingDeposits.get(random.nextInt(savingDeposits.size()));
-            DepositDuration duration = durations.get(random.nextInt(durations.size()));
+            ProductDeposit demandDeposit = savingDeposits.get(random.nextInt(savingDeposits.size()));
+
+            List<DepositDuration> durations2 = durations.stream().filter(a->a.getSaDepositId() == demandDeposit.getDepositId()
+                ).collect(Collectors.toList());
+            DepositDuration duration=durations2.get(random.nextInt(durations2.size()));
             boolean success = false;
             int retryCnt = 0;
             BankAccount account = new BankAccount();

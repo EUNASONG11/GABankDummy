@@ -14,4 +14,5 @@ public class CardAccountAuth {
     private Integer state;
     private LocalDateTime createdAt;
     private Integer flag;
+    private Integer authFlag;
 }

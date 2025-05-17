@@ -28,34 +28,47 @@ public class CardAuthDummy extends DummyDefault {
         List<UseAuthPk> selAccountId = accountMapper.selAccountId();
 
         LocalDateTime endDate = LocalDateTime.now();
+        int cnt = 0;
 
         for(UseAuthPk uap:selAccountId){
             LocalDateTime startDate = uap.getCreatedAt();
             CardAccountAuth ca = new CardAccountAuth();
             ca.setDivisionId(uap.getAccountId());
-            ca.setFlag((uap.getProductId() > 200_000) ? 1 : 0);
+//            ca.setFlag((uap.getProductId() > 200_000) ? 1 : 0);
             ca.setState(0);
+            cnt++;
             while(startDate.isBefore(endDate)){
                 ca.setLocation(kofaker.address().fullAddress()); // 위치 어케 넣을지 생각 일단  >> 랜덤으로 넣음
                 ca.setCreatedAt(startDate); // createdAt 넣기위한 for문(2022년도~오늘)
-                int addDay = kofaker.random().nextInt(30)+3;
+                int addDay = kofaker.random().nextInt(20)+3;
                 int addMinute = kofaker.random().nextInt(50)+1;
+                int addHour = kofaker.random().nextInt(24)+1;
                 startDate = startDate.plusDays(addDay);
                 startDate = startDate.plusMinutes(addMinute);
-
+                startDate = startDate.plusHours(addHour);
+                ca.setFlag(kofaker.random().nextInt(10) == 0 ? 0 : 1);
+                ca.setAuthFlag(kofaker.random().nextInt(10) == 0 ? 1 : 0);
+                cnt++;
                 customerMapper.insAuth(ca);
+                if(cnt%1000==0){
+                    sqlSession.flushStatements();
+                    System.out.println(cnt);
+                }
             }
-            int randomInt = kofaker.random().nextInt(300)+1;
+            int randomInt = kofaker.random().nextInt(250)+1;
             int randomInt2 = kofaker.random().nextInt(6)+1;
             ca.setLocation(kofaker.address().fullAddress());
+            ca.setFlag(kofaker.random().nextInt(10) == 0 ? 0 : 1);
             if(!startDate.isBefore(endDate) && randomInt == 100){
                 ca.setState(1);
+                ca.setAuthFlag(1);
                 ca.setCreatedAt(endDate);
                 customerMapper.insAuth(ca);
                 // 최신일 기준으로 드물게 인증실패가 있도록(1천건당 1번?) > 일단 계좌가 많이 없어서 300건당 1번으로
             }
             if(randomInt == 100 && randomInt2 == 3){
                 ca.setState(1);
+                ca.setAuthFlag(1);
                 ca.setCreatedAt(endDate.plusMinutes(2));
                 customerMapper.insAuth(ca);
                 // 혹시 2연속 틀릴 경우
@@ -70,5 +83,8 @@ public class CardAuthDummy extends DummyDefault {
 //            }
             sqlSession.flushStatements();
         }
+        sqlSession.flushStatements();
+        sqlSession.commit();
+        sqlSession.close();
     }
 }

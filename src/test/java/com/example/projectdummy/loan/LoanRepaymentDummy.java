@@ -28,6 +28,7 @@ public class LoanRepaymentDummy extends DummyDefault {
     void loanRepayment() {
         SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
         List<LoanInfo> selLoanInfo = loanMapper.selLoanInfo();
+        int cnt = 0;
         for (int i = 0; i < selLoanInfo.size(); i++) {
             LoanInfo loanInfo = selLoanInfo.get(i);
             LocalDateTime endAt = loanInfo.getEndAt();
@@ -68,25 +69,29 @@ public class LoanRepaymentDummy extends DummyDefault {
                     loanRepayment.setInterest(interest); // 이자
                     loanMapper.insLoanRepayment(loanRepayment);
                     totalMoneyByDue += principalPayment+interest;
-                    LoanUser lu = accountMapper.selLoanUser(loanInfo.getAccountId());
-                    TransactionHistory th = new TransactionHistory();
-                    LocalDateTime ldt = month.atStartOfDay();
-                    th.setTransactionFeeId(16L);
-                    th.setAccountId(loanInfo.getAccountId());
-                    th.setFlag(0);
-                    th.setMoney(principalPayment+interest);
-                    th.setToName("대출 납부"); // 상품에서 찾아서 넣기
-                    th.setAccountNum(lu.getUseAccount());
-                    th.setToBankCode(lu.getBankCode());
-                    th.setCreatedAt(ldt);
-                    th.setLocation((kofaker.address().fullAddress())); // 위치 어케
-                    th.setHsMoney(totalMoneyByDue); //기존에 넣은거때매 +해야되는데?
-                    th.setAtmCode(kofaker.random().nextInt(3)==0?"00301":"00302"); // ATM 모바일 1:2 비율
+                    if(month.isBefore(LocalDate.now())) {
+
+
+                        LoanUser lu = accountMapper.selLoanUser(loanInfo.getAccountId());
+                        TransactionHistory th = new TransactionHistory();
+                        LocalDateTime ldt = month.atStartOfDay();
+                        th.setTransactionFeeId(16L);
+                        th.setAccountId(loanInfo.getAccountId());
+                        th.setFlag(0);
+                        th.setMoney(principalPayment + interest);
+                        th.setToName("대출 납부"); // 상품에서 찾아서 넣기
+                        th.setAccountNum(lu.getUseAccount());
+                        th.setToBankCode(lu.getBankCode());
+                        th.setCreatedAt(ldt);
+                        th.setLocation((kofaker.address().fullAddress())); // 위치 어케
+                        th.setHsMoney(totalMoneyByDue); //기존에 넣은거때매 +해야되는데?
+                        th.setAtmCode(kofaker.random().nextInt(3) == 0 ? "00301" : "00302"); // ATM 모바일 1:2 비율
 
 //                    th.setUseAccount(lu.getUseAccount()); // 이거 달라져도 괜찮음
 //                    th.setUseBankCode(lu.getBankCode()); // 위에 따라 달라진 은행코드
-                    if(!loanRepayment.getDueCode().equals("01101")){
-                        accountMapper.insTranHistory(th);
+                        if (!loanRepayment.getDueCode().equals("01101")) {
+                            accountMapper.insTranHistory(th);
+                        }
                     }
                 }
             } else if (loanInfo.getRedemptionCode().equals("01103")) {
@@ -120,25 +125,29 @@ public class LoanRepaymentDummy extends DummyDefault {
                     loanMapper.insLoanRepayment(loanRepayment);
 
                     totalMoneyByDue += monthlyPrincipal+interest;
-                    LoanUser lu = accountMapper.selLoanUser(loanInfo.getAccountId());
-                    TransactionHistory th = new TransactionHistory();
-                    LocalDateTime ldt = month.atStartOfDay();
-                    th.setTransactionFeeId(16L);
-                    th.setAccountId(loanInfo.getAccountId());
-                    th.setFlag(0);
-                    th.setMoney(monthlyPrincipal+interest);
-                    th.setToName(lu.getCustName()); // 상품에서 찾아서 넣기
-                    th.setAccountNum(lu.getUseAccount());
-                    th.setToBankCode(lu.getBankCode());
-                    th.setCreatedAt(ldt);
-                    th.setLocation("대출 납부"); // 위치 어케
-                    th.setHsMoney(totalMoneyByDue); //기존에 넣은거때매 +해야되는데?
-                    th.setAtmCode(kofaker.random().nextInt(3)==0?"00301":"00302"); // ATM 모바일 1:2 비율
+                    if(month.isBefore(LocalDate.now())) {
+
+
+                        LoanUser lu = accountMapper.selLoanUser(loanInfo.getAccountId());
+                        TransactionHistory th = new TransactionHistory();
+                        LocalDateTime ldt = month.atStartOfDay();
+                        th.setTransactionFeeId(16L);
+                        th.setAccountId(loanInfo.getAccountId());
+                        th.setFlag(0);
+                        th.setMoney(monthlyPrincipal + interest);
+                        th.setToName("대출 납부"); // 상품에서 찾아서 넣기
+                        th.setAccountNum(lu.getUseAccount());
+                        th.setToBankCode(lu.getBankCode());
+                        th.setCreatedAt(ldt);
+                        th.setLocation((kofaker.address().fullAddress())); // 위치 어케
+                        th.setHsMoney(totalMoneyByDue); //기존에 넣은거때매 +해야되는데?
+                        th.setAtmCode(kofaker.random().nextInt(3) == 0 ? "00301" : "00302"); // ATM 모바일 1:2 비율
 
 //                    th.setUseAccount(lu.getUseAccount()); // 이거 달라져도 괜찮음
 //                    th.setUseBankCode(lu.getBankCode()); // 위에 따라 달라진 은행코드
-                    if(!loanRepayment.getDueCode().equals("01101")){
-                        accountMapper.insTranHistory(th);
+                        if (!loanRepayment.getDueCode().equals("01101")) {
+                            accountMapper.insTranHistory(th);
+                        }
                     }
                 }
 
